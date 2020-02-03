@@ -9,10 +9,51 @@
 		<!-- Lien vers mon CSS -->
 		<link href="../css/styleLog.css" rel="stylesheet">
 		
-
+		<!-- recapcha -->
+		<script src="https://www.google.com/recaptcha/api.js"></script>
 	</head>
 
 	<body>
+	
+		<?php
+			//Declaration des variables
+			$pseudoOK = true;
+			$mailOK = true;
+			$mdpOK = true;
+			$mdpVerif = true;
+			$reCapcha = true;
+			$mailUnique = true;
+			$pseudoUnique = true;
+			
+			
+			//capcha
+			require '../recapcha/recaptcha.php';
+			$clef_publique = '6LfiFNUUAAAAAGR6dA-YZmCRvrn3UJJBZ44URp2O';
+			$clef_secrete = '6LfiFNUUAAAAAFVym_YEI3RNt4bki45CzpE-nUYD';
+			
+			$reCaptcha = new ReCaptcha($clef_secrete);
+			if(isset($_POST["g-recaptcha-response"])) {
+				$resp = $reCaptcha->verifyResponse(
+					$_SERVER["REMOTE_ADDR"],
+					$_POST["g-recaptcha-response"]
+					);
+				if ($resp != null && $resp->success) {
+					$reCapcha = true;
+				}else {
+					$reCapcha = false;
+				}
+			}
+			
+			//connexion à la bd
+			
+			//verification des formats
+			
+			//verification de mdp et mdpVerif
+			
+			//requete
+					
+		
+		?>
 
 		
 		<div class="cadre ">
@@ -24,13 +65,44 @@
 
 
 				<!-- formulaire-->
-				<form>
-					<input type="text" id="nom"  name="nom" placeholder="nom">
-					<input type="text" id="prenom"  name="prenom" placeholder="prenom">
-					<input type="text" id="pseudo"  name="pseudo" placeholder="pseudo">
-					<input type="email" id="mail"  name="mail" placeholder="mail">
-					<input type="tel" id="tel"  name="tel" placeholder="télephone">
-					<!-- date naissance <input type="date" id="date"  name="date" placeholder="date de naissance"> -->
+				<form action="inscription.php" method="POST">
+				
+					<input type="text" id="pseudo" <?php if (!$pseudoOK || !$pseudoUnique){ echo "<div class = \"formulaireERR\" ";}?> name="pseudo" placeholder="pseudo" <?php if (isset($_POST["pseudo"]) && $pseudoOK){echo "value = \"".$_POST["pseudo"]."\"";}?>>
+					<?php
+						if (!$pseudoOK){
+							echo " <div class=\" txtERR\">Le pseudo n'est pas valide il doit faire entre 1 et 25 charcatere</div>";
+						}
+						if (!$pseudoUnique){
+							echo " <div class=\" txtERR\">Ce pseudo est déja pris veuillez en trouver un autre</div>";
+						}
+					?>
+					<input type="email" id="mail" <?php if (!$mailOK || !$mailUnique){ echo "<div class = \"formulaireERR\" ";}?> name="mail" placeholder="mail" <?php if (isset($_POST["mail"]) && $mailOK){echo "value = \"".$_POST["mail"]."\"";}?>>
+					<?php
+						if (!$mailOK){
+								echo " <div class=\" txtERR\">Le mail est invalide veuillez remplir un mail valide</div>";
+						}
+						if (!$mailUnique){
+							echo " <div class=\" txtERR\">Un compte est déjà associé à ce compte</div>";
+						}
+					?>
+					<input type="password" id="mdp" <?php if (!$mdpOK){ echo "<div class = \"formulaireERR\" ";}?> name="mdp" placeholder="mot de passe">
+					<?php
+						if (!$mdpOK){
+							echo " <div class=\" txtERR\">Le mot de passe est invalide il doit au minimum avoir une majuscule, une minuscule et 8 characteres</div>";
+						}
+					?>
+					<input type="password" id="mdpVerif" <?php if (!$mdpVerif){ echo "<div class = \"formulaireERR\" ";}?> name="mdpVerif" placeholder="Verification de mot de passe">
+					<?php
+						if (!$mdpVerif){
+							echo " <div class=\" txtERR\">Les mots de passe ne sont pas identique</div>";
+						}
+					?>
+					<div class="centrer g-recaptcha" data-sitekey="<?php echo $clef_publique;?>"></div>
+					<?php
+						if (!$reCapcha){
+							echo " <div class=\" txtERR\">Veuillez remplir le Recapcha</div></br>";
+						}
+					?>
 					<input type="submit" class="boutonVert"  value="Connexion">
 				</form>
 
