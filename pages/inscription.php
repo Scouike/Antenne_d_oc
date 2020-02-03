@@ -45,11 +45,63 @@
 			}
 			
 			//connexion à la bd
+			$host = 'localhost';
+			$db   = 'bdradio';
+			$user = 'root';
+			$pass = 'root';
+			$charset = 'utf8mb4';
+			$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+			$options = [
+				PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+				PDO::ATTR_EMULATE_PREPARES   => false,
+			];
+			try {
+				 $pdo = new PDO($dsn, $user, $pass, $options);
+			} catch (PDOException $e) {
+				 throw new PDOException($e->getMessage(), (int)$e->getCode());
+			}
 			
 			//verification des formats
+			$regexPseudo = "/^([a-zA-Z'àâéèêôùûçÀÂÉÈÔÙÛÇ[:blank:]-]{1,25})$/";
+			$regexMail =" /^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$/ "; //TODO VERIFIER LA LONGEUR MAX TOTALE
+			$regexMdp ="#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,30}$#";
+			 
+			if (isset($_POST["pseudo"]) && !preg_match($regexPseudo, $_POST["pseudo"])){
+				$pseudoOK =false;
+			}
 			
-			//verification de mdp et mdpVerif
+			if (isset($_POST["mail"]) && !preg_match($regexMail, $_POST["mail"])){
+				$mailOK =false;
+			}
 			
+			if (isset($_POST["mdp"]) && !preg_match($regexMdp, $_POST["mdp"])){
+				$mdpOK =false;
+			}
+			//verification de la correspondance des mdp
+			if (isset($_POST["mdp"]) && isset($_POST["mdpVerif"]) && $_POST["mdp"] != $_POST["mdpVerif"] ){
+				$mdpVerif = false;
+			}			
+			
+			// verification que l'utilisateur et le mail sont unique
+			if (isset($_POST["mail"]) || isset($_POST["pseudo"]) ){
+				$sql = "SELECT * FROM utilisateur";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute();
+				while ($row = $stmt->fetch())
+				{
+					if (isset($_POST["mail"]) && $row['mail'] == $_POST["mail"] ){
+						$mailUnique = false;
+					}
+					
+					if (isset($_POST["pseudo"]) && $row['pseudo'] == $_POST["pseudo"] ){
+						$pseudoUnique = false;
+					}
+					
+				}							
+			}
+			
+
 			//requete
 					
 		
