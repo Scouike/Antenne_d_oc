@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans+Caption&display=swap');
+
+#logo{
+ height:50px;	
+}
+body{
+	background-color:#FBEEDE;
+	font-family: 'PT Sans Caption', sans-serif;
+}
+
+.couleurLiens{
+	color:#EED2A9;
+}
+.barreNavig {
+	background-color:#FEF7ED;/* couleur de fond de la barre de navigation */
+	color :red; 
+}
+
+.cadre {
+	display: flex;
+	align-items: center;
+	flex-direction: column; 
+	justify-content: center;
+	width: 100%;
+	min-height: 100%;
+	padding: 20px;
+	
+}
+
+.marge70{
+	padding:70px;
+}
+
+.baliseA { /* les liens c'est pas beau sans css */
+  color: #92badd;
+  display:inline-block;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.titre {
+  text-decoration: none;
+  text-align: center; /* allignement */
+  font-size: 15px; /* taille */
+  font-weight: 600; /* largeur */
+  text-transform: uppercase; /* met le texte en majuscule */
+  display:inline-block;   /* permet d'avoir 2titre sur une ligne */
+  margin: 40px 8px 10px 8px; /* les marge */
+  color: #cccccc; /* la couleur */
+}
+
+.polaroid {
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+  margin-top:25px;
+}
+
+.polatxt {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+.image {
+  background-size: cover;
+  width: 100%;
+  height: 200px;
+}
+
+.image img {
+  display: none;
+}
+footer{
+  
+  font-family: 'PT Sans Caption', sans-serif;	
+  background-color: #FEF7ED;
+  bottom: 500; left: 0; right: 0;
+  position:absolute;
+}
+.margin{
+	padding:70px;
+}
+.btnpadding{
+	margin:10px;
+}
+.cadre2{	
+	margin: 10px 50px 20px;
+	border-style:solid ; 		/* Bordure double */
+	border-width:2px;			/* Epaisseur bordure */
+	border-color:#585976;		/* Couleur de la bordure */
+	border-radius: 5px;			/* Arrondissement des angles */
+	
+}
+
+.decalageGauche{
+	margin:70px;
+}
+
+.imageGrande{
+	height:400px;
+}
+	
+	
