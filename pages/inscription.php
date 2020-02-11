@@ -64,7 +64,7 @@
 			
 			//verification des formats
 			$regexPseudo = "/^([a-zA-Z'àâéèêôùûçÀÂÉÈÔÙÛÇ[:blank:]-]{1,25})$/";
-			$regexMail =" /^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$/ "; //TODO VERIFIER LA LONGEUR MAX TOTALE
+			$regexMail ="/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix";
 			$regexMdp ="#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,30}$#";
 			 
 			if (isset($_POST["pseudo"]) && !preg_match($regexPseudo, $_POST["pseudo"])){
@@ -103,6 +103,28 @@
 			
 
 			//requete
+			if (isset($_POST["pseudo"]) && 
+				isset($_POST["mail"]) &&
+				isset($_POST["mdp"]) && 
+				isset($_POST["mdpVerif"]) && 
+				$pseudoOK &&
+				$mailOK &&
+				$mdpOK &&
+				$mdpVerif &&
+				$reCapcha &&
+				$mailUnique &&
+				$pseudoUnique ){
+					
+				$mail = $_POST["mail"];
+				$mdp = hash('sha256', $_POST["mdp"]);
+				$pseudo = $_POST["pseudo"];
+					
+				$sql = 'INSERT INTO utilisateur (attente,mail,mdp,niveau,pseudo) VALUES (false,?,? ,1,?)';
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$mail,$mdp,$pseudo]);
+				
+			
+			}
 					
 		
 		?>
