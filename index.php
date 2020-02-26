@@ -24,10 +24,10 @@
 
 		<!-- Barre de navigation regarde si une seesion existe et si oui determine si c'est une session admin ou utilisateur--> 
 		<?php   
-			if (isset($_SESSION['type']) && $_SESSION['type']=="animateur") {
+			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
 				/* inclu une barre de navigation */
 				include('pages/bareNav/barreNavAnimateur.html');
-			}else if (isset($_SESSION['type']) && $_SESSION['type']=="admin") {
+			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
 				/* inclu une barre de navigation */
 				include('pages/bareNav/barreNavAdmin.html');
 			}else{

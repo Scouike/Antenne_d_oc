@@ -1,3 +1,14 @@
+<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require '../PHPMailer-master/src/Exception.php';
+require '../PHPMailer-master/src/PHPMailer.php';
+require '../PHPMailer-master/src/SMTP.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
@@ -16,14 +27,56 @@
 	<body>
 	
 		<?php
+		
+			//envoie de mail 
+			function envoieMail($destinataire,$subject,$body){
+				// Instantiation and passing `true` enables exceptions
+				$mail = new PHPMailer(true);
+				$mail->SMTPOptions = array('ssl' =>  
+				   array( 
+					  'verify_peer' => false, 
+					  'verify_peer_name' => false, 
+					  'allow_self_signed' => true));
+
+				try {
+					//Server settings
+					$mail->isSMTP();                                            // Send using SMTP
+					$mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+					$mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+					$mail->Username   = 'mathieuzenonetutomail@gmail.com';                     // SMTP username
+					$mail->Password   = 'Ef7McERA';                               // SMTP password
+					$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+					$mail->Port       = 587;                                    // TCP port to connect to
+
+					//Recipients
+					$mail->setFrom('mathieuzenonetutomail@gmail.com', 'Radio Antenne d\'Oc');
+					$mail->addAddress($destinataire, 'Joe User');     // Add a recipient
+					
+					// Content
+					$mail->isHTML(true);                                  // Set email format to HTML
+					$mail->Subject = $subject;
+					$mail->Body    = $body;
+					$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+					$mail->send();
+				} catch (Exception $e) {
+					echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+				}
+			}
+		
+		
+		
+		
 			//Declaration des variables
-			$pseudoOK = true;
+			$nomOK = true;
+			$prenomOK = true;
+			$ageOK = true;
 			$mailOK = true;
 			$mdpOK = true;
 			$mdpVerif = true;
 			$reCapcha = true;
 			$mailUnique = true;
-			$pseudoUnique = true;
+			$inscriptionValide = false;
 			
 			
 			//capcha
@@ -63,18 +116,26 @@
 			}
 			
 			//verification des formats
-			$regexPseudo = "/^([a-zA-Z'àâéèêôùûçÀÂÉÈÔÙÛÇ[:blank:]-]{1,25})$/";
+			$regexNomPrenom = "/^([a-zA-Z'àâéèêôùûçÀÂÉÈÔÙÛÇ[:blank:]-]{1,25})$/";
 			$regexMail ="/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix";
 			$regexMdp ="#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,30}$#";
 			 
-			if (isset($_POST["pseudo"]) && !preg_match($regexPseudo, $_POST["pseudo"])){
-				$pseudoOK =false;
+			// verif nom
+			if (isset($_POST["nom"]) && !preg_match($regexNomPrenom, $_POST["nom"])){
+				$nomOK =false;
 			}
 			
+			//verif prenom
+			if (isset($_POST["prenom"]) && !preg_match($regexNomPrenom, $_POST["prenom"])){
+				$prenomOK =false;
+			}
+			
+			//verif mail
 			if (isset($_POST["mail"]) && !preg_match($regexMail, $_POST["mail"])){
 				$mailOK =false;
 			}
 			
+			//verif mdp
 			if (isset($_POST["mdp"]) && !preg_match($regexMdp, $_POST["mdp"])){
 				$mdpOK =false;
 			}
@@ -83,8 +144,8 @@
 				$mdpVerif = false;
 			}			
 			
-			// verification que l'utilisateur et le mail sont unique
-			if (isset($_POST["mail"]) || isset($_POST["pseudo"]) ){
+			// verification que le mail est unique
+			if (isset($_POST["mail"]) ){
 				$sql = "SELECT * FROM utilisateur";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
@@ -94,34 +155,75 @@
 						$mailUnique = false;
 					}
 					
-					if (isset($_POST["pseudo"]) && $row['pseudo'] == $_POST["pseudo"] ){
-						$pseudoUnique = false;
-					}
-					
 				}							
+			}
+			 
+			//verification de l'age 
+			function age($date) { 
+				$age = date('Y') - $date; 
+				if (date('md') < date('md', strtotime($date))) { 
+					return $age - 1; 
+				} 
+				return $age; 
+			}
+			if (isset($_POST["dateNaiss"]) && (age($_POST["dateNaiss"]) <15 || age($_POST["dateNaiss"])) > 100 ){
+				$ageOK = false;
 			}
 			
 
 			//requete
-			if (isset($_POST["pseudo"]) && 
+			if (isset($_POST["prenom"]) && 
+				isset($_POST["nom"]) &&
+				isset($_POST["dateNaiss"]) &&
 				isset($_POST["mail"]) &&
 				isset($_POST["mdp"]) && 
 				isset($_POST["mdpVerif"]) && 
-				$pseudoOK &&
+				$prenomOK &&
+				$nomOK &&
+				$ageOK &&
 				$mailOK &&
 				$mdpOK &&
 				$mdpVerif &&
 				$reCapcha &&
-				$mailUnique &&
-				$pseudoUnique ){
+				$mailUnique ){
 					
 				$mail = $_POST["mail"];
 				$mdp = hash('sha256', $_POST["mdp"]);
-				$pseudo = $_POST["pseudo"];
+				$prenom = $_POST["prenom"];
+				$nom = $_POST["nom"];
+				$dateNaiss = $_POST["dateNaiss"];
+				//generation aleatoire d'une clef
+				$clef = md5(microtime(TRUE)*100000);
 					
-				$sql = 'INSERT INTO utilisateur (attente,mail,mdp,niveau,pseudo) VALUES (false,?,? ,1,?)';
+				//modification bd
+				$sql = 'INSERT INTO utilisateur (attente,mail,mdp,niveau,prenom,nom,dateNaiss,clefActivation) VALUES (true,?,? ,1,?,?,?,?)';
 				$stmt = $pdo->prepare($sql);
-				$stmt->execute([$mail,$mdp,$pseudo]);
+				$stmt->execute([$mail,$mdp,$prenom,$nom,$dateNaiss,$clef]);
+				
+				//envoie du mail
+				$subject = "Activer votre compte" ;
+				$body = 'Bienvenue sur Anthene d\'Oc,
+						 
+						Pour activer votre compte, veuillez cliquer sur le lien ci-dessous
+						ou copier/coller dans votre navigateur Internet.
+						 </br></br></br>
+						http://localhost/ProjetRadioGit/ProjetRadioPhp/pages/activation.php?log='.urlencode($mail).'&cle='.urlencode($clef).'
+						 
+						</br></br></br>
+						---------------
+						Ceci est un mail automatique, Merci de ne pas y répondre.';
+				
+				envoieMail($mail,$subject,$body);
+				
+				
+				
+				
+				
+				
+				
+				$inscriptionValide = true;
+				
+				
 				
 			
 			}
@@ -136,39 +238,62 @@
 				<a class = "inactive underlineHove titre"  href="connexion.php"> Se connecter</a>
 				<a class = "active titre"  href=""> S'inscrire</a>
 
-
-
+				<?php
+					if ($inscriptionValide){
+						
+						echo "<div class=\" centrer\">Bravo votre inscription a été prise en compte, veuillez maintenant activer votre compte en cliquant sur le lien qui vous a été envoyé, merci. </div>";
+						echo " <a class=\"underlineHover\" href=\"../index.php\">Accueil</a>";
+					}else{
+						
+				?>
+				
 				<!-- formulaire-->
 				<form action="inscription.php" method="POST">
 				
-					<input type="text" id="pseudo" <?php if (!$pseudoOK || !$pseudoUnique){ echo "<div class = \"formulaireERR\" ";}?> name="pseudo" placeholder="pseudo" <?php if (isset($_POST["pseudo"]) && $pseudoOK){echo "value = \"".$_POST["pseudo"]."\"";}?>>
+					<input type="text" id="prenom" <?php if (!$prenomOK ){ echo "<div class = \"formulaireERR\" ";}?> name="prenom" placeholder="prenom" <?php if (isset($_POST["prenom"]) && $prenomOK){echo "value = \"".$_POST["prenom"]."\"";}?> required>
 					<?php
-						if (!$pseudoOK){
-							echo " <div class=\" txtERR\">Le pseudo n'est pas valide il doit faire entre 1 et 25 charcatere</div>";
+						if (!$prenomOK){
+							echo " <div class=\" txtERR\">Le prenom n'est pas valide il doit faire entre 1 et 25 charcatere</div>";
 						}
-						if (!$pseudoUnique){
-							echo " <div class=\" txtERR\">Ce pseudo est déja pris veuillez en trouver un autre</div>";
-						}
+						
 					?>
-					<input type="email" id="mail" <?php if (!$mailOK || !$mailUnique){ echo "<div class = \"formulaireERR\" ";}?> name="mail" placeholder="mail" <?php if (isset($_POST["mail"]) && $mailOK){echo "value = \"".$_POST["mail"]."\"";}?>>
+					
+					<input type="text" id="nom" <?php if (!$nomOK){ echo "<div class = \"formulaireERR\" ";}?> name="nom" placeholder="nom" <?php if (isset($_POST["nom"]) && $nomOK){echo "value = \"".$_POST["nom"]."\"";}?> required>
+					<?php
+						if (!$nomOK){
+							echo " <div class=\" txtERR\">Le nom n'est pas valide il doit faire entre 1 et 25 caractères</div>";
+						}
+						
+					?>
+					
+					<input type="date" id="dateNaiss" <?php if (!$ageOK){ echo "<div class = \"formulaireERR\" ";}?> name="dateNaiss" min="1900-00-01" max="2200-00-01" required >
+					<?php
+						if (!$ageOK){
+							echo " <div class=\" txtERR\">Le site est réservé au personnes de plus de 15 ans</div>";
+						}
+						
+					?>
+					
+					
+					<input type="email" id="mail" <?php if (!$mailOK || !$mailUnique){ echo "<div class = \"formulaireERR\" ";}?> name="mail" placeholder="mail" <?php if (isset($_POST["mail"]) && $mailOK){echo "value = \"".$_POST["mail"]."\"";}?> required>
 					<?php
 						if (!$mailOK){
-								echo " <div class=\" txtERR\">Le mail est invalide veuillez remplir un mail valide</div>";
+								echo " <div class=\" txtERR\">Le mail est invalide, veuillez remplir un mail valide</div>";
 						}
 						if (!$mailUnique){
-							echo " <div class=\" txtERR\">Un compte est déjà associé à ce compte</div>";
+							echo " <div class=\" txtERR\">Un compte est déjà associé à ce mail</div>";
 						}
 					?>
-					<input type="password" id="mdp" <?php if (!$mdpOK){ echo "<div class = \"formulaireERR\" ";}?> name="mdp" placeholder="mot de passe">
+					<input type="password" id="mdp" <?php if (!$mdpOK){ echo "<div class = \"formulaireERR\" ";}?> name="mdp" placeholder="mot de passe" required>
 					<?php
 						if (!$mdpOK){
-							echo " <div class=\" txtERR\">Le mot de passe est invalide il doit au minimum avoir une majuscule, une minuscule et 8 characteres</div>";
+							echo " <div class=\" txtERR\">Le mot de passe est invalide, il doit au minimum avoir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>";
 						}
 					?>
-					<input type="password" id="mdpVerif" <?php if (!$mdpVerif){ echo "<div class = \"formulaireERR\" ";}?> name="mdpVerif" placeholder="Verification de mot de passe">
+					<input type="password" id="mdpVerif" <?php if (!$mdpVerif){ echo "<div class = \"formulaireERR\" ";}?> name="mdpVerif" placeholder="Verification de mot de passe" required>
 					<?php
 						if (!$mdpVerif){
-							echo " <div class=\" txtERR\">Les mots de passe ne sont pas identique</div>";
+							echo " <div class=\" txtERR\">Les mots de passe ne correspondent pas</div>";
 						}
 					?>
 					<div class="centrer g-recaptcha" data-sitekey="<?php echo $clef_publique;?>"></div>
@@ -177,9 +302,12 @@
 							echo " <div class=\" txtERR\">Veuillez remplir le Recapcha</div></br>";
 						}
 					?>
-					<input type="submit" class="boutonVert"  value="Connexion">
+					<input type="submit" class="boutonVert"  value="Inscription">
 				</form>
-
+				
+				<?php
+					}
+				?>
 
 
 			</div>

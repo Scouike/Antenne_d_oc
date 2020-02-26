@@ -15,9 +15,9 @@
 <body>
 	<!-- Barre de navigation --> 
 		<?php   
-			if (isset($_SESSION['type']) && $_SESSION['type']=="animateur") {
+			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
 				include('../bareNav/barreNavAnimateur.html');
-			}else if (isset($_SESSION['type']) && $_SESSION['type']=="admin") {
+			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
 				include('../bareNav/barreNavAdmin.html');
 			}
 		?>

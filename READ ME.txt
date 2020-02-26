@@ -1,0 +1,7 @@
+Creer bd avec code sql fournis
+
+chemin depuis le www de uwamp à respecter
+
+www/ProjetRadioGit/ProjetRadioPhp
+
+mettre le code de git dans ProjetRadioPhp

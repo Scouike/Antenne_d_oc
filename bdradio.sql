@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 11, 2020 at 03:22 PM
+-- Generation Time: Feb 26, 2020 at 11:14 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.18
 
@@ -23,11 +23,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `emmission`
+-- Table structure for table `emission`
 --
 
-CREATE TABLE `emmission` (
-  `id_emmission` int(11) NOT NULL,
+CREATE TABLE `emission` (
+  `id_emission` int(11) NOT NULL,
   `nom` varchar(25) NOT NULL,
   `texte` varchar(50) NOT NULL,
   `interview` tinyint(1) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `emmission` (
 
 CREATE TABLE `liason` (
   `id_liaison` int(11) NOT NULL,
-  `id_emmission` int(11) NOT NULL,
+  `id_emission` int(11) NOT NULL,
   `id_theme` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -54,7 +54,7 @@ CREATE TABLE `liason` (
 
 CREATE TABLE `podcast` (
   `id_podcast` int(11) NOT NULL,
-  `id_emmission` int(11) NOT NULL,
+  `id_emission` int(11) NOT NULL,
   `date` varchar(8) NOT NULL,
   `image` varchar(250) DEFAULT NULL,
   `son` varchar(250) NOT NULL,
@@ -85,39 +85,41 @@ CREATE TABLE `theme` (
 
 CREATE TABLE `utilisateur` (
   `id_utilisateur` int(11) NOT NULL,
-  `pseudo` varchar(25) NOT NULL,
+  `nom` varchar(25) NOT NULL,
   `mail` varchar(35) NOT NULL,
   `mdp` varchar(500) NOT NULL,
   `niveau` int(11) NOT NULL,
-  `attente` tinyint(1) NOT NULL
+  `attente` tinyint(1) NOT NULL,
+  `prenom` varchar(25) NOT NULL,
+  `dateNaiss` varchar(10) NOT NULL,
+  `clefActivation` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `utilisateur`
 --
 
-INSERT INTO `utilisateur` (`id_utilisateur`, `pseudo`, `mail`, `mdp`, `niveau`, `attente`) VALUES
-(1, 'matmat', 'zenonemathieu@gmail.com', 'mdp', 2, 0),
-(10, 'mathieuZen', 'mathieu.zenone@iut-rodez.fr', 'be7af5e98ba30dce453ce5ed9aea66ca6cc299dfe322f6edd1631485199c9f5b', 1, 0),
-(11, 'test', 'test@gamil.com', '07480fb9e85b9396af06f006cf1c95024af2531c65fb505cfbd0add1e2f31573', 1, 0),
-(12, 'alex', 'alex@gmail.com', '60dc48c86ade05d1de5a43fe1591fd5e2271dd6fa55e290490b5ecd02b807a9d', 1, 0);
+INSERT INTO `utilisateur` (`id_utilisateur`, `nom`, `mail`, `mdp`, `niveau`, `attente`, `prenom`, `dateNaiss`, `clefActivation`) VALUES
+(5, 'amsif', 'alex.amsif@iut-rodez.fr', '996fbb1fc8c13fae5628ea5b0368c01e762716ff09aa1f27daa52974e7ccd3f7', 1, 0, 'alex', '2000-06-28', 'eb573aaf29403c2f7da65cd51a2e2b9d'),
+(6, 'borgi', 'tatiana.borgi@iut-rodez.fr', 'dc67409635f1a754ea8679220ae3cb604a3c5050320986de0375b583132b1a42', 1, 0, 'tatiana', '2000-07-02', 'e92f308bf4213f5acb36533e1786f7ef'),
+(8, 'zenone', 'zenonemathieu@gmail.com', 'be7af5e98ba30dce453ce5ed9aea66ca6cc299dfe322f6edd1631485199c9f5b', 2, 0, 'mathieu', '1999-10-02', '0fd7438014bdd06d8f3259ecc4a6f76b');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `emmission`
+-- Indexes for table `emission`
 --
-ALTER TABLE `emmission`
-  ADD PRIMARY KEY (`id_emmission`);
+ALTER TABLE `emission`
+  ADD PRIMARY KEY (`id_emission`);
 
 --
 -- Indexes for table `liason`
 --
 ALTER TABLE `liason`
   ADD PRIMARY KEY (`id_liaison`),
-  ADD KEY `id_emmission` (`id_emmission`),
+  ADD KEY `id_emmission` (`id_emission`),
   ADD KEY `id_theme` (`id_theme`);
 
 --
@@ -125,7 +127,7 @@ ALTER TABLE `liason`
 --
 ALTER TABLE `podcast`
   ADD PRIMARY KEY (`id_podcast`),
-  ADD KEY `id_emmision` (`id_emmission`);
+  ADD KEY `id_emmision` (`id_emission`);
 
 --
 -- Indexes for table `theme`
@@ -144,10 +146,10 @@ ALTER TABLE `utilisateur`
 --
 
 --
--- AUTO_INCREMENT for table `emmission`
+-- AUTO_INCREMENT for table `emission`
 --
-ALTER TABLE `emmission`
-  MODIFY `id_emmission` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `emission`
+  MODIFY `id_emission` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `liason`
 --
@@ -167,7 +169,7 @@ ALTER TABLE `theme`
 -- AUTO_INCREMENT for table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- Constraints for dumped tables
 --
@@ -176,14 +178,14 @@ ALTER TABLE `utilisateur`
 -- Constraints for table `liason`
 --
 ALTER TABLE `liason`
-  ADD CONSTRAINT `FK_emmision` FOREIGN KEY (`id_emmission`) REFERENCES `emmission` (`id_emmission`),
+  ADD CONSTRAINT `FK_emmision` FOREIGN KEY (`id_emission`) REFERENCES `emission` (`id_emission`),
   ADD CONSTRAINT `FK_theme` FOREIGN KEY (`id_theme`) REFERENCES `theme` (`id_theme`);
 
 --
 -- Constraints for table `podcast`
 --
 ALTER TABLE `podcast`
-  ADD CONSTRAINT `FK_emmission` FOREIGN KEY (`id_emmission`) REFERENCES `emmission` (`id_emmission`);
+  ADD CONSTRAINT `FK_emmission` FOREIGN KEY (`id_emission`) REFERENCES `emission` (`id_emission`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

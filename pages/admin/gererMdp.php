@@ -15,7 +15,7 @@
 <body>
 		<!-- barre navigation -->
 		<?php   
-			if (isset($_SESSION['type']) && $_SESSION['type']=="admin") {
+			if (isset($_SESSION['level']) && $_SESSION['level']==2) {
 				include('../bareNav/barreNavAdmin.html');
 			}
 		?>

@@ -22,7 +22,7 @@
 			//declaration des variables
 			$reCapcha = true;
 			$mdpSaisie = true;
-			$pseudoSaisie = true;
+			$mailSaisie = true;
 			$champCorrecte = true;
 			$conecte = false;
 				
@@ -62,9 +62,9 @@
 				 throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
 			
-			//verification mdp et pseudo
-			if (isset($_POST["pseudo"]) && strlen($_POST["pseudo"])== 0){
-				$pseudoSaisie = false;
+			//verification mdp et mail
+			if (isset($_POST["mail"]) && strlen($_POST["mail"])== 0){
+				$mailSaisie = false;
 			}
 			
 			if (isset($_POST["mdp"]) && strlen($_POST["mdp"])== 0){
@@ -72,17 +72,18 @@
 			}
 			
 			//connexion
-			if ($reCapcha && $pseudoSaisie &&  $mdpSaisie && isset($_POST["pseudo"]) && isset($_POST["mdp"]) ){
+			if ($reCapcha && $mailSaisie &&  $mdpSaisie && isset($_POST["mail"]) && isset($_POST["mdp"]) ){
 				$champCorrecte = false;
 				$sql = "SELECT * FROM utilisateur ";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
 				while ($row = $stmt->fetch())
 				{
-					if ($row['pseudo'] == $_POST["pseudo"] && $row['mdp'] == hash('sha256',$_POST["mdp"])){
+					
+					if ($row['mail'] == $_POST["mail"] && $row['mdp'] == hash('sha256',$_POST["mdp"]) && $row['attente'] == 0){
 						$champCorrecte = true;
 						$conecte = true;
-						$_SESSION['pseudo'] = $row['pseudo'];
+						$_SESSION['prenom'] = $row['prenom'];
 						$_SESSION['level'] = $row['niveau'];
 						$_SESSION['id'] = $row['id_utilisateur'];
 					}
@@ -110,20 +111,20 @@
 					<?php
 						if (!$conecte) {
 					?>
-							<input type="text" id="pseudo" <?php if (!$champCorrecte || !$pseudoSaisie ){ echo "<div class = \"formulaireERR\" ";}?> name="pseudo" placeholder="pseudo" <?php if (isset($_POST["pseudo"]) && $pseudoSaisie && $champCorrecte){echo "value = \"".$_POST["pseudo"]."\"";}?>>
+							<input type="email" id="mail" <?php if (!$champCorrecte || !$mailSaisie ){ echo "<div class = \"formulaireERR\" ";}?> name="mail" placeholder="mail" <?php if (isset($_POST["mail"]) && $mailSaisie && $champCorrecte){echo "value = \"".$_POST["mail"]."\"";}?> required>
 								<?php
-									if (!$pseudoSaisie){
-										echo " <div class=\" txtERR\">Veuillez saisir votre pseudo</div>";
+									if (!$mailSaisie){
+										echo " <div class=\" txtERR\">Veuillez saisir votre mail</div>";
 									}
 
 								?>
-							<input type="password" id="mdp" <?php if (!$champCorrecte || !$mdpSaisie ){ echo "<div class = \"formulaireERR\" ";}?> name="mdp" placeholder="mot de passe">
+							<input type="password" id="mdp" <?php if (!$champCorrecte || !$mdpSaisie ){ echo "<div class = \"formulaireERR\" ";}?> name="mdp" placeholder="mot de passe" required>
 								<?php
 									if (!$mdpSaisie){
 										echo " <div class=\" txtERR\">Veuillez saisir votre mot de passe</div>";
 									}
 									if (!$champCorrecte){
-										echo " <div class=\" txtERR\">Le mot de passe ou le pseudo est invalide veuillez recommencer</div>";
+										echo " <div class=\" txtERR\">Le mot de passe ou le mail sont invalides, veuillez recommencer</div>";
 									}
 								
 								?>
@@ -136,14 +137,27 @@
 							<input type="submit" class="boutonVert" value="Connexion">
 					<?php
 						}else{
-							echo "<div class=\" centrer\">Bravo ".$_SESSION['pseudo']." vous etes bien connecté et vous avez un pass de niveau ".$_SESSION['level']." </div>";
+							echo "<div class=\" centrer\">Bravo ".$_SESSION['prenom']." vous etes bien connecté et vous avez un pass de niveau ".$_SESSION['level']." </div>";
 						}
 					?>
 				</form>
 
 				<!-- Mot de passe oublié -->
 				<div id="formFooter">
-				  <a class="underlineHover" href="#">Mot de passe oublié?</a>
+				  <?php
+					if (!$conecte) {
+				   ?>
+					<a class="underlineHover" href="mdpOubli.php">Mot de passe oublié?</a>
+				  <?php
+					}else{
+						
+				   ?>
+				   <a class="underlineHover" href="../index.php">Accueil</a>
+				  <?php
+				  
+				    }
+					
+				  ?>
 				</div>
 
 			</div>
