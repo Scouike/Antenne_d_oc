@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Rubriques</title>
-		<!-- Lien vers boostrap -->
+		<!-- Lien vers boostrap -
 		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
 		
 		<!-- Lien vers mon CSS -->
@@ -38,54 +38,50 @@
 		<!-- DIfférents thème d'émission -->
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4 col-sm-6">
+			<?php
+			//connexion à la bd
+			$host = 'localhost';
+			$db   = 'bdradio';
+			$user = 'root';
+			$pass = 'root';
+			$charset = 'utf8mb4';
+			$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+			$options = [
+				PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+				PDO::ATTR_EMULATE_PREPARES   => false,
+			];
+			try {	
+				 $pdo = new PDO($dsn, $user, $pass, $options);
+			} catch (PDOException $e) {
+				 throw new PDOException($e->getMessage(), (int)$e->getCode());
+			}
+			
+				$sql="SELECT * FROM theme ORDER BY titre ASC"  ;
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute();
+				$titre="";
+				$image="";
+				$tabImage[0]="";
+				$tabTitre[0]="";
+				$increment=0;
+				while( $ligne = $stmt->fetch() ) {
+					$increment++;
+					$tabTitre[$increment]=$ligne['titre'];
+					$tabImage[$increment]=$ligne['image'];
+					echo'<div class="col-md-4 col-sm-6">
 					<div class="polaroid">
-						<a href="Emission.php"><div class="image" style="background-image:url(../images/nature.jpg)"><img src="../images/nature.jpg" alt="" /></div>
+						<a href="Emission.php?titre='.$tabTitre[$increment].'">
+						<div class="image" style="background-image:url('.$tabImage[$increment].')">
+							<img src="'.$tabImage[$increment].'" class="center" alt="Image du thème : '.$tabImage[$increment].'"/>
+						</div>
 						<div class="polatxt">
-							<p>Nature</p>
+							<p>'.$tabTitre[$increment].'</p>
 						</div></a>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-					<div class="polaroid">
-						<a href="Emission.php"><div class="image" style="background-image:url(../images/reggae.png)"><img src="../images/reggae.png" alt="" /></div>
-						<div class="polatxt">
-							<p>Reggae</p>
-						</div></a>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-					<div class="polaroid">
-						<a href="Emission.php"><div class="image" style="background-image:url(../images/culture.jpg)"><img src="../images/culture.jpg" alt="" /></div>
-						<div class="polatxt">
-							<p>Culture</p>
-						</div> </a>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-					<div class="polaroid">
-						<a href="Emission.php"><div class="image" style="background-image:url(../images/cuisine.jpg)"><img src="../images/cuisine.jpg" alt="" /></div>
-						<div class="polatxt">
-							<p>Cuisine</p>
-						</div> </a>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-					<div class="polaroid">
-						<a href="Emission.php"><div class="image" style="background-image:url(../images/automobile.jpg)"><img src="../images/automobile.jpg" alt="" /></div>
-						<div class="polatxt">
-							<p>Automobile</p>
-						</div> </a>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-					<div class="polaroid">
-						<a href="Emission.php"><div class="image" style="background-image:url(../images/politique.jpg)"><img src="../images/politique.jpg" alt="" /></div>
-						<div class="polatxt">
-							<p>Politique</p>
-						</div></a>
-					</div>
-				</div>
+						</div>
+					</div>';
+				}
+				?>
 			</div>
 		</div>
 	<!-- Footer -->
