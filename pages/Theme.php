@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Rubriques</title>
-		<!-- Lien vers boostrap -
+		<!-- Lien vers boostrap -->
 		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
 		
 		<!-- Lien vers mon CSS -->
@@ -57,7 +57,7 @@
 				 throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
 			
-				$sql="SELECT * FROM theme ORDER BY titre ASC"  ;
+				$sql="SELECT * FROM theme WHERE archive=0 ORDER BY titre ASC"  ;
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
 				$titre="";
@@ -72,12 +72,13 @@
 					echo'<div class="col-md-4 col-sm-6">
 					<div class="polaroid">
 						<a href="Emission.php?titre='.$tabTitre[$increment].'">
-						<div class="image" style="background-image:url('.$tabImage[$increment].')">
-							<img src="'.$tabImage[$increment].'" class="center" alt="Image du thème : '.$tabImage[$increment].'"/>
-						</div>
-						<div class="polatxt">
-							<p>'.$tabTitre[$increment].'</p>
-						</div></a>
+							<div class="image" style="background-image:url('.$tabImage[$increment].')">
+								<img src="'.$tabImage[$increment].'" class="center" alt="Image du thème : '.$tabImage[$increment].'"/>
+							</div>
+							<div class="polatxt">
+								<p>'.$tabTitre[$increment].'</p>
+							</div>
+						</a>
 						</div>
 					</div>';
 				}
