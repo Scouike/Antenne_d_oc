@@ -84,6 +84,11 @@ footer{
 .btnpadding{
 	margin:10px;
 }
+
+.marge{
+	margin:50px;
+}
+
 .cadre2{	
 	margin: 10px 50px 20px;
 	border-style:solid ; 		/* Bordure double */

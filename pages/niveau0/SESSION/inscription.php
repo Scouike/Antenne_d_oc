@@ -80,7 +80,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 			
 			
 			//capcha
-			require '.././../recapcha/recaptcha.php';
+			require '../../../recapcha/recaptcha.php';
 			$clef_publique = '6LfiFNUUAAAAAGR6dA-YZmCRvrn3UJJBZ44URp2O';
 			$clef_secrete = '6LfiFNUUAAAAAFVym_YEI3RNt4bki45CzpE-nUYD';
 			
@@ -166,7 +166,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 				} 
 				return $age; 
 			}
-			if (isset($_POST["dateNaiss"]) && (age($_POST["dateNaiss"]) <15 || age($_POST["dateNaiss"])) > 100 ){
+			if (isset($_POST["dateNaiss"]) && (age($_POST["dateNaiss"]) <= 15 || age($_POST["dateNaiss"])) >= 100 ){
 				$ageOK = false;
 			}
 			
