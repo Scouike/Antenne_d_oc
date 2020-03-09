@@ -5,13 +5,13 @@
 		<meta charset="utf-8">
 		<title>Rubriques</title>
 		<!-- Lien vers boostrap -->
-		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../bootstrap/css/bootstrap.css" rel="stylesheet">
 		
 		<!-- Lien vers mon CSS -->
-		<link href="../css/style.css" rel="stylesheet">
+		<link href="../../css/style.css" rel="stylesheet">
 		
 		<!-- liens vers fontawesome -->
-		<link href="../fontawesome/css/all.css" rel="stylesheet" >
+		<link href="../../fontawesome/css/all.css" rel="stylesheet" >
 		
 		<!-- script boostrap -->
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
@@ -25,14 +25,16 @@
 		<!-- Barre de navigation --> 
 		<?php   
 			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
-				/* inclu une barre de navigation */
-				include('bareNav/barreNavAnimateur.html');
+				include('../bareNav/barreNavUtilisateur.html');
 			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
 				/* inclu une barre de navigation */
-				include('bareNav/barreNavAdmin.html');
+				include('../bareNav/barreNavAnimateur.html');
+			}else if (isset($_SESSION['level']) && $_SESSION['level']==3) {
+				/* inclu une barre de navigation */
+				include('../bareNav/barreNavAdmin.html');
 			}else{
 				/* inclu une barre de navigation */
-				include('bareNav/barreNav.html'); 
+				include('../bareNav/barreNav.html'); 
 			}
 		?>
 		<!-- DIfférents thème d'émission -->
@@ -87,7 +89,7 @@
 		</div>
 	<!-- Footer -->
 	<?php   
-		include('footeur/footeurs.html'); 
+		include('../footeur/footeurs.html'); 
 	?>
 		
 	</body>

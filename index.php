@@ -24,16 +24,20 @@
 
 		<!-- Barre de navigation regarde si une seesion existe et si oui determine si c'est une session admin ou utilisateur--> 
 		<?php   
+			
 			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
+				include('pages/bareNav/barreNavUtilisateur.html');
+			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
 				/* inclu une barre de navigation */
 				include('pages/bareNav/barreNavAnimateur.html');
-			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
+			}else if (isset($_SESSION['level']) && $_SESSION['level']==3) {
 				/* inclu une barre de navigation */
 				include('pages/bareNav/barreNavAdmin.html');
 			}else{
 				/* inclu une barre de navigation */
 				include('pages/bareNav/barreNav.html'); 
 			}
+			
 		?>
 		
 			<p class="cadre2"> Les fréquences : Bretenoux 89.0 &nbsp; Cahors 88.1 &nbsp; Cahors sud

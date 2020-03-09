@@ -2,10 +2,10 @@
 -- version 4.5.4.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Feb 26, 2020 at 11:14 PM
--- Server version: 5.7.11
--- PHP Version: 5.6.18
+-- Client :  localhost
+-- Généré le :  Lun 09 Mars 2020 à 08:21
+-- Version du serveur :  5.7.11
+-- Version de PHP :  5.6.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `bdradio`
+-- Base de données :  `bdradio`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `emission`
+-- Structure de la table `emission`
 --
 
 CREATE TABLE `emission` (
@@ -34,10 +34,17 @@ CREATE TABLE `emission` (
   `archive` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `emission`
+--
+
+INSERT INTO `emission` (`id_emission`, `nom`, `texte`, `interview`, `archive`) VALUES
+(25, 'Oui-Oui', 'Vas-y', 0, 0);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `liason`
+-- Structure de la table `liason`
 --
 
 CREATE TABLE `liason` (
@@ -46,10 +53,17 @@ CREATE TABLE `liason` (
   `id_theme` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `liason`
+--
+
+INSERT INTO `liason` (`id_liaison`, `id_emission`, `id_theme`) VALUES
+(12, 25, 1);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `podcast`
+-- Structure de la table `podcast`
 --
 
 CREATE TABLE `podcast` (
@@ -64,10 +78,17 @@ CREATE TABLE `podcast` (
   `attente` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `podcast`
+--
+
+INSERT INTO `podcast` (`id_podcast`, `id_emission`, `date`, `image`, `son`, `texte`, `intemporelle`, `archive`, `attente`) VALUES
+(16, 25, 'test', 'test', 'test', 'test', 0, 0, 0);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `theme`
+-- Structure de la table `theme`
 --
 
 CREATE TABLE `theme` (
@@ -77,10 +98,17 @@ CREATE TABLE `theme` (
   `archive` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `theme`
+--
+
+INSERT INTO `theme` (`id_theme`, `image`, `titre`, `archive`) VALUES
+(1, '/ProjetRadioGit/ProjetRadioPhp/images/nature.png', 'Nature', 0);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utilisateur`
+-- Structure de la table `utilisateur`
 --
 
 CREATE TABLE `utilisateur` (
@@ -96,7 +124,7 @@ CREATE TABLE `utilisateur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `utilisateur`
+-- Contenu de la table `utilisateur`
 --
 
 INSERT INTO `utilisateur` (`id_utilisateur`, `nom`, `mail`, `mdp`, `niveau`, `attente`, `prenom`, `dateNaiss`, `clefActivation`) VALUES
@@ -105,17 +133,17 @@ INSERT INTO `utilisateur` (`id_utilisateur`, `nom`, `mail`, `mdp`, `niveau`, `at
 (8, 'zenone', 'zenonemathieu@gmail.com', 'be7af5e98ba30dce453ce5ed9aea66ca6cc299dfe322f6edd1631485199c9f5b', 2, 0, 'mathieu', '1999-10-02', '0fd7438014bdd06d8f3259ecc4a6f76b');
 
 --
--- Indexes for dumped tables
+-- Index pour les tables exportées
 --
 
 --
--- Indexes for table `emission`
+-- Index pour la table `emission`
 --
 ALTER TABLE `emission`
   ADD PRIMARY KEY (`id_emission`);
 
 --
--- Indexes for table `liason`
+-- Index pour la table `liason`
 --
 ALTER TABLE `liason`
   ADD PRIMARY KEY (`id_liaison`),
@@ -123,66 +151,66 @@ ALTER TABLE `liason`
   ADD KEY `id_theme` (`id_theme`);
 
 --
--- Indexes for table `podcast`
+-- Index pour la table `podcast`
 --
 ALTER TABLE `podcast`
   ADD PRIMARY KEY (`id_podcast`),
   ADD KEY `id_emmision` (`id_emission`);
 
 --
--- Indexes for table `theme`
+-- Index pour la table `theme`
 --
 ALTER TABLE `theme`
   ADD PRIMARY KEY (`id_theme`);
 
 --
--- Indexes for table `utilisateur`
+-- Index pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   ADD PRIMARY KEY (`id_utilisateur`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables exportées
 --
 
 --
--- AUTO_INCREMENT for table `emission`
+-- AUTO_INCREMENT pour la table `emission`
 --
 ALTER TABLE `emission`
-  MODIFY `id_emission` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_emission` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
--- AUTO_INCREMENT for table `liason`
+-- AUTO_INCREMENT pour la table `liason`
 --
 ALTER TABLE `liason`
-  MODIFY `id_liaison` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_liaison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
--- AUTO_INCREMENT for table `podcast`
+-- AUTO_INCREMENT pour la table `podcast`
 --
 ALTER TABLE `podcast`
-  MODIFY `id_podcast` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_podcast` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
--- AUTO_INCREMENT for table `theme`
+-- AUTO_INCREMENT pour la table `theme`
 --
 ALTER TABLE `theme`
-  MODIFY `id_theme` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_theme` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `utilisateur`
+-- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
   MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables exportées
 --
 
 --
--- Constraints for table `liason`
+-- Contraintes pour la table `liason`
 --
 ALTER TABLE `liason`
   ADD CONSTRAINT `FK_emmision` FOREIGN KEY (`id_emission`) REFERENCES `emission` (`id_emission`),
   ADD CONSTRAINT `FK_theme` FOREIGN KEY (`id_theme`) REFERENCES `theme` (`id_theme`);
 
 --
--- Constraints for table `podcast`
+-- Contraintes pour la table `podcast`
 --
 ALTER TABLE `podcast`
   ADD CONSTRAINT `FK_emmission` FOREIGN KEY (`id_emission`) REFERENCES `emission` (`id_emission`);

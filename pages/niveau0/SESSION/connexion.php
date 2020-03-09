@@ -5,10 +5,10 @@
 		<meta charset="utf-8">
 		<title>Connexion</title>
 		<!-- Lien vers boostrap -->
-		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
 		
 		<!-- Lien vers mon CSS -->
-		<link href="../css/styleLog.css" rel="stylesheet">
+		<link href="../../../css/styleLog.css" rel="stylesheet">
 		
 		<!-- recapcha -->
 		<script src="https://www.google.com/recaptcha/api.js"></script>
@@ -27,7 +27,7 @@
 			$conecte = false;
 				
 			//capcha
-			require '../recapcha/recaptcha.php';
+			require '../../../recapcha/recaptcha.php';
 			$clef_publique = '6LfiFNUUAAAAAGR6dA-YZmCRvrn3UJJBZ44URp2O';
 			$clef_secrete = '6LfiFNUUAAAAAFVym_YEI3RNt4bki45CzpE-nUYD';
 			
@@ -152,7 +152,7 @@
 					}else{
 						
 				   ?>
-				   <a class="underlineHover" href="../index.php">Accueil</a>
+				   <a class="underlineHover" href="../../../index.php">Accueil</a>
 				  <?php
 				  
 				    }

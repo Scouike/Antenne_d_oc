@@ -3,9 +3,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-require '../PHPMailer-master/src/Exception.php';
-require '../PHPMailer-master/src/PHPMailer.php';
-require '../PHPMailer-master/src/SMTP.php';
+require '../../../PHPMailer-master/src/Exception.php';
+require '../../../PHPMailer-master/src/PHPMailer.php';
+require '../../../PHPMailer-master/src/SMTP.php';
 
 ?>
 <!DOCTYPE html>
@@ -14,10 +14,10 @@ require '../PHPMailer-master/src/SMTP.php';
 		<meta charset="utf-8">
 		<title>Mot de passe oublié</title>
 		<!-- Lien vers boostrap -->
-		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
 		
 		<!-- Lien vers mon CSS -->
-		<link href="../css/styleLog.css" rel="stylesheet">
+		<link href="../../../css/styleLog.css" rel="stylesheet">
 		
 		<!-- recapcha -->
 		<script src="https://www.google.com/recaptcha/api.js"></script>
@@ -166,7 +166,7 @@ require '../PHPMailer-master/src/SMTP.php';
 
 				<!-- Mot de passe oublié -->
 				<div id="formFooter">
-				   <a class="underlineHover" href="../index.php">Accueil</a>
+				   <a class="underlineHover" href="../../../index.php">Accueil</a>
 				</div>
 
 			</div>

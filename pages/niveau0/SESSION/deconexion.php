@@ -5,10 +5,10 @@
 		<meta charset="utf-8">
 		<title>Deconnexion</title>
 		<!-- Lien vers boostrap -->
-		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
 		
 		<!-- Lien vers mon CSS -->
-		<link href="../css/styleLog.css" rel="stylesheet">
+		<link href="../../../css/styleLog.css" rel="stylesheet">
 		
 
 	</head>
@@ -22,7 +22,7 @@
 				<!-- on detruit la session -->	
 				<?php session_destroy(); ?>
 				<!-- formulaire-->
-				<form action =  "../index.php"  method="post">			  			  
+				<form action =  "../../../index.php"  method="post">			  			  
 				  <input type="submit" class="boutonVert" value="Deconnexion">
 				</form>
 

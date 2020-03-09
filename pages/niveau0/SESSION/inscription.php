@@ -3,9 +3,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-require '../PHPMailer-master/src/Exception.php';
-require '../PHPMailer-master/src/PHPMailer.php';
-require '../PHPMailer-master/src/SMTP.php';
+require '../../../PHPMailer-master/src/Exception.php';
+require '../../../PHPMailer-master/src/PHPMailer.php';
+require '../../../PHPMailer-master/src/SMTP.php';
 
 ?>
 
@@ -15,10 +15,10 @@ require '../PHPMailer-master/src/SMTP.php';
 		<meta charset="utf-8">
 		<title>Inscription</title>
 		<!-- Lien vers boostrap -->
-		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
 		
 		<!-- Lien vers mon CSS -->
-		<link href="../css/styleLog.css" rel="stylesheet">
+		<link href="../../../css/styleLog.css" rel="stylesheet">
 		
 		<!-- recapcha -->
 		<script src="https://www.google.com/recaptcha/api.js"></script>
@@ -80,7 +80,7 @@ require '../PHPMailer-master/src/SMTP.php';
 			
 			
 			//capcha
-			require '../recapcha/recaptcha.php';
+			require '.././../recapcha/recaptcha.php';
 			$clef_publique = '6LfiFNUUAAAAAGR6dA-YZmCRvrn3UJJBZ44URp2O';
 			$clef_secrete = '6LfiFNUUAAAAAFVym_YEI3RNt4bki45CzpE-nUYD';
 			
@@ -242,7 +242,7 @@ require '../PHPMailer-master/src/SMTP.php';
 					if ($inscriptionValide){
 						
 						echo "<div class=\" centrer\">Bravo votre inscription a été prise en compte, veuillez maintenant activer votre compte en cliquant sur le lien qui vous a été envoyé, merci. </div>";
-						echo " <a class=\"underlineHover\" href=\"../index.php\">Accueil</a>";
+						echo " <a class=\"underlineHover\" href=\"../../../index.php\">Accueil</a>";
 					}else{
 						
 				?>

@@ -27,6 +27,9 @@
 		<!-- barre navigation -->
 		<?php   
 			if (isset($_SESSION['level']) && $_SESSION['level']==2) {
+				include('../bareNav/barreNavAnimateur.html');
+			}else if (isset($_SESSION['level']) && $_SESSION['level']==3) {
+				/* inclu une barre de navigation */
 				include('../bareNav/barreNavAdmin.html');
 			}
 		?>

@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<title>Activation</title>
 		<!-- Lien vers boostrap -->
-		<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet">
 		
 		<!-- Lien vers mon CSS -->
-		<link href="../css/styleLog.css" rel="stylesheet">
+		<link href="../../../css/styleLog.css" rel="stylesheet">
 		
 		<!-- recapcha -->
 		<script src="https://www.google.com/recaptcha/api.js"></script>
@@ -113,7 +113,7 @@
 
 				<!-- Mot de passe oublié -->
 				<div id="formFooter">
-				   <a class="underlineHover" href="../index.php">Accueil</a>
+				   <a class="underlineHover" href="../../../index.php">Accueil</a>
 				</div>
 
 			</div>
