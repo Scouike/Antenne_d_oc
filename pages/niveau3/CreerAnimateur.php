@@ -106,7 +106,7 @@
 			} 
 			return $age; 
 		}
-		if (isset($_POST["dateNaiss"]) && (age($_POST["dateNaiss"]) <= 15 || age($_POST["dateNaiss"])) >= 100 ){
+		if (isset($_POST["dateNaiss"]) && (age($_POST["dateNaiss"]) < 15 || age($_POST["dateNaiss"]) > 100) ){
 			$ageOK = false;
 		}
 			
@@ -258,6 +258,7 @@
 					if (!$ageOK){
 						echo '<div class="invalid-feedback">Le site est réservé au personnes de plus de 15 ans</div>';
 					}
+
 						
 				?>
 			</div>

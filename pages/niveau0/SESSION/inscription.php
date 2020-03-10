@@ -166,7 +166,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 				} 
 				return $age; 
 			}
-			if (isset($_POST["dateNaiss"]) && (age($_POST["dateNaiss"]) <= 15 || age($_POST["dateNaiss"])) >= 100 ){
+			if (isset($_POST["dateNaiss"]) && (age($_POST["dateNaiss"]) < 15 || age($_POST["dateNaiss"]) >= 100) ){
 				$ageOK = false;
 			}
 			
@@ -207,7 +207,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 						Pour activer votre compte, veuillez cliquer sur le lien ci-dessous
 						ou copier/coller dans votre navigateur Internet.
 						 </br></br></br>
-						http://localhost/ProjetRadioGit/ProjetRadioPhp/pages/activation.php?log='.urlencode($mail).'&cle='.urlencode($clef).'
+						http://localhost/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/SESSION/activation.php?log='.urlencode($mail).'&cle='.urlencode($clef).'
 						 
 						</br></br></br>
 						---------------

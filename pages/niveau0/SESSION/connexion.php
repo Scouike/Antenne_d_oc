@@ -84,6 +84,7 @@
 						$champCorrecte = true;
 						$conecte = true;
 						$_SESSION['prenom'] = $row['prenom'];
+						$_SESSION['mail'] = $row['mail'];
 						$_SESSION['level'] = $row['niveau'];
 						$_SESSION['id'] = $row['id_utilisateur'];
 					}

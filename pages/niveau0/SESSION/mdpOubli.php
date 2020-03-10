@@ -121,7 +121,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 						pas à l\'origine de ce mail veuillez l\'ignorer.
 						 
 						</br></br></br> 
-						http://localhost/ProjetRadioGit/ProjetRadioPhp/pages/recupererMDP.php?log='.urlencode($mail).'&cle='.urlencode($clef).'
+						http://localhost/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/SESSION/recupererMDP.php?log='.urlencode($mail).'&cle='.urlencode($clef).'
 						 
 						</br></br></br>
 						---------------
