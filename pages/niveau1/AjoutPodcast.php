@@ -9,6 +9,7 @@
 		<!-- Lien vers mon CSS -->
 		<link href="../../css/style.css" rel="stylesheet">
 		
+		<link href="dropzone.css" rel="stylesheet" type="text/css">
 		<!-- liens vers fontawesome -->
 		<link href="../../fontawesome/css/all.css" rel="stylesheet" >
 		
@@ -19,60 +20,142 @@
 </head>
 <body>
 	<!-- Barre de navigation --> 
-		<?php   
-			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
-				include('../bareNav/barreNavUtilisateur.html');
-			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
-				include('../bareNav/barreNavAnimateur.html');
-			}else if (isset($_SESSION['level']) && $_SESSION['level']==3) {
-				/* inclu une barre de navigation */
-				include('../bareNav/barreNavAdmin.html');
+	<?php   
+		if (isset($_SESSION['level']) && $_SESSION['level']==1) {
+			include('../bareNav/barreNavUtilisateur.html');
+		}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
+			include('../bareNav/barreNavAnimateur.html');
+		}else if (isset($_SESSION['level']) && $_SESSION['level']==3) {
+			/* inclu une barre de navigation */
+			include('../bareNav/barreNavAdmin.html');
+		}
+		//connexion à la bd
+		$host = 'localhost';
+		$db   = 'bdradio';
+		$user = 'root';
+		$pass = 'root';
+		$charset = 'utf8mb4';
+		$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+		$options = [
+			PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+			PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+			PDO::ATTR_EMULATE_PREPARES   => false,
+		];
+			
+		try {
+			 $pdo = new PDO($dsn, $user, $pass, $options);
+		} catch (PDOException $e) {
+			 throw new PDOException($e->getMessage(), (int)$e->getCode());
+		}
+		if(!empty($_FILES['Podcast']['name'])){
+			$targetDir = "../../podcast/";
+			$PodcastName = basename($_FILES['Podcast']['name']);
+			$ImageName = basename($_FILES['Image']['name']);
+			$targetPodcastPath = $targetDir . $PodcastName;
+			$targetImagePath = $targetDir . $ImageName;
+			$PodcastType = pathinfo($targetPodcastPath,PATHINFO_EXTENSION);
+			$ImageType = pathinfo($targetImagePath,PATHINFO_EXTENSION);
+		}
+		
+		$son="NULL";
+		$id_emission="NULL";
+		$image="NULL";
+		$texte="NULL";
+		if(isset($_POST["submit"])&&!empty($_FILES['Podcast']['name'])){
+			$formatPodcast = array('mp3','ogg','wav');
+			$formatImage = array('jpg','png','jpeg','gif','pdf');
+			if(in_array($PodcastType, $formatPodcast)){
+				if(!move_uploaded_file($_FILES['Podcast']['tmp_name'], $targetPodcastPath)){
+					echo '<H2> Il y a eu un soucis lors de l\'upload';
+				}else{
+					$son=$targetPodcastPath;
+					$sql = 'INSERT INTO podcast (son, id_emission, image,  texte,dateArchive, dateCreation) 
+					VALUES (?,?,?,?,?,?)';
+				}
+			}else{
+				echo '<H2>Seuls les format mp3,ogg,wav sont acceptés, le fichier n\' a pas été upload</H2>';
 			}
+			if ($_POST["emission"]!=""){
+				$idemission =  "SELECT id_emission FROM emission WHERE nom=?";
+				$requete= $pdo->prepare($idemission);
+				$requete->execute(array($_POST["emission"]));
+				$id_emission= implode("|",$requete->fetch());
+			}
+			if(in_array($ImageType, $formatImage)||$ImageType==""){
+				if(move_uploaded_file($_FILES['Image']['tmp_name'], $targetPodcastPath)){
+					$image=$targetImagePath;
+				}
+			}else{
+				echo '<H2>Seuls les formats jpg,png,jpeg,gif,pdf sont acceptés, le fichier n\' a pas été upload</H2>';
+			}
+			if ($_POST["Texte"]!=""){
+				$texte=$_POST["Texte"];
+			}
+			$dateArchive = date("Y-m-d", strtotime($_POST["dateArchiv"]));
+			$dateCrea = date("Y-m-d", strtotime($_POST["dateCréa"]));	
+			
+			var_dump($sql);
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute([$son,$id_emission,$image,$texte,$dateArchive,$dateCrea]);
+		}else{
+			echo'<H2>Veuillez sélectionner un podcast.</H2>';
+		}
 		?>
 	<h1 class="text-uppercase m-4 text-center">Ajout de Podcast</h1>
 	<div class="margin cadre2">
-		<form>
+		<form action="AjoutPodcast.php"method="POST" enctype="multipart/form-data">
 			<div class="form-row">
 				<div class="col">
-				<!-- Les zones de textes pour le titre et le nom de l'auteur du podcast -->
-					<input type="text" class="form-control" placeholder="Titre du podcast"> 
+					<label >Date de création:</label>
+					<input type="date" name="dateCréa" class="form-control" placeholder="Date du Podcast"
+					value="<?php echo date("Y-m-d",time()) ;?>">
 				</div>
 				<div class="col">
-					<input type="text" class="form-control" placeholder="Nom de l'auteur du Podcast">
+					<label >Date d'archivage	:</label>
+					<input type="date" name="dateArchiv" class="form-control" placeholder="Date du Podcast"
+					value="<?php echo date("Y-m-d",strtotime("+1 year")) ;?>"
+					min ="<?php echo date("Y-m-d",strtotime("+1 year")) ;?>">
 				</div>
 			</div>
 			<br/>
 			<div class="form-group">
 			<!-- zone de texte servant à la description du podcast -->
-				<label for="TextDescription">Description du podcast</label>
-				<textarea class="form-control" id="TextDescription" rows="3"></textarea>
+				<label for="TextDescription">Texte pour le podcast</label>
+				<textarea class="form-control" id="TextDescription" name="Texte" rows="3"></textarea>
 			</div>
 			<div class="row">
 			<!-- Bouttons pour choisir les fichiers Image et Podcast -->
 				<div class="col">
 				<!-- Nom du boutton -->
 					<label for="formImage">Image</label>
-					<input type="file" class="form-control-file" id="formImage">
+					<input type="file" name ="Image" class="form-control-file" id="formImage">
 				</div>
 				<div class="col">
 				<!-- Nom du boutton -->
 					<label for="formPodcast">Podcast</label>
-					<input type="file" class="form-control-file" id="formPodcast">
+					<input required type="file" name="Podcast" class="form-control-file" id="formPodcast">
 				</div>
 			</div>
 			<br/>
 			<!-- Liste déroulante avec les possibles émissions 	 -->
-			<select class="custom-select">
-				<option selected>Choisissez à quel émission appartient le podcast</option>
-				<option value="1">Emission 1</option>
-				<option value="2">Emission 2</option>
-				<option value="3">Emission 3</option>
+			<label>Choix émission du podcast</label>
+			<select name="emission" class="custom-select" autocomplete="on" required>
+				<?php
+				$sql="SELECT DISTINCT nom FROM emission";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute();
+				while ($row = $stmt->fetch()){
+					echo'<option value="'.$row["nom"].'">'.$row["nom"].'</option>';
+				}
+				?>
 			</select>
 			
-			<button type="button" class="btn btn-success float-right btnpadding">Enregistrer	</button>
+			<input type="submit" name="submit" value="Envoyer" class="btn btn-success float-right btnpadding">
 		</form>
 	</div>
-
+	<script src="jquery.min.js" type="text/javascript"></script>
+    <script src="dropzone.js" type="text/javascript"></script>
+	<script src="configDropZone.js" type="text/javascript"></script>
 
 	<!-- Footer -->
 	<?php   
