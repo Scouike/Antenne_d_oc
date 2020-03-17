@@ -61,6 +61,7 @@
 		$id_emission="NULL";
 		$image="NULL";
 		$texte="NULL";
+		$ajoutValide=false;
 		if(isset($_POST["submit"])&&!empty($_FILES['Podcast']['name'])){
 			$formatPodcast = array('mp3','ogg','wav');
 			$formatImage = array('jpg','png','jpeg','gif','pdf');
@@ -93,10 +94,10 @@
 			}
 			$dateArchive = date("Y-m-d", strtotime($_POST["dateArchiv"]));
 			$dateCrea = date("Y-m-d", strtotime($_POST["dateCréa"]));	
-			
-			var_dump($sql);
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute([$son,$id_emission,$image,$texte,$dateArchive,$dateCrea]);
+			
+			$ajoutValide=true;
 		}else{
 			echo'<H2>Veuillez sélectionner un podcast.</H2>';
 		}
@@ -149,7 +150,12 @@
 				}
 				?>
 			</select>
-			
+			<?php
+					if ($ajoutValide){
+						
+						echo "Le Podcast a été upload correctement";
+					}
+			?>
 			<input type="submit" name="submit" value="Envoyer" class="btn btn-success float-right btnpadding">
 		</form>
 	</div>
