@@ -69,15 +69,15 @@ INSERT INTO `liason` (`id_liaison`, `id_emission`, `id_theme`) VALUES
 CREATE TABLE `podcast` (
   `id_podcast` int(11) NOT NULL,
   `id_emission` int(11) NOT NULL,
-  `date` varchar(8) NOT NULL,
   `image` varchar(250) DEFAULT NULL,
   `son` varchar(250) NOT NULL,
   `texte` text,
   `intemporelle` tinyint(1) NOT NULL DEFAULT '0',
   `archive` tinyint(1) NOT NULL DEFAULT '0',
-  `attente` tinyint(1) NOT NULL DEFAULT '0'
+  `attente` tinyint(1) NOT NULL DEFAULT '0',
+  `dateArchive` varchar(10) DEFAULT NULL,
+  `dateCreation` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Contenu de la table `podcast`
 --
