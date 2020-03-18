@@ -82,9 +82,6 @@ CREATE TABLE `podcast` (
 -- Contenu de la table `podcast`
 --
 
-INSERT INTO `podcast` (`id_podcast`, `id_emission`, `date`, `image`, `son`, `texte`, `intemporelle`, `archive`, `attente`) VALUES
-(16, 25, 'test', 'test', 'test', 'test', 0, 0, 0);
-
 -- --------------------------------------------------------
 
 --

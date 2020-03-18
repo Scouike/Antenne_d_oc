@@ -29,6 +29,8 @@
 			/* inclu une barre de navigation */
 			include('../bareNav/barreNavAdmin.html');
 		}
+		
+		
 		//connexion à la bd
 		$host = 'localhost';
 		$db   = 'bdradio';
@@ -47,6 +49,8 @@
 		} catch (PDOException $e) {
 			 throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
+		
+		//Declaration des chemin pour les fichier 
 		if(!empty($_FILES['Podcast']['name'])){
 			$targetDir = "../../podcast/";
 			$PodcastName = basename($_FILES['Podcast']['name']);
@@ -57,31 +61,42 @@
 			$ImageType = pathinfo($targetImagePath,PATHINFO_EXTENSION);
 		}
 		
+		//initialisation fariable
 		$son="NULL";
 		$id_emission="NULL";
 		$image="NULL";
 		$texte="NULL";
+		$attente = 1;
 		$ajoutValide=false;
+		
+		
 		if(isset($_POST["submit"])&&!empty($_FILES['Podcast']['name'])){
+			//format Accepté
 			$formatPodcast = array('mp3','ogg','wav');
 			$formatImage = array('jpg','png','jpeg','gif','pdf');
+			
 			if(in_array($PodcastType, $formatPodcast)){
 				if(!move_uploaded_file($_FILES['Podcast']['tmp_name'], $targetPodcastPath)){
 					echo '<H2> Il y a eu un soucis lors de l\'upload';
 				}else{
 					$son=$targetPodcastPath;
-					$sql = 'INSERT INTO podcast (son, id_emission, image,  texte,dateArchive, dateCreation) 
-					VALUES (?,?,?,?,?,?)';
+					$sql = 'INSERT INTO podcast (son, id_emission, image,attente,  texte,dateArchive, dateCreation) 
+					VALUES (?,?,?,?,?,?,?)';
 				}
 			}else{
 				echo '<H2>Seuls les format mp3,ogg,wav sont acceptés, le fichier n\' a pas été upload</H2>';
 			}
+			
+			//on determine l'id de l'emmision choisit
 			if ($_POST["emission"]!=""){
 				$idemission =  "SELECT id_emission FROM emission WHERE nom=?";
 				$requete= $pdo->prepare($idemission);
 				$requete->execute(array($_POST["emission"]));
 				$id_emission= implode("|",$requete->fetch());
 			}
+			
+			
+			//on vérifie que le typed e l'image soit le bon 
 			if(in_array($ImageType, $formatImage)||$ImageType==""){
 				if(move_uploaded_file($_FILES['Image']['tmp_name'], $targetPodcastPath)){
 					$image=$targetImagePath;
@@ -89,13 +104,22 @@
 			}else{
 				echo '<H2>Seuls les formats jpg,png,jpeg,gif,pdf sont acceptés, le fichier n\' a pas été upload</H2>';
 			}
+			
+			//on initialise le texte
 			if ($_POST["Texte"]!=""){
 				$texte=$_POST["Texte"];
 			}
+			
+			//on determine si le podcat sera mis en attente ou pas
+			if ($_SESSION == 2 || $_SESSION ==3){
+				$attente = 0;
+			}
+			
+			
 			$dateArchive = date("Y-m-d", strtotime($_POST["dateArchiv"]));
 			$dateCrea = date("Y-m-d", strtotime($_POST["dateCréa"]));	
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute([$son,$id_emission,$image,$texte,$dateArchive,$dateCrea]);
+			$stmt->execute([$son,$id_emission,$image,$texte,$attente,$dateArchive,$dateCrea]);
 			
 			$ajoutValide=true;
 		}else{
