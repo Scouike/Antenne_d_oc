@@ -40,67 +40,104 @@
 			
 		?>
 		
-			<p class="cadre2"> Les fréquences : Bretenoux 89.0 &nbsp; Cahors 88.1 &nbsp; Cahors sud
-				89.0 &nbsp; Cazals 88.8 &nbsp;Figeac 88.1 &nbsp; Gourdon 105.3
-				&nbsp; Labastide-Murat 104.1 &nbsp;  Montcuq 88.8 &nbsp; Prayssac
-				93.7 &nbsp; Souillac 100.3 <br />
-		</p>
-	<div class=" cadre2 decalageGauche">
+	<p class="cadre2"> Les fréquences : Bretenoux 89.0 &nbsp; Cahors 88.1 &nbsp; Cahors sud
+		89.0 &nbsp; Cazals 88.8 &nbsp;Figeac 88.1 &nbsp; Gourdon 105.3
+		&nbsp; Labastide-Murat 104.1 &nbsp;  Montcuq 88.8 &nbsp; Prayssac
+		93.7 &nbsp; Souillac 100.3 <br />
+	</p>
+	<!-- podcast avec image et texte -->
+	<div class=" cadre3 decalageGauche">
 		<div class="row">
-			<div class="col">
-				<img src="images/Logo.png" class="img-fluid logo" alt="Image Emission">
+			<div class="col cadre_image ">
+				<img src="images/Logo.png" class="illustration" alt="Image Emission">
 			</div>
-
-			<div class="col">
+			<div class="col ">
 				<div class="row">
-					<div class="col">LA DATE</div>
-					<div class="col">AUTEUR</div>
-				</div>
-				<div class="row">
-					<div class="col"><h3>Texte descriptif du podcast</h3></div>
-				</div>
+					<div class="col description"><p>Texte descriptif du podcast</p></div>
+				</div>	
 				<div class="row">
 					<div class="col"><figure>
-						<figcaption>Ecouter le podcast : 	</figcaption>
-						<audio controls src="lien_audio">Your browser does not support the<code>audio</code> element.</audio> 
-						</figure>
-					</div>
-					<div class="col">
-						<br/>
+						<figcaption>Ecouter le podcast :</figcaption><br/>
+						<audio controls src="lien_audio">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
 						<button type="button" class="btn btn-outline-success">Télécharger</button>
+						</figure>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class=" cadre2 decalageGauche">
 		<div class="row">
-			<div class="row">
-				<div class="col mini-box"><h3>&nbsp; &nbsp; Texte descriptif du podcast</h3></div>
+			<div class="col">LA DATE</div>
+			<div class="col">EMISSION</div>
+		</div>
+	</div>
+	<!-- /podcast avec image et texte -->
+	
+	<!-- podcast sans image avec texte -->
+	<div class=" cadre3 decalageGauche">
+		<div class="row">
+			<div class="col">
+				<div class="row">
+					<div class="col description"><p>Texte descriptif du podcast<p></div>
+				</div>
+				
+				<div class="row">
+					<div class="col"><figure>
+						<figcaption>Ecouter le podcast :</figcaption><br/>
+						<audio controls src="lien_audio">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+						<button type="button" class="btn btn-outline-success">Télécharger</button>
+						</figure>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">LA DATE</div>
+			<div class="col">EMISSION</div>
+		</div>
+	</div>
+	<!-- /podcast sans image avec texte -->
+	
+	<!-- podcast sans image sans texte -->
+	<div class=" cadre3 decalageGauche">
+		<div class="row">
+			<div class="col">				
+				<div class="row">
+					<div class="col"><figure>
+						<figcaption>Ecouter le podcast :</figcaption><br/>
+						<audio controls src="lien_audio">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+						<button type="button" class="btn btn-outline-success">Télécharger</button>
+						</figure>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">LA DATE</div>
+			<div class="col">EMISSION</div>
+		</div>
+	</div>
+	<!-- /podcast sans image sans texte -->
+	  
+	<!-- podcast avec image sans texte -->
+	<div class=" cadre3 decalageGauche">
+		<div class="row">
+			<div class="col cadre_image">
+				<img src="images/Logo.png" class="illustration" alt="Image Emission">
 			</div>
 			<div class="col">
 				<div class="row">
-					<div class="col mini-box">LA DATE</div>
-					<div class="col mini-box">AUTEUR</div>
-				</div>
-				<div class="row">
-					<div class="col mini-box"><figure>
-						<figcaption>Ecouter le podcast : 	</figcaption>
-						<audio
-							controls
-							src="/media/examples/t-rex-roar.mp3">
-								Your browser does not support the
-								<code>audio</code> element.
-						</audio> 
+					<div class="col"><figure>
+						<figcaption>Ecouter le podcast :</figcaption><br/>
+						<audio controls src="lien_audio">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+						<button type="button" class="btn btn-outline-success">Télécharger</button>
 						</figure>
 					</div>
-					<div class="col mini-box">
-						<br/>
-						<button type="button" class="btn btn-outline-success">Télécharger</button>
-					</div>
-			  </div>
+				</div>
 			</div>
-
+		</div>
+		<div class="row">
+			<div class="col">LA DATE</div>
+			<div class="col">EMISSION</div>
 		</div>
 	</div>
 	  

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Sans+Caption&display=swap');
 
 #logo{
- height:50px;	
+ height:60px;	
 }
 body{
 	background-color:#FBEEDE;
@@ -23,12 +23,15 @@ body{
 	justify-content: center;
 	width: 100%;
 	min-height: 100%;
-	padding: 20px;
 	
 }
 
 .marge70{
 	padding:70px;
+}
+
+.illustration {
+	width: 100%;
 }
 
 .baliseA { /* les liens c'est pas beau sans css */
@@ -85,10 +88,6 @@ footer{
 	margin:10px;
 }
 
-.marge{
-	margin:50px;
-}
-
 .cadre2{	
 	margin: 10px 50px 20px;
 	border-style:solid ; 		/* Bordure double */
@@ -105,5 +104,23 @@ footer{
 .imageGrande{
 	height:400px;
 }
+
+.cadre_image {
+	max-width: 30%;
+}	
 	
+.description {
+	padding: 5px 5px 5px 5px;
+	font-size: 1.2em;
+}
+.cadre3{	
+	margin: 10px 50px 20px;
+	padding: 5px 20px 5px 20px;
+	text-align: center;
+	border-style:solid ; 		/* Bordure double */
+	border-width:2px;			/* Epaisseur bordure */
+	border-color:#585976;		/* Couleur de la bordure */
+	border-radius: 5px;			/* Arrondissement des angles */
 	
+}
+
