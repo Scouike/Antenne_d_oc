@@ -55,8 +55,193 @@
 			}
 			
 			//fonction qui determine qui affiche un podcast
-			function affichagePodcast($date, $idemmision, $podcast, $texte){
+			function affichagePodcast($date, $idemission, $podcast, $texte, $image){
+				global $pdo;
 				
+				//recuperation du nom de l'emission
+				$sql = "SELECT nom FROM emission WHERE id_emission = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$idemission]);	
+
+				
+				while ($row = $stmt->fetch()) {
+					$nomemission = $row['nom'];
+				}
+				
+			
+				//dertermination du type de podcast
+				if ($image != "NULL" && $texte != "NULL" ){
+					
+					//affichage d'un podcast avec une image et un texte
+					echo	'<div class=" cadre3 decalageGauche">
+							<div class="row">
+								<div class="col cadre_image ">
+									<img src="'.$image.'" class="illustration" alt="Image Emission">
+								</div>
+								<div class="col ">
+									<div class="row">
+										<div class="col description"><p>'.$texte.'</p></div>
+									</div>	
+									<div class="row">
+										<div class="col"><figure>
+											<figcaption>Ecouter le podcast :</figcaption><br/>
+											<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+											<button type="button" class="btn btn-outline-success">Télécharger</button>
+											</figure>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">date de mise en ligne : '.$date.' </div>
+								<div class="col">Emmision : '.$nomemission.'</div>
+							</div>
+						</div>';
+					
+				}else if($image == "NULL" && $texte == "NULL"){
+					//affichage d'un podcast sans image et sans texte
+					echo   '<div class=" cadre3 decalageGauche">
+								<div class="row">
+									<div class="col">				
+										<div class="row">
+											<div class="col"><figure>
+												<figcaption>Ecouter le podcast :</figcaption><br/>
+												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												</figure>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">date de mise en ligne : '.$date.' </div>
+									<div class="col">Emmision : '.$nomemission.'</div>
+								</div>
+							</div>';
+					
+				}else if($image != "NULL"){
+					//affichage d'un podcast avec une image mais pas de texte
+					echo	'<div class=" cadre3 decalageGauche">
+								<div class="row">
+									<div class="col cadre_image">
+										<img src="'.$image.'" class="illustration" alt="Image Emission">
+									</div>
+									<div class="col">
+										<div class="row">
+											<div class="col"><figure>
+												<figcaption>Ecouter le podcast :</figcaption><br/>
+												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												</figure>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">date de mise en ligne : '.$date.' </div>
+									<div class="col">Emmision : '.$nomemission.'</div>
+								</div>
+							</div>';
+					
+				}else{
+					//affichage d'un podcast avec un texte et pas d'image
+					echo	'<div class=" cadre3 decalageGauche">
+								<div class="row">
+									<div class="col">
+										<div class="row">
+											<div class="col description"><p>'.$texte.'<p></div>
+										</div>
+										
+										<div class="row">
+											<div class="col"><figure>
+												<figcaption>Ecouter le podcast :</figcaption><br/>
+												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												</figure>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">date de mise en ligne : '.$date.' </div>
+									<div class="col">Emmision : '.$nomemission.'</div>
+								</div>
+							</div>';
+				}
+				
+			}			
+			
+			//fonction verifiant la rechercher par txt
+			function trieParTxt($txtVerif,$txtARespecter){
+				$txtCorrespondant = false;
+				
+				if( preg_match('#'.$txtARespecter.'#',$txtVerif)) {
+					$txtCorrespondant = true;
+				}
+				if ($txtARespecter == 'TOUS'){
+					$txtCorrespondant = true;
+				}
+				
+				return $txtCorrespondant;
+			}
+			
+			//fonction verifiant la recherche par emissions
+			function trieParEmission($id_emissionVerif,$nom_emissionARespecter){
+				global $pdo;
+				$emissionCorrespondant = false;
+				
+				//recuperation du nom de l'emission
+				$sql = "SELECT nom FROM emission WHERE id_emission = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_emissionVerif]);	
+				while ($row = $stmt->fetch()) {
+					$nom_emission = $row['nom'];
+				}
+				
+				if ($nom_emission == $nom_emissionARespecter){
+					$emissionCorrespondant = true;
+				}
+				
+				if ($nom_emissionARespecter == 'TOUS'){
+					$emissionCorrespondant = true;
+				}
+				return $emissionCorrespondant;
+			}
+			
+			//fonction verifiant la recherche par theme
+			function trieParTheme($id_emissionVerif,$themeARespecter){
+				global $pdo;
+				$themeCorrespondant = false;
+				
+				//recuperation du theme de l'emission
+				$sql = "SELECT titre FROM theme JOIN emission ON emission.id_theme = theme.id_theme WHERE id_emission = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_emissionVerif]);	
+				while ($row = $stmt->fetch()) {
+					$nom_theme = $row['titre'];
+				}
+				
+				if ($nom_theme==$themeARespecter){
+					$themeCorrespondant = true;
+				}
+				
+				if ($themeARespecter=='TOUS'){
+					$themeCorrespondant = true;
+				}
+				
+				
+				return $themeCorrespondant;
+			}
+			
+			//foction verifiant qu'un podcast vérifie le trie selectionner
+			function selection($txtVerif,$txtARespecter,$id_emissionVerif,$nom_emissionARespecter,$themeARespecter){
+				$selectionOK = false;
+				if (trieParTxt($txtVerif,$txtARespecter) && 
+					trieParEmission($id_emissionVerif,$nom_emissionARespecter) && 
+					trieParTheme($id_emissionVerif,$themeARespecter)){
+						$selectionOK = true;
+					}
+				return $selectionOK;
 			}
 			
 			
@@ -75,7 +260,7 @@
 				<div class="col">
 				<!-- Les zones de textes pour le titre et le nom de l'auteur du podcast -->
 					Texte :
-					<input type="text" class="form-control" placeholder="Texte à rechercher dans un podcast"> 
+					<input type="text" class="form-control" name = "texte" placeholder="Texte à rechercher dans un podcast" <?php if (isset($_POST['texte'])){echo 'value = "'.$_POST['texte'].'"';}?>> 
 				</div>
 				<div class="col">
 					Theme :
@@ -151,35 +336,23 @@
 		</form>
 	</div>
 	
+	<!-- affichage des podcat -->
+	<?php
+		if (isset($_POST['emission']) || isset($_POST['theme']) || isset($_POST['texte'])){
+			$sql = "SELECT * FROM podcast ORDER BY id_podcast ";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+												 
+			while ($row = $stmt->fetch()) {
+				if(selection($row['texte'],$_POST['texte'],$row['id_emission'],$_POST['emission'],$_POST['theme'])){
+					affichagePodcast($row['dateCreation'], $row['id_emission'], $row['son'], $row['texte'], $row['image']);
+				}
+			}
+		}
 	
-	<div class="margin">
-		<table class="table table-striped ">
-		  <thead>
-			<tr>
-			  <th scope="col">Nom du podcast</th>
-			  <th scope="col">Date</th>
-			  <th scope="col">Emission</th>
-			</tr>
-		  </thead>
-		  <tbody>
-			<tr>
-			  <th scope="row">Nom du podcast</th>
-			  <td>Date</td>
-			  <td>Emission</td>
-			</tr>
-			<tr>
-			  <th scope="row">Nom du podcast</th>
-			  <td>Date</td>
-			  <td>Emission</td>
-			</tr>
-			<tr>
-			  <th scope="row">Nom du podcast</th>
-			  <td>Date</td>
-			  <td>Emission</td>
-			</tr>
-		  </tbody>
-		</table>
-	</div>
+		
+	?>
+	
 
 	<!-- Footer -->
 	<?php   

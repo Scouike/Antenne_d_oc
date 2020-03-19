@@ -138,7 +138,7 @@
 							<input type="submit" class="boutonVert" value="Connexion">
 					<?php
 						}else{
-							echo "<div class=\" centrer\">Bravo ".$_SESSION['prenom']." vous etes bien connecté et vous avez un pass de niveau ".$_SESSION['level']." </div>";
+							echo "<div class=\" centrer\">Bravo ".$_SESSION['prenom']." vous êtes bien connecté et vous avez un pass de niveau ".$_SESSION['level']." </div>";
 						}
 					?>
 				</form>

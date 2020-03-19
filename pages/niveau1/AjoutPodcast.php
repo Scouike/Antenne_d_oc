@@ -119,7 +119,7 @@
 			$dateArchive = date("Y-m-d", strtotime($_POST["dateArchiv"]));
 			$dateCrea = date("Y-m-d", strtotime($_POST["dateCréa"]));	
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute([$son,$id_emission,$image,$texte,$attente,$dateArchive,$dateCrea]);
+			$stmt->execute([$son,$id_emission,$image,$attente,$texte,$dateArchive,$dateCrea]);
 			
 			$ajoutValide=true;
 		}else{
