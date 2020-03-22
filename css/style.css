@@ -124,3 +124,34 @@ footer{
 	
 }
 
+
+.a1 { /* les liens c'est pas beau sans css */
+  color: #92badd;
+  display:inline-block;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+
+.a1.inactive {
+  color: #cccccc;
+}
+
+.a1.active {
+  color: #0d0d0d;
+  border-bottom: 2px solid #5fbae9;
+}
+.a1.active:hover {
+	text-decoration:none;
+}
+
+.a1.inactive:hover {
+	text-decoration:none;
+	border-bottom: 2px solid #5fbae9;
+	
+}
+
+
+
+
+
