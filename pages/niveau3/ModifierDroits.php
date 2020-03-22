@@ -26,6 +26,9 @@
 			/* inclu une barre de navigation */
 			include('../bareNav/barreNavAdmin.html');
 		}
+		//variable
+		$action = false;
+		$BonneModif = false;
 		
 		//connexion à la bd
 		$host = 'localhost';
@@ -44,6 +47,29 @@
 		} catch (PDOException $e) {
 			throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
+		//changement de droit 
+		if (isset($_POST['id_utilisateur']) && $_POST['inputNiveau']){
+			$action = true;
+			
+			//verification si le changement est reel 
+			$sql = "SELECT * FROM utilisateur WHERE id_utilisateur = ? ";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute([$_POST['id_utilisateur']]);
+			while ($row = $stmt->fetch()) {
+				if ($_POST['inputNiveau'] != $row['niveau']){
+					$BonneModif = true;
+				}
+			}
+			//modif du niveau dans la bd 
+			if ($BonneModif){
+				$sql = 'UPDATE utilisateur SET niveau = ? WHERE id_utilisateur = ?';
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$_POST['inputNiveau'],$_POST['id_utilisateur']]);
+			}
+			
+			
+		}
+		
 		
 
 	?>
@@ -57,6 +83,38 @@
 			<a class="a1 active titre" href="ModifierDroits.php">Modifier Droits </a>
 		</div>
 	</div>
+	</br>
+	
+	<?php
+		// si modification demandé et modification justifié 
+		if ($action && $BonneModif){
+			?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Modification effectué!</h4>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>			
+			<?php
+		}
+		
+		//si modification demandé mais pas de réel changement 
+		if ($action && !$BonneModif){
+			?>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Modification non effectué!</h4>
+					<p>Vous ne pouvez pas changer un le droit d'accés d'une personne par son même droit</p>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>	
+			
+			<?php
+		}
+	
+	?>
+
+	
 	
 	<div class="cadre2 margin marge" >
 		<div class="table-responsive">
@@ -68,6 +126,7 @@
 						<th scope="col">Nom</th>
 						<th scope="col">Mail</th>
 						<th scope="col">Niveau</th>
+						<th scope="col">Modifier</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -82,9 +141,39 @@
 									<th scope="row">'.$row['id_utilisateur'].'</th>
 									<td>'.$row['prenom'].'</td>
 									<td>'.$row['nom'].'</td>
-									<td>'.$row['mail'].'</td>
-									<td>'.$row['niveau'].'</td>
-								</tr>';
+									<td>'.$row['mail'].'</td>';
+							
+							echo '<form action="ModifierDroits.php" method="POST">';
+							if ($row['niveau'] == 1){
+								echo '<td>
+										<select id="inputNiveau" name="inputNiveau" class="form-control">
+											<option selected value="1">Utilisateur</option>
+											<option value="2">Animateur</option>
+											<option value="3">Admin</option>
+										</select>
+									 </td>';
+								
+							}else if($row['niveau'] == 2){
+								echo '<td>
+										<select id="inputNiveau" name="inputNiveau" class="form-control">
+											<option value="1">Utilisateur</option>
+											<option selected value="2">Animateur</option>
+											<option value="3">Admin</option>
+										</select>
+									 </td>';
+								
+							}else{
+								echo '<td>
+										<select id="inputNiveau" name="inputNiveau" class="form-control">
+											<option value="1">Utilisateur</option>
+											<option value="2">Animateur</option>
+											<option selected value="3">Admin</option>
+										</select>
+									 </td>';
+							}
+					
+							echo '<td><button type="submit" class="btn btn-primary">Modifier droit</button></td>
+								      <input id="id_utilisateur" name="id_utilisateur" type="hidden" value="'.$row['id_utilisateur'].'"></form></tr>';
 
 						}
 					
