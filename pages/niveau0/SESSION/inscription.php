@@ -194,11 +194,13 @@ require '../../../PHPMailer-master/src/SMTP.php';
 				$dateNaiss = $_POST["dateNaiss"];
 				//generation aleatoire d'une clef
 				$clef = md5(microtime(TRUE)*100000);
-					
+				//donne la date + 1 semaine
+				$dateSupr = date("Y-m-d");
+				$dateSupr = date("Y-m-d",strtotime(date("Y-m-d", strtotime($dateSupr)) . " +1 week"));	
 				//modification bd
-				$sql = 'INSERT INTO utilisateur (attente,mail,mdp,niveau,prenom,nom,dateNaiss,clefActivation) VALUES (true,?,? ,1,?,?,?,?)';
+				$sql = 'INSERT INTO utilisateur (attente,mail,mdp,niveau,prenom,nom,dateNaiss,clefActivation,dateSupr) VALUES (true,?,? ,1,?,?,?,?,?)';
 				$stmt = $pdo->prepare($sql);
-				$stmt->execute([$mail,$mdp,$prenom,$nom,$dateNaiss,$clef]);
+				$stmt->execute([$mail,$mdp,$prenom,$nom,$dateNaiss,$clef,$dateSupr]);
 				
 				//envoie du mail
 				$subject = "Activer votre compte" ;

@@ -127,6 +127,26 @@
 		}
 		?>
 	<h1 class="text-uppercase m-4 text-center">Ajout de Podcast</h1>
+	
+	<?php 
+		if (isset($_SESSION['level']) && $_SESSION['level']>=2 ){
+			
+	?>
+	
+	<div class="cadre ">
+		<div>
+			<!-- titre -->
+			<a class="a1 active titre" href="AjoutPodcast.php">Ajouter Podcast</a>
+			<a class="a1 inactive underlineHover titre" href="../niveau2/AjoutTheme.php">Ajouter Theme</a>
+			<a class="a1 inactive underlineHover titre" href="../niveau2/AjoutEmission.php">Ajouter Emission</a>
+		</div>
+	</div>
+	</br>
+	
+		<?php } ?>
+	
+	
+	
 	<div class="margin cadre2">
 		<form action="AjoutPodcast.php"method="POST" enctype="multipart/form-data">
 			<div class="form-row">

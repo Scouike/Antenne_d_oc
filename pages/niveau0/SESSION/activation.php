@@ -74,7 +74,7 @@
 			
 			//activation du compte dans la bd
 			if ($compteExistant){
-				$sql = "UPDATE utilisateur SET attente = 0 WHERE mail like ? ";
+				$sql = "UPDATE utilisateur SET attente = 0 , dateSupr = null WHERE mail like ? ";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute([$mail]);
 				$compteActif = true;

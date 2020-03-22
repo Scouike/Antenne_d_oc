@@ -89,7 +89,21 @@
 						$_SESSION['id'] = $row['id_utilisateur'];
 					}
 
-				}		
+				}
+
+				//supression des utilisateur non validé trop vieux et des podcast trop vieux
+				if ($_SESSION['level'] >= 2){
+					$date = date("Y-m-d");
+					//gestion des utilisateur
+					$sql = "DELETE FROM utilisateur WHERE attente = 1 AND dateSupr < ?";
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute([$date]);
+
+					//gestion des podcast
+					$sql = "UPDATE podcast SET archive = 1 WHERE attente = 0 AND dateArchive < ?";
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute([$date]);					
+				}
 				
 			}
 		
