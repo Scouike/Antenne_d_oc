@@ -50,7 +50,7 @@
 		//changement de droit 
 		if (isset($_POST['id_utilisateur']) && $_POST['inputNiveau']){
 			$action = true;
-			
+			$ModificationNonPersonel = true;
 			//verification si le changement est reel 
 			$sql = "SELECT * FROM utilisateur WHERE id_utilisateur = ? ";
 			$stmt = $pdo->prepare($sql);
@@ -59,9 +59,12 @@
 				if ($_POST['inputNiveau'] != $row['niveau']){
 					$BonneModif = true;
 				}
+				if ($_SESSION['id'] == $row['id_utilisateur']){
+					$ModificationNonPersonel = false;
+				}
 			}
 			//modif du niveau dans la bd 
-			if ($BonneModif){
+			if ($BonneModif && $ModificationNonPersonel){
 				$sql = 'UPDATE utilisateur SET niveau = ? WHERE id_utilisateur = ?';
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute([$_POST['inputNiveau'],$_POST['id_utilisateur']]);
@@ -87,7 +90,7 @@
 	
 	<?php
 		// si modification demandé et modification justifié 
-		if ($action && $BonneModif){
+		if ($action && $BonneModif && $ModificationNonPersonel){
 			?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
 					<h4 class="alert-heading">Modification effectué!</h4>
@@ -97,8 +100,21 @@
 				</div>			
 			<?php
 		}
+		//si modification demandé et tentative de changer ses propres droits
+		if ($action && !$ModificationNonPersonel){
+			?>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Modification non effectué!</h4>
+					<p>Vous ne pouvez pas changer vos propres droits</p>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>	
+			
+			<?php
+		}
 		
-		//si modification demandé mais pas de réel changement 
+		//si modification demandé mais pas de réel changement
 		if ($action && !$BonneModif){
 			?>
 				<div class="alert alert-danger alert-dismissible fade show" role="alert">

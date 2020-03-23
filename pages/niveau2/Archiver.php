@@ -152,7 +152,7 @@
 			//fonction affichant les podcast
 			function affichagePodcast($date, $idemission, $podcast, $texte, $image, $idPodcast){
 				global $pdo;
-				
+				$date =  date("d-m-Y",strtotime($date));
 				//recuperation du nom de l'emission
 				$sql = "SELECT nom FROM emission WHERE id_emission = ? ";
 				$stmt = $pdo->prepare($sql);

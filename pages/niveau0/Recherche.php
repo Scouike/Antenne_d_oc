@@ -57,7 +57,7 @@
 			//fonction qui determine qui affiche un podcast
 			function affichagePodcast($date, $idemission, $podcast, $texte, $image){
 				global $pdo;
-				
+				$date =  date("d-m-Y",strtotime($date));	
 				//recuperation du nom de l'emission
 				$sql = "SELECT nom FROM emission WHERE id_emission = ? ";
 				$stmt = $pdo->prepare($sql);
@@ -84,7 +84,7 @@
 										<div class="col"><figure>
 											<figcaption>Ecouter le podcast :</figcaption><br/>
 											<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-											<button type="button" class="btn btn-outline-success">Télécharger</button>
+											<a href="'.$podcast.'"  class="btn btn-outline-success">Télécharger</a>
 											</figure>
 										</div>
 									</div>
@@ -105,7 +105,7 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												<a href="'.$podcast.'"  class="btn btn-outline-success">Télécharger</a>
 												</figure>
 											</div>
 										</div>
@@ -129,7 +129,7 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												<a href="'.$podcast.'"  class="btn btn-outline-success">Télécharger</a>
 												</figure>
 											</div>
 										</div>
@@ -154,7 +154,8 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												<a href="'.$podcast.'"  class="btn btn-outline-success">Télécharger</a>
+												
 												</figure>
 											</div>
 										</div>
