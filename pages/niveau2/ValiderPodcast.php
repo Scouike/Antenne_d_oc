@@ -33,6 +33,8 @@
 				include('../bareNav/barreNav.html'); 
 			}
 			
+			//declaration des variables
+			$action = 0; //0 si rien n'est fais 1 si on ajoute le podcast et 2 si on le supprime
 			
 			//connexion à la bd
 			$host = 'localhost';
@@ -52,8 +54,29 @@
 				throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
 			
+			//fonction qui valide ou non un podcast
+			if (isset($_POST['validation'])){
+				//cas ou on autorise le podcast
+				if($_POST['validation']==1){
+					
+					$sql = 'UPDATE podcast SET attente = 0 WHERE id_podcast = ?';
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute([$_POST['id_podcast']]);
+					$action = 1;
+				}
+				
+				//cas ou on detruit le podcast
+				if($_POST['validation']==2){
+					$sql = 'DELETE FROM podcast WHERE id_podcast = ?';
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute([$_POST['id_podcast']]);
+					$action = 2;
+				}
+				
+			}
+			
 			//fonction qui determine qui affiche un podcast
-			function affichagePodcast($date, $idemission, $podcast, $texte, $image){
+			function affichagePodcast($date, $idemission, $podcast, $texte, $image, $idPodcast){
 				global $pdo;
 				
 				//recuperation du nom de l'emission
@@ -84,8 +107,11 @@
 										<div class="col"><figure>
 											<figcaption>Ecouter le podcast :</figcaption><br/>
 											<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Valider</button>
-												<button type="button" class="btn btn-outline-danger" >Suprimer</button>
+												<form action="ValiderPodcast.php" method="POST">
+													<input id="id_podcast" name="id_podcast" type="hidden" value="'.$idPodcast.'">
+													<button type="submit" class="btn btn-outline-success" name="validation" value="1" >Valider</button>
+													<button type="submit" class="btn btn-outline-danger" name="validation" value="2">Suprimer</button>
+												</form>
 											</figure>
 										</div>
 									</div>
@@ -106,8 +132,11 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Valider</button>
-												<button type="button" class="btn btn-outline-danger">Suprimer</button>
+												<form action="ValiderPodcast.php" method="POST">
+													<input id="id_podcast" name="id_podcast" type="hidden" value="'.$idPodcast.'">
+													<button type="submit" class="btn btn-outline-success" name="validation" value="1" >Valider</button>
+													<button type="submit" class="btn btn-outline-danger" name="validation" value="2">Suprimer</button>
+												</form>
 												</figure>
 											</div>
 										</div>
@@ -131,8 +160,11 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Valider</button>
-												<button type="button" class="btn btn-outline-danger">Suprimer</button>
+												<form action="ValiderPodcast.php" method="POST">
+													<input id="id_podcast" name="id_podcast" type="hidden" value="'.$idPodcast.'">
+													<button type="submit" class="btn btn-outline-success" name="validation" value="1" >Valider</button>
+													<button type="submit" class="btn btn-outline-danger" name="validation" value="2">Suprimer</button>
+												</form>
 												</figure>
 											</div>
 										</div>
@@ -157,8 +189,11 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Valider</button>
-												<button type="button" class="btn btn-outline-danger">Suprimer</button>
+												<form action="ValiderPodcast.php" method="POST">
+													<input id="id_podcast" name="id_podcast" type="hidden" value="'.$idPodcast.'">
+													<button type="submit" class="btn btn-outline-success" name="validation" value="1" >Valider</button>
+													<button type="submit" class="btn btn-outline-danger" name="validation" value="2">Suprimer</button>
+												</form>
 												</figure>
 											</div>
 										</div>
@@ -255,6 +290,34 @@
 		?>
 		
 	<h1 class="text-uppercase m-4 text-center">Validation de Podcast</h1>
+	
+	<?php
+		// si modification demandé et modification justifié 
+		if ($action == 1){
+			?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Le podcast à bien été ajouté!</h4>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>			
+			<?php
+		}
+		
+		//si modification demandé mais pas de réel changement 
+		if ($action == 2){
+			?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Le podcast à bien été supprimé!</h4>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>	
+			
+			<?php
+		}
+	
+	?>	
 	<div class="margin cadre2">
 		<form action="ValiderPodcast.php" method="POST">
 			<div class="form-row">
@@ -347,7 +410,7 @@
 												 
 			while ($row = $stmt->fetch()) {
 				if(selection($row['texte'],$_POST['texte'],$row['id_emission'],$_POST['emission'],$_POST['theme'])){
-					affichagePodcast($row['dateCreation'], $row['id_emission'], $row['son'], $row['texte'], $row['image']);
+					affichagePodcast($row['dateCreation'], $row['id_emission'], $row['son'], $row['texte'], $row['image'],$row['id_podcast'] );
 				}
 			}
 		}
