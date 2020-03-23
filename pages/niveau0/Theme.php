@@ -36,11 +36,7 @@
 				/* inclu une barre de navigation */
 				include('../bareNav/barreNav.html'); 
 			}
-		?>
-		<!-- DIfférents thème d'émission -->
-		<div class="container">
-			<div class="row">
-			<?php
+			
 			//connexion à la bd
 			$host = 'localhost';
 			$db   = 'bdradio';
@@ -59,32 +55,38 @@
 				 throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
 			
-				$sql="SELECT * FROM theme WHERE archive=0 ORDER BY titre ASC"  ;
+			
+			
+			//fonction affichant les Theme
+			function affichageTheme($image,$titre,$idTheme){
+				echo'<div class="col-md-4 col-sm-6">
+						<div class="polaroid">
+							<a href="/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/Emission.php?id_theme='.$idTheme.'">
+								<div class="image" style="background-image:url('.$image.')">
+									<img src="'.$image.'" class="center" alt="Image du thème : '.$image.'"/>
+								</div>
+								<div class="polatxt">
+									<p>'.$titre.'</p>
+								</div>
+							</a>
+							</br>
+						</div>
+					</div>';				
+			}
+			
+		?>
+		<h1 class="text-uppercase m-4 text-center">Theme</h1>
+		<!-- DIfférents thème d'émission -->
+		<div class="container">
+			<div class="row">
+			<?php
+				$sql = "SELECT * FROM theme WHERE archive = 0 ORDER BY titre";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
-				$titre="";
-				$image="";
-				$tabImage[0]="";
-				$tabTitre[0]="";
-				$increment=0;
-				while( $ligne = $stmt->fetch() ) {
-					$increment++;
-					$tabTitre[$increment]=$ligne['titre'];
-					$tabImage[$increment]=$ligne['image'];
-					echo'<div class="col-md-4 col-sm-6">
-					<div class="polaroid">
-						<a href="Emission.php?titre='.$tabTitre[$increment].'">
-							<div class="image" style="background-image:url('.$tabImage[$increment].')">
-								<img src="'.$tabImage[$increment].'" class="center" alt="Image du thème : '.$tabImage[$increment].'"/>
-							</div>
-							<div class="polatxt">
-								<p>'.$tabTitre[$increment].'</p>
-							</div>
-						</a>
-						</div>
-					</div>';
+				while ($row = $stmt->fetch()) {	
+					affichageTheme($row['image'],$row['titre'],$row['id_theme']);
 				}
-				?>
+			?>
 			</div>
 		</div>
 	<!-- Footer -->

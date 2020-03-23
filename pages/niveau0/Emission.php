@@ -54,52 +54,93 @@
 			} catch (PDOException $e) {
 				 throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
-			if($_GET["titre"]!=""){
-				Echo '<h1 class="text-uppercase m-4 text-center"> Emission : '.$_GET["titre"].' </h1>';
-				$sql="SELECT *
-					FROM Theme AS T 
-					JOIN liason AS L 
-					ON T.id_theme = L.id_theme
-					JOIN emission AS E
-					ON L.id_emission = E.id_emission
-					AND titre = ?";
-				$stmt = $pdo->prepare($sql);
-				$stmt->execute(array($_GET["titre"]));
-			}else{
-				Echo '<h1 class="text-uppercase m-4 text-center"> Aucun titre transmis </h1>';
-			}
-		?>
-	<div class="margin">
-		<table class="table table-striped ">
-			<?php	
-			//On analyse toutes les émissions disponibles dans un thème
-				While( $ligne = $stmt->fetch() ) {	
-					echo'<tr>
-						<td>'.$ligne["nom"].'</td>
-						<td>'.$ligne["texte"].'</td>
-						<tr>';
-					$podcast="SELECT son,image,texte
-							From Podcast
-							Where id_Emission = ?";
-					$requete = $pdo->prepare($podcast);
-					$requete->execute(array($ligne["id_emission"]));
-					//On analyse tout les podcast liées aux émissions
-					While($analyse = $requete->fetch()){
-						//On crée des liens pour aller sur la page du podcast sur laquelle on pourra écouter et télécharger celui-ci
-						echo'<td>
-								<a href="Podcast.php?son='.$analyse["son"].'&theme='.$ligne["titre"].'">'.basename($analyse["son"]).'</a>
-							</td>';
-					}
-					echo'</tr></tr>';
+			
+			//fonction affichant les emissions
+			function affichageEmission($id_emission,$interview,$nom,$texte){
+				$type = 'Emission';
+				if($interview == 1){
+					$type = 'Interview';
 				}
-			?>
-		</table>
-	</div>
+				echo	'<tr>
+							<th scope="row">'.$type.'</th>
+							<td>'.$nom.'</td>
+							<td><a href="/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/Podcast.php?id_Emission='.$id_emission.'">'.$texte.'</a></td>
+						</tr>';
+		
+			}
+			
+			//declarationVariable
+			$idThemePresentURL = false;
+			$idThemeValide = false;
+			$nomTheme = "";
+			
+			//verif parametre
+			if(isset($_GET['id_theme'])){
+				$idThemePresentURL = true;
+			}
+			
+			//verif que le theme existe
+			if($idThemePresentURL){
+				$sql = "SELECT * FROM theme WHERE id_theme = ?";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$_GET['id_theme']]);
+				while ($row = $stmt->fetch()) {	
+					$idThemeValide = true;
+					$nomTheme = $row['titre'];
+				}
+			}
+			
+			if(!$idThemePresentURL){
+				//message d'erreur on ne se balade pas dans le site en utilisant l'URL
+				echo '<div class="alert alert-danger" role="alert">
+					  <h4 class="alert-heading">Attention!</h4>
+					  <p>Ne vous baladais pas sur le site en utilisant la barre de navigation cela peut vous empécher de profitter pleinement de l\'expérience que nous vous proposons</p>
+					  <hr>
+					  <p class="mb-0">Ce message s\'applique à tous le site </p>
+					</div>';
+				
+			}else if (!$idThemeValide){
+				//message d'erreur ne Theme que vous cherchais n'est plus accessible
+				echo '<div class="alert alert-warning" role="alert">
+					  <h4 class="alert-heading">Attention!</h4>
+					  <p>Atention le liens que vous utilisais n\'est plus valide</p>
+					  <hr>
+					  <p class="mb-0">Nous sommes désolé de la géne ocasionné</p>
+					</div>';
+			}else{
 
-	<!-- Footer -->
-	<?php   
+		?>
+		
+		<h1 class="text-uppercase m-4 text-center">Emissions du Theme : <?php echo $nomTheme;?></h1>
+		<!-- Differentes Emission Disponible -->
+		<?php
+			echo	'<div class="cadre2">
+						<table class="table table-striped ">
+							<thead>
+								<tr>
+									<th scope="col">Type</th>
+									<th scope="col">Nom</th>
+									<th scope="col">Descriptif</th>
+								</tr>
+							</thead>';
+					//affichage des Emissions
+					$sql = "SELECT * FROM emission WHERE archive = 0 AND id_theme = ?";
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute([$_GET['id_theme']]);
+					while ($row = $stmt->fetch()) {
+						
+						affichageEmission($row['id_emission'],$row['interview'],$row['nom'],$row['texte']);
+						
+					}
+					echo '		</table>
+							</div>';			
+		
+		?>
+		<!-- Footer -->
+		<?php  
+			}
 			include('../footeur/footeurs.html'); 
-	?>
+		?>
 		
 	</body>
 	

@@ -107,7 +107,7 @@
 			function affichageTheme($image,$titre,$idTheme){
 				echo'<div class="col-md-4 col-sm-6">
 						<div class="polaroid">
-							<a href="/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/Emission.php?titre='.$titre.'">
+							<a href="/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/Emission.php?id_theme='.$idTheme.'">
 								<div class="image" style="background-image:url('.$image.')">
 									<img src="'.$image.'" class="center" alt="Image du thème : '.$image.'"/>
 								</div>
@@ -136,7 +136,7 @@
 				echo	'<tr>
 							<th scope="row">'.$type.'</th>
 							<td>'.$nom.'</td>
-							<td><a href="/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/Podcast.php?id_Emission='.$id_emission.'&nom='.$nom.'">'.$texte.'</a></td>
+							<td><a href="/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/Podcast.php?id_Emission='.$id_emission.'">'.$texte.'</a></td>
 							<td>
 								<form action="Archiver.php" method="POST">
 									<input id="objet" name="objet" type="hidden" value="'.$_POST['objet'].'">
@@ -146,11 +146,7 @@
 								</form>
 							</td>
 						</tr>';
-			
-						
-						
-						
-							
+		
 			}
 			
 			//fonction affichant les podcast

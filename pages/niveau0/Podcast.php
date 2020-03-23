@@ -55,37 +55,182 @@
 			} catch (PDOException $e) {
 				 throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
-			if($_GET["son"]!=""){
-				$sql="SELECT son,image,texte
-							From Podcast
-							Where son = ?";
+			
+			//fonction qui determine qui affiche un podcast
+			function affichagePodcast($date, $idemission, $podcast, $texte, $image){
+				global $pdo;
+				
+				//recuperation du nom de l'emission
+				$sql = "SELECT nom FROM emission WHERE id_emission = ? ";
 				$stmt = $pdo->prepare($sql);
-				$stmt->execute(array($_GET["son"]));
-				$ligne = $stmt->fetch();
-				if($ligne["image"]!="NULL"){
-					echo'<div class=" cadre2 decalageGauche">
-							 <div class="row">
-								 <div class="col cadre_image">
-									<img src="images/Logo.png" class="illustration" alt="Image Emission">
-							 </div>';
-				}else{
-					
+				$stmt->execute([$idemission]);	
+				while ($row = $stmt->fetch()) {
+					$nomemission = $row['nom'];
 				}
-				if($ligne["texte"]!="NULL"){
-					echo'<div class="col">
-							<div class="row">
-								<div class="col description"><p>Texte descriptif du podcast</p></div>
-								</div>';
-				}else{
+				
+			
+				//dertermination du type de podcast
+				if ($image != "NULL" && $texte != "NULL" ){
 					
+					//affichage d'un podcast avec une image et un texte
+					echo	'<div class=" cadre3 decalageGauche">
+							<div class="row">
+								<div class="col cadre_image ">
+									<img src="'.$image.'" class="illustration" alt="Image Emission">
+								</div>
+								<div class="col ">
+									<div class="row">
+										<div class="col description"><p>'.$texte.'</p></div>
+									</div>	
+									<div class="row">
+										<div class="col"><figure>
+											<figcaption>Ecouter le podcast :</figcaption><br/>
+											<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+											<button type="button" class="btn btn-outline-success">Télécharger</button>
+											</figure>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">date de mise en ligne : '.$date.' </div>
+								<div class="col">Emmision : '.$nomemission.'</div>
+							</div>
+						</div>';
+					
+				}else if($image == "NULL" && $texte == "NULL"){
+					//affichage d'un podcast sans image et sans texte
+					echo   '<div class=" cadre3 decalageGauche">
+								<div class="row">
+									<div class="col">				
+										<div class="row">
+											<div class="col"><figure>
+												<figcaption>Ecouter le podcast :</figcaption><br/>
+												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												</figure>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">date de mise en ligne : '.$date.' </div>
+									<div class="col">Emmision : '.$nomemission.'</div>
+								</div>
+							</div>';
+					
+				}else if($image != "NULL"){
+					//affichage d'un podcast avec une image mais pas de texte
+					echo	'<div class=" cadre3 decalageGauche">
+								<div class="row">
+									<div class="col cadre_image">
+										<img src="'.$image.'" class="illustration" alt="Image Emission">
+									</div>
+									<div class="col">
+										<div class="row">
+											<div class="col"><figure>
+												<figcaption>Ecouter le podcast :</figcaption><br/>
+												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												</figure>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">date de mise en ligne : '.$date.' </div>
+									<div class="col">Emmision : '.$nomemission.'</div>
+								</div>
+							</div>';
+					
+				}else{
+					//affichage d'un podcast avec un texte et pas d'image
+					echo	'<div class=" cadre3 decalageGauche">
+								<div class="row">
+									<div class="col">
+										<div class="row">
+											<div class="col description"><p>'.$texte.'<p></div>
+										</div>
+										
+										<div class="row">
+											<div class="col"><figure>
+												<figcaption>Ecouter le podcast :</figcaption><br/>
+												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
+												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												</figure>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">date de mise en ligne : '.$date.' </div>
+									<div class="col">Emmision : '.$nomemission.'</div>
+								</div>
+							</div>';
+				}
+				
+			}
+			
+			//declarationVariable
+			$idEmissionPresentURL = false;
+			$idEmissionValide = false;
+			$nomEmission = "";
+			
+			//verif parametre
+			if(isset($_GET['id_Emission'])){
+				$idEmissionPresentURL = true;
+			}
+			
+			//verif que le theme existe
+			if($idEmissionPresentURL){
+				$sql = "SELECT * FROM emission WHERE id_emission = ?";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$_GET['id_Emission']]);
+				while ($row = $stmt->fetch()) {	
+					$idEmissionValide = true;
+					$nomEmission = $row['nom'];
 				}
 			}
+			
+			if(!$idEmissionPresentURL){
+				//message d'erreur on ne se balade pas dans le site en utilisant l'URL
+				echo '<div class="alert alert-danger" role="alert">
+					  <h4 class="alert-heading">Attention!</h4>
+					  <p>Ne vous baladais pas sur le site en utilisant la barre de navigation cela peut vous empécher de profitter pleinement de l\'expérience que nous vous proposons</p>
+					  <hr>
+					  <p class="mb-0">Ce message s\'applique à tous le site </p>
+					</div>';
 				
+			}else if (!$idEmissionValide){
+				//message d'erreur ne Theme que vous cherchais n'est plus accessible
+				echo '<div class="alert alert-warning" role="alert">
+					  <h4 class="alert-heading">Attention!</h4>
+					  <p>Atention le liens que vous utilisais n\'est plus valide</p>
+					  <hr>
+					  <p class="mb-0">Nous sommes désolé de la géne ocasionné</p>
+					</div>';
+			}else{
+
 		?>
-	<!-- Footer -->
-	<?php   
-		include('../footeur/footeurs.html'); 
-	?>
+		
+		<h1 class="text-uppercase m-4 text-center">Podcasts de l'Emission : <?php echo $nomEmission;?></h1>
+		<!-- Differentes Emission Disponible -->
+		<?php
+				
+			//affichage des podcast
+			$sql = "SELECT * FROM podcast WHERE archive = 0 AND id_emission = ? AND attente = 0 AND dateCreation <= NOW()";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute([$_GET['id_Emission']]);
+			while ($row = $stmt->fetch()) {	
+				affichagePodcast($row['dateCreation'], $row['id_emission'], $row['son'], $row['texte'], $row['image']);
+			}			
+
+		?>
+		<!-- Footer -->
+		<?php  
+			}
+			include('../footeur/footeurs.html'); 
+		?>
 		
 	</body>
 

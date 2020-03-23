@@ -335,7 +335,7 @@
 	<!-- affichage des podcat -->
 	<?php
 		if (isset($_POST['emission']) || isset($_POST['theme']) || isset($_POST['texte'])){
-			$sql = "SELECT * FROM podcast WHERE archive = 0 AND attente = 0 ORDER BY id_podcast ";
+			$sql = "SELECT * FROM podcast WHERE archive = 0 AND attente = 0 AND dateCreation <= NOW() ORDER BY id_podcast ";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute();
 												 
