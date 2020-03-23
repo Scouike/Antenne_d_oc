@@ -49,6 +49,49 @@
 			}
 			
 			
+			
+			//archivage d'un Podcast dans la bd
+			function archivagePodcast($id_podcast){
+				global $pdo;
+				$sql = "UPDATE podcast SET archive = 1, dateArchive = null WHERE id_podcast = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_podcast]);					
+
+				
+			}
+			
+			//archivage d'une Emission dans la bd
+			function archivageEmission($id_emission){
+				global $pdo;
+				$sql = "UPDATE emission SET archive = 1 WHERE id_emission = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_emission]);					
+				
+				$sql = "SELECT * FROM podcast WHERE id_emission = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_emission]);	
+				while ($row = $stmt->fetch()) {
+					archivagePodcast($row['id_podcast']);
+				}
+								
+			}
+			
+			//archivage d'un Theme dans la bd
+			function archivageTheme($id_theme){
+				global $pdo;
+				
+				$sql = "UPDATE theme SET archive = 1 WHERE id_theme = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_theme]);					
+				
+				$sql = "SELECT * FROM emission WHERE id_theme = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_theme]);	
+				while ($row = $stmt->fetch()) {
+					archivageEmission($row['id_emission']);
+				}
+			}
+			
 			//fonction verifiant la rechercher par txt
 			function trieParTxt($txtVerif,$txtARespecter){
 				$txtCorrespondant = false;
@@ -74,6 +117,8 @@
 							</a>
 							<form action="Archiver.php" method="POST">
 								<input id="id_Theme" name="id_Theme" type="hidden" value="'.$idTheme.'">
+								<input id="objet" name="objet" type="hidden" value="'.$_POST['objet'].'">
+								<input id="texte" name="texte" type="hidden" value="'.$_POST['texte'].'">
 								<button type="submit" class="btn btn-outline-success btn-block " name="Archiver" value="1" >Archiver</button>
 							</form>
 							</br>
@@ -94,6 +139,8 @@
 							<td><a href="/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/Podcast.php?id_Emission='.$id_emission.'&nom='.$nom.'">'.$texte.'</a></td>
 							<td>
 								<form action="Archiver.php" method="POST">
+									<input id="objet" name="objet" type="hidden" value="'.$_POST['objet'].'">
+									<input id="texte" name="texte" type="hidden" value="'.$_POST['texte'].'">
 									<input id="id_Emission" name="id_Emission" type="hidden" value="'.$id_emission.'">
 									<button type="submit" class="btn btn-outline-success" name="Archiver" value="1" >Archiver</button>
 								</form>
@@ -137,6 +184,8 @@
 											<figcaption>Ecouter le podcast :</figcaption><br/>
 											<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
 												<form action="Archiver.php" method="POST">
+													<input id="objet" name="objet" type="hidden" value="'.$_POST['objet'].'">
+													<input id="texte" name="texte" type="hidden" value="'.$_POST['texte'].'">
 													<input id="id_podcast" name="id_podcast" type="hidden" value="'.$idPodcast.'">
 													<button type="submit" class="btn btn-outline-success" name="Archiver" value="1" >Archiver</button>
 												</form>
@@ -161,6 +210,8 @@
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
 												<form action="Archiver.php" method="POST">
+													<input id="objet" name="objet" type="hidden" value="'.$_POST['objet'].'">
+													<input id="texte" name="texte" type="hidden" value="'.$_POST['texte'].'">
 													<input id="id_podcast" name="id_podcast" type="hidden" value="'.$idPodcast.'">
 													<button type="submit" class="btn btn-outline-success" name="Archiver" value="1" >Archiver</button>
 												</form>
@@ -188,6 +239,8 @@
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
 												<form action="Archiver.php" method="POST">
+													<input id="objet" name="objet" type="hidden" value="'.$_POST['objet'].'">
+													<input id="texte" name="texte" type="hidden" value="'.$_POST['texte'].'">
 													<input id="id_podcast" name="id_podcast" type="hidden" value="'.$idPodcast.'">
 													<button type="submit" class="btn btn-outline-success" name="Archiver" value="1" >Archiver</button>
 												</form>
@@ -216,6 +269,8 @@
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
 												<form action="Archiver.php" method="POST">
+													<input id="objet" name="objet" type="hidden" value="'.$_POST['objet'].'">
+													<input id="texte" name="texte" type="hidden" value="'.$_POST['texte'].'">
 													<input id="id_podcast" name="id_podcast" type="hidden" value="'.$idPodcast.'">
 													<button type="submit" class="btn btn-outline-success" name="Archiver" value="1" >Archiver</button>
 												</form>
@@ -232,7 +287,26 @@
 				}
 				
 			}
+			//Declaration des variables
+			$archivage = 0; // 1 pour theme, 2 pour emissison, 3 pour theme 
 			
+			//traitement d'une demande d'archivage de Theme
+			if(isset($_POST['id_Theme'])){
+				archivageTheme($_POST['id_Theme']);
+				$archivage = 3;
+			}
+			
+			//traitement d'une demande d'archivage d'Emission
+			if(isset($_POST['id_Emission'])){
+				archivageEmission($_POST['id_Emission']);
+				$archivage = 2;
+			}
+			
+			//traitement d'une demande d'archivage de podcast
+			if(isset($_POST['id_podcast'])){
+				archivagePodcast($_POST['id_podcast']);
+				$archivage = 1 ;
+			}
 			
 			
 		?>
@@ -280,6 +354,46 @@
 		</div>
 		</br></br>
 		
+		<?php
+			//message reussite archivage podcast
+			if ($archivage == 1){
+				?>
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<h4 class="alert-heading">Le podcast à bien été archivé!</h4>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>			
+				<?php
+			}
+			
+			//message reussite archivage emission
+			if ($archivage == 2){
+				?>
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<h4 class="alert-heading">L'émission à bien été archivé!</h4>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>	
+				
+				<?php
+			}
+			
+			//message reussite archivage theme
+			if ($archivage == 3){
+				?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Le Théme à bien été archivé!</h4>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>	
+				
+				<?php
+			}
+		
+		?>	
 		
 		<?php
 			//on vérifie la recherche et on affiche en cosséquence
