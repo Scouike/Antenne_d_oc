@@ -215,9 +215,7 @@
 				if( preg_match('#'.$txtARespecter.'#',$txtVerif)) {
 					$txtCorrespondant = true;
 				}
-				if ($txtARespecter == 'TOUS'){
-					$txtCorrespondant = true;
-				}
+
 				
 				return $txtCorrespondant;
 			}

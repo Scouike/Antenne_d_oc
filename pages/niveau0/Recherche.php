@@ -62,8 +62,6 @@
 				$sql = "SELECT nom FROM emission WHERE id_emission = ? ";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute([$idemission]);	
-
-				
 				while ($row = $stmt->fetch()) {
 					$nomemission = $row['nom'];
 				}
@@ -178,9 +176,7 @@
 				if( preg_match('#'.$txtARespecter.'#',$txtVerif)) {
 					$txtCorrespondant = true;
 				}
-				if ($txtARespecter == 'TOUS'){
-					$txtCorrespondant = true;
-				}
+
 				
 				return $txtCorrespondant;
 			}
