@@ -92,7 +92,7 @@
 				}
 
 				//supression des utilisateur non validé trop vieux et des podcast trop vieux
-				if ($_SESSION['level'] >= 2){
+				if ($champCorrecte && $conecte && $_SESSION['level'] >= 2){
 					$date = date("Y-m-d");
 					//gestion des utilisateur
 					$sql = "DELETE FROM utilisateur WHERE attente = 1 AND dateSupr < ?";
