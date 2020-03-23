@@ -69,6 +69,7 @@
 					JOIN emission ON podcast.id_emission = emission.id_emission
 					WHERE podcast.archive = 0
 					AND podcast.attente = 0
+					AND dateCreation <= NOW()
 					ORDER BY dateCreation DESC";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
@@ -80,7 +81,7 @@
 		?>		
 		<div class="mySlides transition">
 		<?php
-			affichagePodcast($row['dateCreation'], $row['idemission'], $row['idpodcast'], $row['texte_podcast'], $row['image']);
+			affichagePodcast($row['dateCreation'], $row['idemission'], $row['son'], $row['texte_podcast'], $row['image']);
 		?>
 		</div>
 		<?php
