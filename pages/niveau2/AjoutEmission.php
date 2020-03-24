@@ -46,8 +46,21 @@
 		}
 		//declaration variable
 		$emissionAjout = false;
+		$nomPris = false;
 		
 		if (isset($_POST['uploadfiles'])){
+			
+			$sql = "SELECT nom FROM emission WHERE nom = ? ";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute([$_POST['nomEmission']]);										 
+			while ($row = $stmt->fetch()) {
+				$nomPris = true;						
+			}
+		}
+		
+		
+		if (isset($_POST['uploadfiles']) && !$nomPris){
+			
 			$interview = 0;
 			$emissionInserer = true;
 			if(isset($_POST['interview'])){
@@ -76,6 +89,8 @@
 				</div>			
 			<?php
 		}
+		
+		
 	?>
 	
 	<div class="cadre ">
@@ -96,8 +111,14 @@
 			<div class="form-group row">
 				<label for="nomEmission" class="col-sm-2 col-form-label">Nom Emission :</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control"  id="nomEmission" name="nomEmission" placeholder="Nom de l'emission" maxlength="25" required>
-				
+					<input type="text" class="form-control  <?php if(isset($_POST['uploadfiles']) && $nomPris){ echo "is-invalid";} ?>"  id="nomEmission" name="nomEmission" placeholder="Nom de l'emission" maxlength="25" required>
+					<?php
+						if(isset($_POST['uploadfiles']) && $nomPris){
+							echo '<div class="invalid-feedback">Le nom de ce théme est déjà pris</div>';
+						}
+					
+					
+					?>
 				</div>
 			</div>
 			
@@ -105,7 +126,7 @@
 			<div class="form-group row">
 				<label for="text" class="col-sm-2 col-form-label">Texte :</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control"  id="text" name="text" placeholder="Texte descriptif de l'emission" maxlength="100" required>
+					<input type="text" class="form-control <?php if(isset($_POST['uploadfiles']) && $nomPris){ echo "is-valid";}?>"  id="text" name="text" placeholder="Texte descriptif de l'emission" maxlength="100" <?php if(isset($_POST['uploadfiles']) && $nomPris){ echo 'value="'.$_POST['text'].'"';}?>required>
 				
 				</div>
 			</div>
