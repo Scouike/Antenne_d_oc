@@ -186,7 +186,6 @@ footer{
   padding-right: 16px;
   padding-top: 50px;
   padding-bottom: 50px;
-  color: white;
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;
@@ -194,6 +193,9 @@ footer{
   user-select: none;
 }
 
+.precedent {
+  left: 0;
+}
 /* possitionne le bouton suivant à droite */
 .suivant {
   right: 0;
@@ -239,12 +241,22 @@ footer{
   to {opacity: 1}
 }
 
-.PositionRelativeDropZone{
-	
-	position: relative; 
-	top: 200px; 
-	
-	
-	
+@media screen and (min-width: 1024px){
+	.fleches {
+		min-width:3%;
+		max-width:3%;
+	}	
 }
 
+@media screen and (min-width: 1024px){
+	.colonne-milieu {
+		min-width:94%;
+		max-width:94%;	
+	}	
+}
+
+@media screen and (max-width: 1024px){
+	audio {
+		width: 100%;
+	}
+}

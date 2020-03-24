@@ -32,11 +32,31 @@
 			/* inclu une barre de navigation */
 			include('../bareNav/barreNavAdmin.html');
 		}
-		$nomThemeOK = true;
+		
+		if(isset($_POST['nomTheme'])){
+			echo '<h1>'.$_POST['nomTheme'].'</h1>';
+		}
 		
 		
-			
-			
+		if (!empty($_FILES)) {
+			echo '<h1>'.$_POST["nomTheme"].'</h1>';
+			$target_dir = "../../Theme/";
+
+			// Upload file
+			$target_file = $target_dir . basename($_FILES["file"]["name"]);
+
+			$msg = "";
+			if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+			  $msg = "Successfully uploaded";
+			}else{ 
+			  $msg = "Error while uploading";
+			}
+				
+
+		}
+		
+		
+		
 		
 	?>
 	
@@ -52,44 +72,31 @@
 	</div>
 	</br>
 	
-	<div class="margin cadre2">
-	
-	
+	<div class="margin cadre2 ">
+
 		<h2>Theme </h2>
 		<!-- la drop zone -->
-		<form action="upload.php" class="dropzone" id="dropzoneImage">
-			<!--nom -->
-			<div class="form-group row PositionRelativeDropZone">
-				<label for="nomTheme" class="col-sm-2 col-form-label">Nom Theme :</label>
-				<div class="col-sm-10">
+		<form  action="AjoutTheme.php" class="dropzone" id="laDropZone" method="POST">
+            <!--nom -->
+			<div class="form-group row" id="aDeplacer">
+				<label for="nomTheme" class="col-sm-3 col-form-label">Nom Theme :</label>
+				<div class="col-sm-9">
 					<input type="text" class="form-control"  id="nom" name="nomTheme" placeholder="Nom du Theme" maxlength="25" required>
-				
+					
 				</div>
 			</div>
-		
-		
-		</form>	
-		<form action="AjoutTheme.php" method="POST">
-			
-			<!--nom -->
-			<div class="form-group row">
-				<label for="nomTheme" class="col-sm-2 col-form-label">Nom Theme :</label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control"  id="nom" name="nomTheme" placeholder="Nom du Theme" maxlength="25" required>
-				
-				</div>
-			</div>
-			<button type="submit" id="uploadfiles" class="btn btn-primary">Ajouter Theme</button>
-		</form>	
-			
-		
-		
+        </form>
+        <input type="button" id='uploadfiles' value='Ajouter Theme' >
 	</div>
+	
 
 	<!-- Script -->
+	<script>
+		$('#laDropZone').after($('#aDeplacer'));
+	</script>
     <script src="../../DropZone/jquery.min.js" type="text/javascript"></script>
     <script src="../../DropZone/dropzone.js" type="text/javascript"></script>
-	<script src="../../DropZone/configDropZoneImage.js" type="text/javascript"></script>
+	<script src="../../DropZone/configDropZoneTheme.js" type="text/javascript"></script>
 	
 	<!-- Footer -->
 	<?php   

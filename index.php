@@ -62,7 +62,12 @@
 						   93.7 &nbsp; Souillac 100.3 <br />
 		</p>
 		<h1 class="text-uppercase m-4 text-center">Derniers podcasts publiés</h1>
-	
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-1 fleches">
+					<a class="precedent" onclick="changerSlide(-1)">&#10094;</a>
+				</div>		
+				<div class="col-10 colonne-milieu">
 		<!-- Affichage des podcasts depuis la BD -->
 		<?php 
 			$sql = "SELECT dateCreation, podcast.id_podcast AS idpodcast, podcast.id_emission AS idemission, image, son, podcast.texte AS texte_podcast, emission.nom FROM podcast
@@ -87,7 +92,12 @@
 		<?php
 			}	
 		?>
-	
+					</div>
+					<div class="col-1 fleches">
+					<a class="suivant" onclick="changerSlide(1)">&#10095;</a>
+				</div>
+			</div>
+		</div>
 		<!-- Points sous les slides -->
 		<div class="indicateurs">
 		<?php
@@ -97,11 +107,6 @@
 		?>
 		</div>
 		
-		<!-- Fleches de navigation -->
-		<div>
-			<a class="suivant" onclick="changerSlide(1)">&#10095;</a>
-			<a class="precedent" onclick="changerSlide(-1)">&#10094;</a>
-		</div>	
 	
 		<?php   
 			/* inclus le code du footeur */

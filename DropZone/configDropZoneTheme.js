@@ -1,6 +1,6 @@
 Dropzone.autoDiscover = false;
 
-        var myDropzone = new Dropzone("#dropzoneImage", { 
+        var myDropzone = new Dropzone(".dropzone", { 
             autoProcessQueue: false,
           
 		maxFiles: 1,
@@ -8,8 +8,8 @@ Dropzone.autoDiscover = false;
 		acceptedFiles:".png,.jpg,.gif,.jpeg",
 		addRemoveLinks:true,   //permet d'enlever 1  élément
 		dictRemoveFile:'Supprimer',  //renome le liens pour enlever un element
-		dictDefaultMessage: 'Cliquer ou déposer vos images ici',
-		dictInvalidFileType: 'Probleme de type d\'images, les images autorisé sont les jpeg, les png et les gif',
+		dictDefaultMessage: 'Cliquer ou déposer vos fichier ici',
+		dictInvalidFileType: 'Probleme de type de fichier, les fichier autorisé sont les jpeg, les png et les gif',
 		maxfilesexceeded: function(file) {
 			this.removeAllFiles();
 			this.addFile(file);
@@ -25,11 +25,10 @@ Dropzone.autoDiscover = false;
 					var _this = this;
 					_this.removeAllFiles();
 				}
-    
+
 			});
+			this.on("success", function(file, response) {
+				alert(response)
+			})
 		},
-        });
-       
-        $('#uploadfiles').click(function(){
-            myDropzone.processQueue();
         });
