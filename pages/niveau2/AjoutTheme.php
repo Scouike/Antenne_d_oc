@@ -57,7 +57,18 @@
 	
 		<h2>Theme </h2>
 		<!-- la drop zone -->
-		<form action="upload.php" class="dropzone" id="dropzoneImage"></form>	
+		<form action="upload.php" class="dropzone" id="dropzoneImage">
+			<!--nom -->
+			<div class="form-group row PositionRelativeDropZone">
+				<label for="nomTheme" class="col-sm-2 col-form-label">Nom Theme :</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control"  id="nom" name="nomTheme" placeholder="Nom du Theme" maxlength="25" required>
+				
+				</div>
+			</div>
+		
+		
+		</form>	
 		<form action="AjoutTheme.php" method="POST">
 			
 			<!--nom -->

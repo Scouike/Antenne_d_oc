@@ -44,9 +44,39 @@
 		} catch (PDOException $e) {
 			throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
+		//declaration variable
+		$emissionAjout = false;
+		
+		if (isset($_POST['uploadfiles'])){
+			$interview = 0;
+			$emissionInserer = true;
+			if(isset($_POST['interview'])){
+				$interview = 1;
+			}
+			//requéte
+			$sql="INSERT INTO emission(id_theme, nom, texte, interview, archive) VALUES (?,?,?,?,0)";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute([$_POST['theme'],$_POST['nomEmission'],$_POST['text'],$interview]);
+			
+			$emissionAjout = true;
+		}
 	?>
 	
 	<h1 class="text-uppercase m-4 text-center">Ajout d'Emission</h1>
+	
+	<?php
+		// si emission ajouté
+		if ($emissionAjout){
+			?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Ajout Emission effectué!</h4>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>			
+			<?php
+		}
+	?>
 	
 	<div class="cadre ">
 		<div>
@@ -66,7 +96,7 @@
 			<div class="form-group row">
 				<label for="nomEmission" class="col-sm-2 col-form-label">Nom Emission :</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control"  id="nomEmission" name="nomEmission" placeholder="Nom dde l'emission" maxlength="25" required>
+					<input type="text" class="form-control"  id="nomEmission" name="nomEmission" placeholder="Nom de l'emission" maxlength="25" required>
 				
 				</div>
 			</div>
@@ -90,12 +120,12 @@
 						<?php
 					
 
-							$sql = "SELECT DISTINCT titre FROM theme WHERE archive = 0 ORDER BY titre ";
+							$sql = "SELECT DISTINCT titre, id_theme FROM theme WHERE archive = 0 ORDER BY titre ";
 							$stmt = $pdo->prepare($sql);
 							$stmt->execute();
 												 
 							while ($row = $stmt->fetch()) {
-								echo "<option >".$row['titre']."</option>";
+								echo '<option value="'.$row['id_theme'].'" >'.$row['titre'].'</option>';
 								
 							}
 						?>
@@ -108,7 +138,7 @@
 				<div class="col-sm-2">Interview</div>
 				<div class="col-sm-10">
 					<div class="form-check">
-						<input class="form-check-input" type="checkbox" id="interview" name="interview">
+						<input class="form-check-input" type="checkbox" id="interview" name="interview" value="1">
 						<label class="form-check-label" for="interview">
 							Cocher la case si vous voulez que l'emission soit une interview
 						</label>
@@ -118,7 +148,7 @@
 			
 			
 			
-			<button type="submit" id="uploadfiles" class="btn btn-primary">Ajouter Theme</button>
+			<button type="submit" id="uploadfiles" name="uploadfiles" class="btn btn-primary">Ajouter Theme</button>
 		</form>	
 	</div>
 	
