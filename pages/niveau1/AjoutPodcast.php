@@ -73,7 +73,7 @@
 		if(isset($_POST["submit"])&&!empty($_FILES['Podcast']['name'])){
 			//format Accepté
 			$formatPodcast = array('mp3','ogg','wav');
-			$formatImage = array('jpg','png','jpeg','gif','pdf');
+			$formatImage = array('jpg','png','jpeg','gif');
 			
 			if(in_array($PodcastType, $formatPodcast)){
 				if(!move_uploaded_file($_FILES['Podcast']['tmp_name'], $targetPodcastPath)){
