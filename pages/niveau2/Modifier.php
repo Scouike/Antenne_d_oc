@@ -11,6 +11,13 @@
 			
 		<!-- liens vers fontawesome -->
 		<link href="../../fontawesome/css/all.css" rel="stylesheet" >
+		
+		<script src="../../js/jquery.min.js" type="text/javascript"></script>
+		
+		<!-- script boostrap -->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 			
 
 	</head>
@@ -44,6 +51,14 @@
 			
 			//declaration variable
 			$modification = 0;
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			//fonction verifiant la rechercher par txt
 			function trieParTxt($txtVerif,$txtARespecter){
@@ -247,20 +262,296 @@
 			}
 			
 			function AffichageThemeModif($id_theme){
-				//TODO
-				echo '<h1>1</h1>';
+				global $pdo;
+				$sql = "SELECT * FROM theme WHERE id_theme = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_theme]);
+				while ($row = $stmt->fetch()) {
+					
+					echo '<div class="margin cadre2 ">
+								<h2>Theme </h2>
+								<!-- la drop zone -->
+								<form  action="Modifier.php"  method="POST"  enctype="multipart/form-data" id="formTheme">
+									<div class="alert alert-primary" role="alert">
+									  Attention vous pouvez modifier l\'image si vous le souhaitais mais si vous ne voulais pas la changer n\'interagissais pas avec la zone de dépot de l\'image.
+									</div>
+									<!-- la zone de drop -->
+									<div class="dropzone">
+										<input type="file"  name="imageTheme" >
+									</div>
+									<p id="textDropZoneImg" class="textDropZone">Déposer vos fichier ou cliquer ici</p>
+									
+
+									<!--nom -->
+									<div class="form-group row" id="aDeplacer">
+										<label for="nomTheme" class="col-sm-3 col-form-label">Nom Theme :</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control"  id="nom" name="nomTheme" placeholder="Nom du Theme" value="'.$row['titre'].'" maxlength="25" required>
+											
+										</div>
+									</div>
+									<input id="id_Theme" name="id_theme" type="hidden" value="'.$id_theme.'">
+									<button type="submit" class="btn btn-primary" name="modifTheme">Modifier Theme</button>
+								</form>
+								
+							</div>';
+
+				}
 				
 			}
 			
 			function AffichageEmissionModif($id_Emission){
-				//TODO
-				echo '<h1>2</h1>';				
+				global $pdo;
+				$interview ="";
+				$sql = "SELECT * FROM emission WHERE id_emission = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_Emission]);
+				while ($row = $stmt->fetch()) {
+						if($row['interview']==1){
+							$interview ="checked";
+						}
+						echo '<div class="margin cadre2">
+						<h2>Emission</h2>
+						<form action="AjoutEmission.php" method="POST">
+							
+							<!--nom -->
+							<div class="form-group row">
+								<label for="nomEmission" class="col-sm-2 col-form-label">Nom Emission :</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control  "  id="nomEmission" name="nomEmission" placeholder="Nom de l\'emission" value ="'.$row['nom'].'" maxlength="25" required>
+
+								</div>
+							</div>
+							
+							<!--texte -->
+							<div class="form-group row">
+								<label for="text" class="col-sm-2 col-form-label">Texte :</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control "  id="text" name="text" placeholder="Texte descriptif de l\'emission" maxlength="100" value="'.$row['texte'].'"required>
+								
+								</div>
+							</div>
+
+
+							<!--Theme -->
+							<div class="form-group row">
+								<label for="theme" class="col-sm-2 col-form-label">Theme :</label>
+								<div class="col-sm-10">
+									<select class="custom-select" name ="theme" required>
+										<!-- tous les themes -->
+										
+									
+											';
+											
+											$sql = "SELECT DISTINCT titre, id_theme FROM theme WHERE archive = 0 ORDER BY titre ";
+											$stmt = $pdo->prepare($sql);
+											$stmt->execute();
+																 
+											while ($row2 = $stmt->fetch()) {
+												if($row2['id_theme'] == $row['id_theme']){
+													echo '<option value="'.$row2['id_theme'].'" selected>'.$row2['titre'].'</option>';
+												}else{
+													echo '<option value="'.$row2['id_theme'].'" >'.$row2['titre'].'</option>';
+												}
+											}
+										echo '
+									</select>
+								</div>
+							</div>
+							
+							<!-- interview -->
+							<div class="form-group row">
+								<div class="col-sm-2">Interview</div>
+								<div class="col-sm-10">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="interview" name="interview" value="1" '.$interview.' >
+										<label class="form-check-label" for="interview">
+											Cocher la case si vous voulez que l\'emission soit une interview
+										</label>
+									</div>
+								</div>
+							</div>
+							
+							
+							
+							<button type="submit" id="uploadfiles" name="uploadfiles" class="btn btn-primary">Ajouter Emission</button>
+						</form>	
+					</div>';
+					
+				}
+				
+							
 			}
 			
 			function AffichagePodcastModif($id_Podcast){
-				//TODO
-				echo '<h1>3</h1>';			
+				global $pdo;
+				$sql = "SELECT * FROM podcast WHERE id_podcast = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_Podcast]);
+				while ($row = $stmt->fetch()) {
+					$dateCrea = row['datteCreation'];
+					$dateArchi = row['dateArchive'];
+					echo '
+						<div class="margin cadre2">
+							<form action="AjoutPodcast.php" method="POST" enctype="multipart/form-data">
+							
+								<!-- les date de mise en ligne et d\'archivage -->
+								<div class="form-row">
+									<div class="col">
+										<label >Date de création:</label>
+										<input type="date" name="dateCrea" class="form-control" placeholder="Date du Podcast"
+										value="" min =""required>
+									</div>
+									<div class="col">
+										<label >Date d\'archivage	:</label>
+										<input type="date" name="dateArchiv" class="form-control" placeholder="Date du Podcast"
+										value=""
+										min ="">
+									</div>
+								</div>
+									
+								<br/>
+								
+								<!-- texte pour le podcast -->
+								<div class="form-group">
+									<label for="TextDescription">Texte pour le podcast :</label>
+									<textarea class="form-control" id="TextDescription" name="texte" rows="3"></textarea>
+								</div>
+								
+								<br/><br/>
+								
+								<!-- les fichiers -->
+								<div class="row">
+									<!-- image -->
+									<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+										<div class="dropzone">
+											<input type="file" name="image" id="image" class="form-control-file" >
+										</div>
+										<p id="textDropZoneImg"  class="textDropZone">Déposer les images de vos podcast ici</p>
+										
+									</div>
+									
+											
+									<!-- podcast -->
+									<div class=" col-xs-12 col-sm-12 col-md-6 col-lg-6">
+										<div class="dropzone">
+											<input required type="file" name="podcast" id="podcast" class="form-control-file" >
+										</div>
+										<p id="textDropZonePodcast" class="textDropZone" >Déposer vos fichier audio ici</p>
+										
+									</div>
+									
+								</div>
+								
+
+								
+								<!-- Liste déroulante avec les possibles émissions 	 -->
+								<label>Choix émission du podcast</label>
+								<select name="emission" class="custom-select" required>';
+									
+									$sql="SELECT * FROM emission ORDER BY nom";
+									$stmt = $pdo->prepare($sql);
+									$stmt->execute();
+									while ($row2 = $stmt->fetch()){
+										echo'<option value="'.$row2["id_emission"].'">'.$row2["nom"].'</option>';
+									}
+								echo '	
+								</select>
+								<?php
+
+								?>
+								<input type="submit" name="submit" value="Ajouter Podcast" class="btn btn-success btn-block marge20Top">
+							</form>
+						</div>';
+				}
+						
 			}
+			
+			
+			//verification si Theme en modification
+			if(isset($_POST['modifTheme'])){
+				
+				
+				//on initialise des variables
+				$nomThemeDisponible = true;
+				$presencefichier = false;
+				$maxTaille = 5000000; //5mb
+				
+				//on traite la demande de modification 
+				$id_theme = $_POST['id_theme'];
+				// debug echo '<h1> id theme : '.$_POST['id_theme'].'</h1>';
+				//on recupere les info du theme
+				$sql = "SELECT * FROM theme WHERE id_theme = ? ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute([$id_theme]);
+				while ($row = $stmt->fetch()) {
+					$nomTheme = $row['titre'];
+				}	
+				
+				
+				//on verifie dans la table que le nom n'est déja pas pris
+				$sql = "SELECT * FROM theme";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute();
+				while ($row = $stmt->fetch()) {
+					if ($_POST['nomTheme'] == $row['titre'] && $row['titre']!=$nomTheme){
+						$nomThemeDisponible = false;
+					}
+				}	
+				
+				//on verifie si il y a un fichier 
+				if (!empty($_FILES['imageTheme']['name']) && $nomThemeDisponible) {
+					$presencefichier = true;
+					$formatBon =false;
+					$tailleCorrecte = false;
+					//Destination du fichier
+					$uploaddir = '../../Theme/';
+					
+					//on teste si le fichier est dans un bon format
+					$formatImage = array('image/jpg','image/png','image/jpeg','image/gif'); //format autorisé
+					if(in_array($_FILES['imageTheme']['type'], $formatImage)){
+						$formatBon = true;
+					}
+					
+					//on teste la taille
+					if($maxTaille >= $_FILES['imageTheme']['size'] ){
+						$tailleCorrecte = true;
+					}
+					
+					//on genere un nom valide à l'image du podcast
+					do{
+						$nomFichierInvalide = true;
+						$clef = md5(microtime(TRUE)*100000);
+						$cheminBD ="/ProjetRadioGit/ProjetRadioPhp/Theme/".$clef.$_FILES['imageTheme']['name'];
+						$uploadfile = $uploaddir.$clef.$_FILES['imageTheme']['name'];
+						$sql = "SELECT * FROM theme";
+						$stmt = $pdo->prepare($sql);
+						$stmt->execute();
+						while ($row = $stmt->fetch()) {
+							if ($cheminBD == $row['image']){
+								$nomFichierInvalide = false;
+								$cheminBD ="/ProjetRadioGit/ProjetRadioPhp/Theme/".$clef.$_FILES['imageTheme']['name'];
+								$uploadfile = $uploaddir.$clef.$_FILES['imageTheme']['name'];
+							}
+						}
+					}while(!$nomFichierInvalide);
+				}
+				if($nomThemeDisponible && $presencefichier && $tailleCorrecte && $formatBon){
+					if (move_uploaded_file($_FILES['imageTheme']['tmp_name'], $uploadfile)) {
+						$sql ='UPDATE theme SET image = ?,titre = ? WHERE id_theme = ?';
+						$stmt = $pdo->prepare($sql);
+						$stmt->execute([$cheminBD,$_POST['nomTheme'],$id_theme]);
+						$modification =3;
+					}
+				}else if($nomThemeDisponible && !$presencefichier){
+					$sql ='UPDATE theme SET titre = ? WHERE id_theme = ?';
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute([$_POST['nomTheme'],$id_theme]);
+					$modification =3;
+				}				
+					
+			}
+			
 			
 		?>
 			
@@ -276,6 +567,47 @@
 			</div>
 		</div>
 		</br>
+		<?php
+			//message reussite modification podcast
+			if ($modification == 1){
+				?>
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<h4 class="alert-heading">Le podcast à bien été modifié!</h4>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>			
+				<?php
+			}
+			
+			//message reussite modification emission
+			if ($modification == 2){
+				?>
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<h4 class="alert-heading">L'émission à bien été modifié!</h4>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>	
+				
+				<?php
+			}
+			
+			//message reussite modification theme
+			if ($modification == 3){
+				?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Le Théme à bien été modifié!</h4>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>	
+				
+				<?php
+			}
+		
+		?>	
+		
 		<!--recherche -->
 		<div class="margin cadre2">
 			<form action="Modifier.php" method="POST">
@@ -307,46 +639,7 @@
 		</div>
 		</br></br>
 		
-		<?php
-			//message reussite archivage podcast
-			if ($modification == 1){
-				?>
-					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						<h4 class="alert-heading">Le podcast à bien été archivé!</h4>
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>			
-				<?php
-			}
-			
-			//message reussite archivage emission
-			if ($modification == 2){
-				?>
-					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						<h4 class="alert-heading">L'émission à bien été archivé!</h4>
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>	
-				
-				<?php
-			}
-			
-			//message reussite archivage theme
-			if ($modification == 3){
-				?>
-				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Le Théme à bien été archivé!</h4>
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>	
-				
-				<?php
-			}
 		
-		?>	
 		
 		<?php
 			//on vérifie la recherche et on affiche en cosséquence
@@ -401,14 +694,65 @@
 			}
 			
 			//on vérifi si une modification est demandé
-			if (isset($_POST['objetModif'])){
+			if (isset($_POST['objetModif']) && $modification==0){
 				
 				AffichageObjetModif($_POST['id_Objet'],$_POST['objetModif']);
 			}
+			
+			//on reaffiche la modif de theme masi avec des erreurs
+			if(isset($_POST['modifTheme']) &&  $modification==0){
+				
+				?>
+				<div class="margin cadre2 ">
 
+					<h2>Theme </h2>
+					<!-- la drop zone -->
+					<form  action="Modifier.php"  method="POST"  enctype="multipart/form-data" id="formTheme">
+						<!-- la zone de drop -->
+						<div class="dropzone">
+							<input type="file"  name="imageTheme" >
+						</div>
+						<p id="textDropZoneImg" class="textDropZone">Déposer vos fichier ou cliquer ici</p>
+						<?php
+							
+							if($presencefichier && !$formatBon){
+								echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type d\'image accépté sont : jpg, png, jpeg, gif</div>';
+							}
+							if($presencefichier && !$tailleCorrecte){
+								echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 5mb</div>';
+							}
+						
+						?>
+						<!--nom -->
+						<div class="form-group row" id="aDeplacer">
+							<label for="nomTheme" class="col-sm-3 col-form-label">Nom Theme :</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control <?php if(isset($_POST['nomTheme']) && !$nomThemeDisponible){ echo "is-invalid";} ?>"  id="nom" name="nomTheme" placeholder="Nom du Theme" maxlength="25" required>
+								<?php	
+									if (isset($_POST['nomTheme']) && !$nomThemeDisponible ){
+										echo '<div class="invalid-feedback">Le Nom du théme que vous voulez ajouter est déjà pris</div>';
+									}
+								?>
+							</div>
+						</div>
+						<input id="id_Theme" name="id_theme" type="hidden" value="<?php echo $id_theme; ?>">
+						<button type="submit" class="btn btn-primary" name="modifTheme">Modifier Theme</button>
+					</form>
+					
+				</div>
+				
+				<?php
+				
+			}
+			
+			
+				
+				
+		
 		?>
 		
 		
+
 		
 	
 
