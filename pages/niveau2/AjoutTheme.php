@@ -143,7 +143,7 @@
 		if ($themeAjouter){
 			?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Le Théme à bien été ajouter!</h4>
+					<h4 class="alert-heading">Le Théme a bien été ajouté!</h4>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -162,7 +162,7 @@
 			<div class="dropzone">
 				<input type="file"  name="imageTheme" >
 			</div>
-			<p id="textDropZone">Déposer vos fichier ou cliquer ici</p>
+			<p id="textDropZoneImg" class="textDropZone">Déposer vos fichier ou cliquer ici</p>
 			<?php
 				
 				if(!$formatBon){
@@ -199,13 +199,11 @@
 	<script>
 		$(document).ready(function(){
 		  $('form input').change(function () {
-			$('#textDropZone').text(this.files.length + " fichier à été  ajouté");
+			$('#textDropZoneImg').text(this.files.length + " fichier a été  ajouté");
 		  });
 		});
 	</script>
     <script src="../../js/jquery.min.js" type="text/javascript"></script>
-    <script src="../../DropZone/dropzone.js" type="text/javascript"></script>
-	<script src="../../DropZone/configDropZoneTheme.js" type="text/javascript"></script>
 	
 	<!-- Footer -->
 	<?php   

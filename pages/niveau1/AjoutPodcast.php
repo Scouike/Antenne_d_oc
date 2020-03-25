@@ -49,83 +49,149 @@
 		} catch (PDOException $e) {
 			 throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
-		
-		//Declaration des chemin pour les fichier 
-		if(!empty($_FILES['Podcast']['name'])){
-			$targetDir = "../../podcast/";
-			$PodcastName = basename($_FILES['Podcast']['name']);
-			$ImageName = basename($_FILES['Image']['name']);
-			$targetPodcastPath = $targetDir . $PodcastName;
-			$targetImagePath = $targetDir . $ImageName;
-			$PodcastType = pathinfo($targetPodcastPath,PATHINFO_EXTENSION);
-			$ImageType = pathinfo($targetImagePath,PATHINFO_EXTENSION);
+		//on determine le niveau de la session_cache_expire
+		$attente = 1;
+		if($_SESSION['level'] >= 2){
+			$attente = 0;
 		}
+		
 		
 		//initialisation fariable
-		$son="NULL";
-		$id_emission="NULL";
-		$image="NULL";
-		$texte="NULL";
-		$attente = 1;
-		$ajoutValide=false;
+		$uploaddir = '../../podcast/';
+		$formatPodcast = array('audio/mp3','audio/ogg','audio/wav');
+		$formatImage = array('image/jpg','image/png','image/jpeg','image/gif');
+		$formatImageCorecte = true;
+		$formatPodcastCorecte = false;
+		$maxTaille = 5000000; //5mb
+		$tailleImageValid = true;
+		$taillePodcastValid = false;
+		$fichierSonVide = false;
+		$podcastAjout = false;
 		
 		
-		if(isset($_POST["submit"])&&!empty($_FILES['Podcast']['name'])){
-			//format Accepté
-			$formatPodcast = array('mp3','ogg','wav');
-			$formatImage = array('jpg','png','jpeg','gif');
+		if(isset($_POST['submit'])){
+			//echo '<h1>passage</h1>';
+			$dateCrea = $_POST['dateCrea'];
+			$dateArch = $_POST['dateArchiv'];
+			//verif que la date d'archivage soit renseigné
+			if ($dateArch==""){
+				$dateArch = null;
+			}
 			
-			if(in_array($PodcastType, $formatPodcast)){
-				if(!move_uploaded_file($_FILES['Podcast']['tmp_name'], $targetPodcastPath)){
-					echo '<H2> Il y a eu un soucis lors de l\'upload';
+			//verif du text
+			$text = $_POST['texte'];
+			if($text==""){
+				$text="NULL";
+			}
+			echo $_POST['emission'];
+			
+			//si image alors il doit respecter des regles
+			if (!empty($_FILES['image']['name'])){
+				$formatImageCorecte = false;
+				$tailleImageValid = false;
+				
+				//on teste si le fichier est dans un bon format				
+				if(in_array($_FILES['image']['type'], $formatImage)){
+					$formatImageCorecte = true;
+				}
+				
+				//on teste la taille
+				if($maxTaille >= $_FILES['image']['size'] ){
+					$tailleImageValid = true;
+				}
+				
+				//on genere un nom valide à l'image du podcast
+				do{
+					$nomFichierInvalide = true;
+					$clef = md5(microtime(TRUE)*100000);
+					$cheminBDImage ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef;
+					$uploadfileImage = $uploaddir.$clef;
+					$sql = "SELECT * FROM podcast";
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute();
+					while ($row = $stmt->fetch()) {
+						if ($cheminBDImage == $row['image'] || $cheminBDImage == $row['son']){
+							$nomFichierInvalide = false;
+							$cheminBDImage ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef;
+							$uploadfileImage = $uploaddir.$clef;
+						}
+					}
+				}while(!$nomFichierInvalide);
+					
+			}else{
+				$cheminBDImage = "NULL";
+			}
+			
+			//verif sur le son
+			if (!empty($_FILES['podcast']['name'])){
+
+				
+				//on teste si le fichier est dans un bon format
+				if(in_array($_FILES['podcast']['type'], $formatPodcast)){
+					$formatPodcastCorecte = true;
+				}
+				
+				//on teste la taille
+				if($maxTaille >= $_FILES['podcast']['size'] ){
+					$taillePodcastValid = true;
+				}
+				
+				//on genere un nom valide à l'image du podcast
+				do{
+					$nomFichierInvalide = true;
+					$clef = md5(microtime(TRUE)*100000);
+					$cheminBDPodcast ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef;
+					$uploadfilePodcast = $uploaddir.$clef;
+					$sql = "SELECT * FROM podcast";
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute();
+					while ($row = $stmt->fetch()) {
+						if ($cheminBDPodcast == $row['image'] || $cheminBDImage == $row['son']){
+							$nomFichierInvalide = false;
+							$cheminBDPodcast ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef;
+							$uploadfilePodcast = $uploaddir.$clef;
+						}
+					}
+				}while(!$nomFichierInvalide);
+					
+			}else{
+				$fichierSonVide = true;	
+			}
+			//echo $_POST['emission'].'    '.$_SESSION['id'].'     '.$cheminBDImage.'    '.$cheminBDPodcast.'    '.$text.'    '.$attente.'    '.$dateArch.'     '.$dateCrea;
+			if(!$fichierSonVide && $formatImageCorecte && $tailleImageValid && $taillePodcastValid && $formatPodcastCorecte){
+				if($cheminBDImage==null){
+					if(move_uploaded_file($_FILES['podcast']['tmp_name'], $uploadfilePodcast)){
+							$sql = "INSERT INTO podcast(id_emission, id_utilisateur, image, son, texte, archive, attente, dateArchive, dateCreation) VALUES (?,?,?,?,?,0,?,?,?)";
+							$stmt = $pdo->prepare($sql);
+							$stmt->execute([$_POST['emission'],$_SESSION['id'],$cheminBDImage,$cheminBDPodcast,$text,$attente,$dateArch,$dateCrea]);
+							$podcastAjout = true;
+					}
+					
 				}else{
-					$son=$targetPodcastPath;
-					$sql = 'INSERT INTO podcast (son, id_emission, image,attente,  texte,dateArchive, dateCreation) 
-					VALUES (?,?,?,?,?,?,?)';
+					if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadfileImage)) {
+						if(move_uploaded_file($_FILES['podcast']['tmp_name'], $uploadfilePodcast)){
+							$sql = "INSERT INTO podcast(id_emission, id_utilisateur, image, son, texte, archive, attente, dateArchive, dateCreation) VALUES (?,?,?,?,?,0,?,?,?)";
+							$stmt = $pdo->prepare($sql);
+							$stmt->execute([$_POST['emission'],$_SESSION['id'],$cheminBDImage,$cheminBDPodcast,$text,$attente,$dateArch,$dateCrea]);
+							$podcastAjout = true;
+						}
+					}
 				}
-			}else{
-				echo '<H2>Seuls les format mp3,ogg,wav sont acceptés, le fichier n\' a pas été upload</H2>';
-			}
-			
-			//on determine l'id de l'emmision choisit
-			if ($_POST["emission"]!=""){
-				$idemission =  "SELECT id_emission FROM emission WHERE nom=?";
-				$requete= $pdo->prepare($idemission);
-				$requete->execute(array($_POST["emission"]));
-				$id_emission= implode("|",$requete->fetch());
 			}
 			
 			
-			//on vérifie que le typed e l'image soit le bon 
-			if(in_array($ImageType, $formatImage)||$ImageType==""){
-				if(move_uploaded_file($_FILES['Image']['tmp_name'], $targetPodcastPath)){
-					$image=$targetImagePath;
-				}
-			}else{
-				echo '<H2>Seuls les formats jpg,png,jpeg,gif,pdf sont acceptés, le fichier n\' a pas été upload</H2>';
-			}
-			
-			//on initialise le texte
-			if ($_POST["Texte"]!=""){
-				$texte=$_POST["Texte"];
-			}
-			
-			//on determine si le podcat sera mis en attente ou pas
-			if ($_SESSION == 2 || $_SESSION ==3){
-				$attente = 0;
-			}
 			
 			
-			$dateArchive = date("Y-m-d", strtotime($_POST["dateArchiv"]));
-			$dateCrea = date("Y-m-d", strtotime($_POST["dateCréa"]));	
-			$stmt = $pdo->prepare($sql);
-			$stmt->execute([$son,$id_emission,$image,$attente,$texte,$dateArchive,$dateCrea]);
 			
-			$ajoutValide=true;
-		}else{
-			echo'<H2>Veuillez sélectionner un podcast.</H2>';
+			
 		}
+
+	
+			
+		
 		?>
+		
+		
 	<h1 class="text-uppercase m-4 text-center">Ajout de Podcast</h1>
 	
 	<?php 
@@ -146,66 +212,131 @@
 		<?php } ?>
 	
 	
+	<?php
+		//message reussite ajout de Podcast
+		if ($podcastAjout){
+			?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<h4 class="alert-heading">Le Podcast a bien été ajouté!</h4>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>			
+			<?php
+		}
+		
+	?>	
 	
+	<div class="alert alert-primary alert-dismissible fade show" role="alert">
+		<strong>Attention!</strong> Si vous voulez que votre podcast ne soit pas archivé veuillez suprimer toutes valeur du champs d'archivage.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
 	<div class="margin cadre2">
-		<form action="AjoutPodcast.php"method="POST" enctype="multipart/form-data">
+		<form action="AjoutPodcast.php" method="POST" enctype="multipart/form-data">
+		
+			<!-- les date de mise en ligne et d'archivage -->
 			<div class="form-row">
 				<div class="col">
 					<label >Date de création:</label>
-					<input type="date" name="dateCréa" class="form-control" placeholder="Date du Podcast"
-					value="<?php echo date("Y-m-d",time()) ;?>">
+					<input type="date" name="dateCrea" class="form-control" placeholder="Date du Podcast"
+					value="<?php echo date("Y-m-d",time()) ;?>" min ="<?php echo date("Y-m-d",time()) ;?>"required>
 				</div>
 				<div class="col">
 					<label >Date d'archivage	:</label>
 					<input type="date" name="dateArchiv" class="form-control" placeholder="Date du Podcast"
 					value="<?php echo date("Y-m-d",strtotime("+1 year")) ;?>"
-					min ="<?php echo date("Y-m-d",strtotime("+1 year")) ;?>">
+					min ="<?php echo date("Y-m-d",strtotime("+1 day")) ;?>">
 				</div>
 			</div>
+				
 			<br/>
+			
+			<!-- texte pour le podcast -->
 			<div class="form-group">
-			<!-- zone de texte servant à la description du podcast -->
-				<label for="TextDescription">Texte pour le podcast</label>
-				<textarea class="form-control" id="TextDescription" name="Texte" rows="3"></textarea>
+				<label for="TextDescription">Texte pour le podcast :</label>
+				<textarea class="form-control" id="TextDescription" name="texte" rows="3"></textarea>
 			</div>
+			
+			<br/><br/>
+			
+			<!-- les fichiers -->
 			<div class="row">
-			<!-- Bouttons pour choisir les fichiers Image et Podcast -->
-				<div class="col">
-				<!-- Nom du boutton -->
-					<label for="formImage">Image</label>
-					<input type="file" name ="Image" class="form-control-file" id="formImage">
+				<!-- image -->
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<div class="dropzone">
+						<input type="file" name="image" id="image" class="form-control-file" >
+					</div>
+					<p id="textDropZoneImg"  class="textDropZone">Déposer les images de vos podcast ici</p>
+					<?php
+						if(!$formatImageCorecte){
+						echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type de fichiers audios accépté sont : jpg, png, jpeg, gif</div>';
+						}
+						if(!$tailleImageValid){
+							echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 5mb</div>';
+						}
+
+					?>
 				</div>
-				<div class="col">
-				<!-- Nom du boutton -->
-					<label for="formPodcast">Podcast</label>
-					<input required type="file" name="Podcast" class="form-control-file" id="formPodcast">
+				
+						
+				<!-- podcast -->
+				<div class=" col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<div class="dropzone">
+						<input required type="file" name="podcast" id="podcast" class="form-control-file" >
+					</div>
+					<p id="textDropZonePodcast" class="textDropZone" >Déposer vos fichier audio ici</p>
+					<?php
+				
+						if(isset($_POST['submit']) && !$formatPodcastCorecte){
+							echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type d\'image accépté sont : mp3, ogg, wav</div>';
+						}
+						if(isset($_POST['submit']) && !$taillePodcastValid){
+							echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 5mb</div>';
+						}
+						if(isset($_POST['submit']) && $fichierSonVide){
+							echo '<div class="alert alert-danger" role="alert">Aucun fichier detecté</div>';
+						}
+					
+					?>
 				</div>
+				
 			</div>
-			<br/>
+			
+
+			
 			<!-- Liste déroulante avec les possibles émissions 	 -->
 			<label>Choix émission du podcast</label>
-			<select name="emission" class="custom-select" autocomplete="on" required>
+			<select name="emission" class="custom-select" required>
 				<?php
-				$sql="SELECT DISTINCT nom FROM emission";
+				$sql="SELECT DISTINCT nom FROM emission ORDER BY nom";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
 				while ($row = $stmt->fetch()){
-					echo'<option value="'.$row["nom"].'">'.$row["nom"].'</option>';
+					echo'<option value="'.$row["id_emission"].'">'.$row["nom"].'</option>';
 				}
 				?>
 			</select>
 			<?php
-					if ($ajoutValide){
-						
-						echo "Le Podcast a été upload correctement";
-					}
+
 			?>
-			<input type="submit" name="submit" value="Envoyer" class="btn btn-success float-right btnpadding">
+			<input type="submit" name="submit" value="Ajouter Podcast" class="btn btn-success btn-block marge20Top">
 		</form>
 	</div>
-	<script src="jquery.min.js" type="text/javascript"></script>
-    <script src="dropzone.js" type="text/javascript"></script>
-	<script src="configDropZone.js" type="text/javascript"></script>
+	
+	<!--script -->
+	<script>
+		$(document).ready(function(){
+		  $('#image').change(function () {
+			$('#textDropZoneImg').text(this.files.length + " fichier a été  ajouté");
+		  });
+		  $('#podcast').change(function () {
+			$('#textDropZonePodcast').text(this.files.length + " fichier a été  ajouté");
+		  });
+		});
+	</script>
+	<script src="../../js/jquery.min.js" type="text/javascript"></script>
 
 	<!-- Footer -->
 	<?php   

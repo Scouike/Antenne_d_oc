@@ -82,7 +82,7 @@
 		if ($emissionAjout){
 			?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Ajout Emission effectué!</h4>
+					<h4 class="alert-heading">L'ajout de l'émission a bien été effectuée !</h4>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -169,7 +169,7 @@
 			
 			
 			
-			<button type="submit" id="uploadfiles" name="uploadfiles" class="btn btn-primary">Ajouter Theme</button>
+			<button type="submit" id="uploadfiles" name="uploadfiles" class="btn btn-primary">Ajouter Emission</button>
 		</form>	
 	</div>
 	

@@ -184,7 +184,7 @@ footer{
   opacity: 0;
 
 }
-#textDropZone {
+.textDropZone {
 	position: relative;
 	text-align: center;
 	bottom:140px;
@@ -288,4 +288,8 @@ footer{
 	audio {
 		width: 100%;
 	}
+}
+
+.marge20Top{
+	margin-top:20px;
 }
