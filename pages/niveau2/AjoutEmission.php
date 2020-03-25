@@ -136,7 +136,7 @@
 			<div class="form-group row">
 				<label for="theme" class="col-sm-2 col-form-label">Theme :</label>
 				<div class="col-sm-10">
-					<select class="custom-select" name ="theme">
+					<select class="custom-select" name ="theme" required>
 						<!-- tous les themes -->
 						<?php
 					

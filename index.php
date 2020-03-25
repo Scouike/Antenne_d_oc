@@ -146,7 +146,7 @@
 										<div class="col"><figure>
 											<figcaption>Ecouter le podcast :</figcaption><br/>
 											<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-											<button type="button" class="btn btn-outline-success">Télécharger</button>
+											<a href="'.$podcast.'"  class="btn btn-outline-success">Télécharger</a>
 											</figure>
 										</div>
 									</div>
@@ -167,7 +167,7 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												<a href="'.$podcast.'"  class="btn btn-outline-success">Télécharger</a>
 												</figure>
 											</div>
 										</div>
@@ -191,7 +191,7 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												<a href="'.$podcast.'"  class="btn btn-outline-success">Télécharger</a>
 												</figure>
 											</div>
 										</div>
@@ -216,7 +216,7 @@
 											<div class="col"><figure>
 												<figcaption>Ecouter le podcast :</figcaption><br/>
 												<audio controls src="'.$podcast.'">Your browser does not support the<code>audio</code> element.</audio><br/><br/>
-												<button type="button" class="btn btn-outline-success">Télécharger</button>
+												<a href="'.$podcast.'"  class="btn btn-outline-success">Télécharger</a>
 												</figure>
 											</div>
 										</div>

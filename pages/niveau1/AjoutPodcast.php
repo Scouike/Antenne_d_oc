@@ -62,7 +62,7 @@
 		$formatImage = array('image/jpg','image/png','image/jpeg','image/gif');
 		$formatImageCorecte = true;
 		$formatPodcastCorecte = false;
-		$maxTaille = 5000000; //5mb
+		$maxTaille = 15000000; //15mb
 		$tailleImageValid = true;
 		$taillePodcastValid = false;
 		$fichierSonVide = false;
@@ -70,23 +70,27 @@
 		
 		
 		if(isset($_POST['submit'])){
-			//echo '<h1>passage</h1>';
+			//echo '<h1>formulaire detecté</h1>';
 			$dateCrea = $_POST['dateCrea'];
 			$dateArch = $_POST['dateArchiv'];
 			//verif que la date d'archivage soit renseigné
 			if ($dateArch==""){
-				$dateArch = null;
+				$dateArch = date("Y-m-d",strtotime("+10 year"));
+				//echo '<h1>date archivage null</h1>';
 			}
+			//echo '<h1>date archivage  detecté</h1>';
 			
 			//verif du text
 			$text = $_POST['texte'];
 			if($text==""){
 				$text="NULL";
+				//echo '<h1>texte null detecté</h1>';
 			}
-			echo $_POST['emission'];
+			//echo '<h1>texte</h1>';
 			
 			//si image alors il doit respecter des regles
 			if (!empty($_FILES['image']['name'])){
+				//echo '<h1>image detecté</h1>';
 				$formatImageCorecte = false;
 				$tailleImageValid = false;
 				
@@ -104,27 +108,28 @@
 				do{
 					$nomFichierInvalide = true;
 					$clef = md5(microtime(TRUE)*100000);
-					$cheminBDImage ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef;
-					$uploadfileImage = $uploaddir.$clef;
+					$cheminBDImage ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef.$_FILES['image']['name'];
+					$uploadfileImage = $uploaddir.$clef.$_FILES['image']['name'];
 					$sql = "SELECT * FROM podcast";
 					$stmt = $pdo->prepare($sql);
 					$stmt->execute();
 					while ($row = $stmt->fetch()) {
 						if ($cheminBDImage == $row['image'] || $cheminBDImage == $row['son']){
 							$nomFichierInvalide = false;
-							$cheminBDImage ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef;
-							$uploadfileImage = $uploaddir.$clef;
+							$cheminBDImage ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef.$_FILES['image']['name'];
+							$uploadfileImage = $uploaddir.$clef.$_FILES['image']['name'];
 						}
 					}
 				}while(!$nomFichierInvalide);
 					
 			}else{
+			//	echo '<h1>image non detecté</h1>';
 				$cheminBDImage = "NULL";
 			}
 			
 			//verif sur le son
 			if (!empty($_FILES['podcast']['name'])){
-
+				//echo '<h1>son detecté</h1>';
 				
 				//on teste si le fichier est dans un bon format
 				if(in_array($_FILES['podcast']['type'], $formatPodcast)){
@@ -140,26 +145,27 @@
 				do{
 					$nomFichierInvalide = true;
 					$clef = md5(microtime(TRUE)*100000);
-					$cheminBDPodcast ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef;
-					$uploadfilePodcast = $uploaddir.$clef;
+					$cheminBDPodcast ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef.$_FILES['podcast']['name'];
+					$uploadfilePodcast = $uploaddir.$clef.$_FILES['podcast']['name'];
 					$sql = "SELECT * FROM podcast";
 					$stmt = $pdo->prepare($sql);
 					$stmt->execute();
 					while ($row = $stmt->fetch()) {
 						if ($cheminBDPodcast == $row['image'] || $cheminBDImage == $row['son']){
 							$nomFichierInvalide = false;
-							$cheminBDPodcast ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef;
-							$uploadfilePodcast = $uploaddir.$clef;
+							$cheminBDPodcast ="/ProjetRadioGit/ProjetRadioPhp/podcast/".$clef.$_FILES['podcast']['name'];
+							$uploadfilePodcast = $uploaddir.$clef.$_FILES['podcast']['name'];
 						}
 					}
 				}while(!$nomFichierInvalide);
 					
 			}else{
 				$fichierSonVide = true;	
+				//echo '<h1>son non detecté</h1>';
 			}
 			//echo $_POST['emission'].'    '.$_SESSION['id'].'     '.$cheminBDImage.'    '.$cheminBDPodcast.'    '.$text.'    '.$attente.'    '.$dateArch.'     '.$dateCrea;
 			if(!$fichierSonVide && $formatImageCorecte && $tailleImageValid && $taillePodcastValid && $formatPodcastCorecte){
-				if($cheminBDImage==null){
+				if($cheminBDImage=="NULL"){
 					if(move_uploaded_file($_FILES['podcast']['tmp_name'], $uploadfilePodcast)){
 							$sql = "INSERT INTO podcast(id_emission, id_utilisateur, image, son, texte, archive, attente, dateArchive, dateCreation) VALUES (?,?,?,?,?,0,?,?,?)";
 							$stmt = $pdo->prepare($sql);
@@ -293,7 +299,7 @@
 							echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type d\'image accépté sont : mp3, ogg, wav</div>';
 						}
 						if(isset($_POST['submit']) && !$taillePodcastValid){
-							echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 5mb</div>';
+							echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 15mb</div>';
 						}
 						if(isset($_POST['submit']) && $fichierSonVide){
 							echo '<div class="alert alert-danger" role="alert">Aucun fichier detecté</div>';
@@ -310,7 +316,7 @@
 			<label>Choix émission du podcast</label>
 			<select name="emission" class="custom-select" required>
 				<?php
-				$sql="SELECT DISTINCT nom FROM emission ORDER BY nom";
+				$sql="SELECT * FROM emission ORDER BY nom";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
 				while ($row = $stmt->fetch()){

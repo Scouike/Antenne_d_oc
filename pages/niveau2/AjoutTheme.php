@@ -96,16 +96,16 @@
 			do{
 				$nomFichierInvalide = true;
 				$clef = md5(microtime(TRUE)*100000);
-				$cheminBD ="/ProjetRadioGit/ProjetRadioPhp/Theme/".$clef;
-				$uploadfile = $uploaddir.$clef;
+				$cheminBD ="/ProjetRadioGit/ProjetRadioPhp/Theme/".$clef.$_FILES['imageTheme']['name'];
+				$uploadfile = $uploaddir.$clef.$_FILES['imageTheme']['name'];
 				$sql = "SELECT * FROM theme";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
 				while ($row = $stmt->fetch()) {
 					if ($cheminBD == $row['image']){
 						$nomFichierInvalide = false;
-						$cheminBD ="/ProjetRadioGit/ProjetRadioPhp/Theme/".$clef;
-						$uploadfile = $uploaddir.$clef;
+						$cheminBD ="/ProjetRadioGit/ProjetRadioPhp/Theme/".$clef.$_FILES['imageTheme']['name'];
+						$uploadfile = $uploaddir.$clef.$_FILES['imageTheme']['name'];
 					}
 				}
 			}while(!$nomFichierInvalide);
