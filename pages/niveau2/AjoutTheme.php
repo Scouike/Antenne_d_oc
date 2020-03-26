@@ -14,9 +14,6 @@
 		<!-- liens vers fontawesome -->
 		<link href="../../fontawesome/css/all.css" rel="stylesheet" >
 		
-		<!-- pour la drop zone -->
-		<link href="../../DropZone/dropzone.css" rel="stylesheet" type="text/css">
-        <link href="../../DropZone/style.css" rel="stylesheet" type="text/css">
 		
 		<!-- script boostrap -->
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

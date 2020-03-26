@@ -333,8 +333,9 @@
 					<!-- Les zones de textes pour le titre et le nom de l'auteur du podcast -->
 						Texte :
 						<input type="text" class="form-control" name = "texte" placeholder="Texte à rechercher dans l'objet à trouver" <?php if(isset($_POST['texte'])){ echo 'value = "'.$_POST['texte'].'"';} ?>> 
-					</div>
-					<div class="col">
+					
+						</br>
+						
 						Type d'objet :
 						<select class="custom-select" name ="objet">
 						

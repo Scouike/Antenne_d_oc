@@ -56,7 +56,7 @@
 		}
 		
 		
-		//initialisation fariable
+		//initialisation variable
 		$uploaddir = '../../podcast/';
 		$formatPodcast = array('audio/mp3','audio/ogg','audio/wav');
 		$formatImage = array('image/jpg','image/png','image/jpeg','image/gif');
@@ -70,13 +70,18 @@
 		
 		
 		if(isset($_POST['submit'])){
+			$datenonValide = true;
 			//echo '<h1>formulaire detecté</h1>';
 			$dateCrea = $_POST['dateCrea'];
 			$dateArch = $_POST['dateArchiv'];
 			//verif que la date d'archivage soit renseigné
 			if ($dateArch==""){
 				$dateArch = date("Y-m-d",strtotime("+10 year"));
+				$datenonValide = false;
+				
 				//echo '<h1>date archivage null</h1>';
+			}else if(strtotime($dateArch)>strtotime($dateCrea)){
+				$datenonValide = false;
 			}
 			//echo '<h1>date archivage  detecté</h1>';
 			
@@ -164,7 +169,7 @@
 				//echo '<h1>son non detecté</h1>';
 			}
 			//echo $_POST['emission'].'    '.$_SESSION['id'].'     '.$cheminBDImage.'    '.$cheminBDPodcast.'    '.$text.'    '.$attente.'    '.$dateArch.'     '.$dateCrea;
-			if(!$fichierSonVide && $formatImageCorecte && $tailleImageValid && $taillePodcastValid && $formatPodcastCorecte){
+			if(!$fichierSonVide && $formatImageCorecte && $tailleImageValid && $taillePodcastValid && $formatPodcastCorecte && !$datenonValide){
 				if($cheminBDImage=="NULL"){
 					if(move_uploaded_file($_FILES['podcast']['tmp_name'], $uploadfilePodcast)){
 							$sql = "INSERT INTO podcast(id_emission, id_utilisateur, image, son, texte, archive, attente, dateArchive, dateCreation) VALUES (?,?,?,?,?,0,?,?,?)";
@@ -245,24 +250,28 @@
 			<!-- les date de mise en ligne et d'archivage -->
 			<div class="form-row">
 				<div class="col">
-					<label >Date de création:</label>
-					<input type="date" name="dateCrea" class="form-control" placeholder="Date du Podcast"
-					value="<?php echo date("Y-m-d",time()) ;?>" min ="<?php echo date("Y-m-d",time()) ;?>"required>
+					<label >Date de mise en ligne:</label>
+					<input type="date" name="dateCrea" class="form-control <?php if(isset($_POST['dateCrea']) && $datenonValide){ echo "is-invalid"; }?>" placeholder="Date du Podcast"
+					value="<?php if(!isset($_POST['dateCrea']) || (isset($_POST['dateCrea']) && $datenonValide)){echo date("Y-m-d",time());}else if(!$podcastAjout){ echo $_POST['dateCrea'];}?>" min ="<?php echo date("Y-m-d",time()) ;?>"required>
 				</div>
 				<div class="col">
 					<label >Date d'archivage	:</label>
-					<input type="date" name="dateArchiv" class="form-control" placeholder="Date du Podcast"
-					value="<?php echo date("Y-m-d",strtotime("+1 year")) ;?>"
+					<input type="date" name="dateArchiv" class="form-control  <?php if(isset($_POST['dateArchiv']) && $datenonValide){ echo "is-invalid"; }?>" placeholder="Date du Podcast"
+					value="<?php if(!isset($_POST['dateArchiv']) || (isset($_POST['dateArchiv']) && $datenonValide)){ echo date("Y-m-d",strtotime("+1 year")); }else if(!$podcastAjout){ echo $_POST['dateArchiv']; }?>"
 					min ="<?php echo date("Y-m-d",strtotime("+1 day")) ;?>">
 				</div>
 			</div>
-				
+			<?php
+				if(isset($_POST['submit']) && $datenonValide){
+					echo '</br><div class="alert alert-danger" role="alert">Atention la date de mise en ligne ne peut pas étre postérieur à la date d\'archivage</div>';
+				}
+			?>
 			<br/>
 			
 			<!-- texte pour le podcast -->
 			<div class="form-group">
 				<label for="TextDescription">Texte pour le podcast :</label>
-				<textarea class="form-control" id="TextDescription" name="texte" rows="3"></textarea>
+				<textarea class="form-control" id="TextDescription" name="texte" rows="3"><?php if(isset($_POST['texte']) && !$podcastAjout){echo $_POST['texte'];}?></textarea>
 			</div>
 			
 			<br/><br/>
@@ -320,7 +329,11 @@
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
 				while ($row = $stmt->fetch()){
-					echo'<option value="'.$row["id_emission"].'">'.$row["nom"].'</option>';
+					if (isset($_POST['emission']) && $_POST['emission']==$row["id_emission"] && !$podcastAjout){		
+						echo'<option value="'.$row["id_emission"].'" selected>'.$row["nom"].'</option>';
+					}else{
+						echo'<option value="'.$row["id_emission"].'">'.$row["nom"].'</option>';
+					}
 				}
 				?>
 			</select>

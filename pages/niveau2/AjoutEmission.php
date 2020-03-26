@@ -146,7 +146,11 @@
 							$stmt->execute();
 												 
 							while ($row = $stmt->fetch()) {
-								echo '<option value="'.$row['id_theme'].'" >'.$row['titre'].'</option>';
+								if(isset($_POST['uploadfiles']) && $row['id_theme'] == $_POST['theme']){
+									echo '<option value="'.$row['id_theme'].'" selected >'.$row['titre'].'</option>';
+								}else{
+									echo '<option value="'.$row['id_theme'].'" >'.$row['titre'].'</option>';
+								}
 								
 							}
 						?>
