@@ -21,10 +21,14 @@
 	</head>
 
 	<body>
-
-		<!-- Barre de navigation regarde si une seesion existe et si oui determine si c'est une session admin ou utilisateur--> 
 		<?php   
-			
+			if(isset($_GET['deconexion'])){
+				// on détruit la session	
+				session_destroy();
+				header('Location: http://localhost/ProjetRadioGit/ProjetRadioPhp/index.php');
+				Exit();
+			}
+			//on regarde si une session existe et si oui de qu'elle type elle est
 			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
 				include('pages/bareNav/barreNavUtilisateur.html');
 			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
@@ -55,6 +59,22 @@
 			} catch (PDOException $e) {
 				 throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
+			$cadreFestif = false;
+			if ($cadreFestif){
+				?>
+					
+						<div class="row cadre3">
+							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
+								<img src="images/imageFestive.jpg" class ="imagFestive" alt="image festive" />
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 ">
+							texte : blablabla
+							</div>
+						</div>
+					
+				<?php
+			}
+			
 		?>
 		<p class="cadre3"> Les fréquences : Bretenoux 89.0 &nbsp; Cahors 88.1 &nbsp; Cahors sud
 						   89.0 &nbsp; Cazals 88.8 &nbsp;Figeac 88.1 &nbsp; Gourdon 105.3

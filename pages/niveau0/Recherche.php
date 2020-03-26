@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
@@ -12,7 +12,6 @@
 		
 		<!-- liens vers fontawesome -->
 		<link href="../../fontawesome/css/all.css" rel="stylesheet" >
-		
 		<!-- script boostrap -->
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -20,8 +19,9 @@
 	</head>
 
 	<body>
-		<!-- Barre de navigation --> 
 		<?php   
+
+		
 			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
 				include('../bareNav/barreNavUtilisateur.html');
 			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
@@ -33,6 +33,7 @@
 			}else{
 				/* inclu une barre de navigation */
 				include('../bareNav/barreNav.html'); 
+				
 			}
 			
 			

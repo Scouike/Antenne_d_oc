@@ -22,6 +22,13 @@
 <body>
 	<!-- Barre de navigation --> 
 	<?php   
+		//redirection des utilisateurs qui ne devrais pas étre à cette endroits
+		if (!isset($_SESSION['level']) || $_SESSION['level'] < 3){
+			header('Location: http://localhost/ProjetRadioGit/ProjetRadioPhp/index.php');
+			Exit();
+		}
+	
+		//barre de navigation
 		if (isset($_SESSION['level']) && $_SESSION['level']==3) {
 			/* inclu une barre de navigation */
 			include('../bareNav/barreNavAdmin.html');
@@ -137,7 +144,6 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th scope="col">#</th>
 						<th scope="col">Prenom</th>
 						<th scope="col">Nom</th>
 						<th scope="col">Mail</th>
@@ -148,14 +154,13 @@
 				<tbody>
 				
 					<?php
-						$sql = "SELECT * FROM utilisateur WHERE attente = 0 ORDER BY id_utilisateur";
+						$sql = "SELECT * FROM utilisateur WHERE attente = 0 ORDER BY prenom";
 						$stmt = $pdo->prepare($sql);
 						$stmt->execute();
 											 
 						while ($row = $stmt->fetch()) {
 							echo '<tr>
-									<th scope="row">'.$row['id_utilisateur'].'</th>
-									<td>'.$row['prenom'].'</td>
+									<th scope="row">'.$row['prenom'].'</th>
 									<td>'.$row['nom'].'</td>
 									<td>'.$row['mail'].'</td>';
 							

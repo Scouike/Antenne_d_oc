@@ -77,7 +77,8 @@ require '../../../PHPMailer-master/src/SMTP.php';
 			$reCapcha = true;
 			$mailUnique = true;
 			$inscriptionValide = false;
-			
+			$mailIndesirable = true;
+			$tousLesMailsIndesirable = array('mailIndesirable1@gmail.com','mailIndesirable2@gmail.com','mailIndesirable3@gmail.com');//mettre tous les mails indésirable ici
 			
 			//capcha
 			require '../../../recapcha/recaptcha.php';
@@ -133,6 +134,11 @@ require '../../../PHPMailer-master/src/SMTP.php';
 			//verif mail
 			if (isset($_POST["mail"]) && !preg_match($regexMail, $_POST["mail"])){
 				$mailOK =false;
+			}
+			
+			//verif mail indesirable
+			if( isset($_POST["mail"]) && in_array($_POST["mail"], $tousLesMailsIndesirable)){
+					$mailIndesirable = false;
 			}
 			
 			//verif mdp
@@ -285,6 +291,12 @@ require '../../../PHPMailer-master/src/SMTP.php';
 						if (!$mailUnique){
 							echo " <div class=\" txtERR\">Un compte est déjà associé à ce mail</div>";
 						}
+						if (!$mailIndesirable){
+							echo " <div class=\" txtERR\">Votre mail à été classé dans les indésirable vous n'étes pas ou plus le bienvenue sur ce site </div>";
+						}
+						
+						
+						
 					?>
 					<input type="password" id="mdp" <?php if (!$mdpOK){ echo "<div class = \"formulaireERR\" ";}?> name="mdp" placeholder="mot de passe" required>
 					<?php

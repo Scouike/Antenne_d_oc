@@ -65,7 +65,7 @@ body{
   padding: 10px 20px;
 }
 
-.image {
+.image, .imagFestive {
   
   background-size: cover;
   width: 100%;
@@ -294,3 +294,4 @@ footer{
 .marge20Top{
 	margin-top:20px;
 }
+

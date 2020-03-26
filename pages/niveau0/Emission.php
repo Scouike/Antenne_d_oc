@@ -21,9 +21,10 @@
 
 	<body>
 
-		<!-- Barre de navigation --> 
-		<?php   
-			
+		 
+		<?php  
+		
+			//Barre de navigation 
 			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
 				include('../bareNav/barreNavUtilisateur.html');
 			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {

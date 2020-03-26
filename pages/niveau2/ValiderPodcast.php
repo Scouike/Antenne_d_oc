@@ -18,8 +18,14 @@
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<!-- Barre de navigation --> 
-		<?php   
+		<?php 
+			//redirection des utilisateurs qui ne devrais pas étre à cette endroits
+			if (!isset($_SESSION['level']) || $_SESSION['level'] < 2){
+				header('Location: http://localhost/ProjetRadioGit/ProjetRadioPhp/index.php');
+				Exit();
+			}
+		
+			//barre de navigation			
 			if (isset($_SESSION['level']) && $_SESSION['level']==1) {
 				include('../bareNav/barreNavUtilisateur.html');
 			}else if (isset($_SESSION['level']) && $_SESSION['level']==2) {
