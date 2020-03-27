@@ -112,7 +112,7 @@
 			
 			//fonction affichant les Theme
 			function affichageTheme($image,$titre,$idTheme){
-				echo'<div class="col-md-4 col-sm-6">
+				echo'<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
 						<div class="polaroid">
 							<a href="/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/Emission.php?id_theme='.$idTheme.'">
 								<div class="image" style="background-image:url('.$image.')">
