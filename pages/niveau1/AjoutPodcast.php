@@ -269,7 +269,7 @@
 			</div>
 			<?php
 				if(isset($_POST['submit']) && $datenonValide){
-					echo '</br><div class="alert alert-danger" role="alert">Atention la date de mise en ligne ne peut pas étre postérieur à la date d\'archivage</div>';
+					echo '</br><div class="alert alert-danger" role="alert">Atention la date de mise en ligne ne peut pas être postérieur à la date d\'archivage</div>';
 				}
 			?>
 			<br/>
@@ -289,13 +289,13 @@
 					<div class="dropzone">
 						<input type="file" name="image" id="image" class="form-control-file" >
 					</div>
-					<p id="textDropZoneImg"  class="textDropZone">Déposer les images de vos podcast ici</p>
+					<p id="textDropZoneImg"  class="textDropZone">Déposer les images de vos podcasts ici</p>
 					<?php
 						if(!$formatImageCorecte){
-						echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type de fichiers audios accépté sont : jpg, png, jpeg, gif</div>';
+						echo '<div class="alert alert-danger" role="alert">Le format n\'est pas correct, les types de fichiers audio accéptés sont : jpg, png, jpeg, gif</div>';
 						}
 						if(!$tailleImageValid){
-							echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 5mb</div>';
+							echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximal = 1GB</div>';
 						}
 
 					?>
@@ -307,14 +307,14 @@
 					<div class="dropzone">
 						<input required type="file" name="podcast" id="podcast" class="form-control-file" >
 					</div>
-					<p id="textDropZonePodcast" class="textDropZone" >Déposer vos fichier audio ici</p>
+					<p id="textDropZonePodcast" class="textDropZone" >Déposer vos fichiers audio ici</p>
 					<?php
 				
 						if(isset($_POST['submit']) && !$formatPodcastCorecte){
-							echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type d\'image accépté sont : mp3, ogg, wav</div>';
+							echo '<div class="alert alert-danger" role="alert">Le format n\'est pas correct, les types d\'images accéptés sont : mp3, ogg, wav</div>';
 						}
 						if(isset($_POST['submit']) && !$taillePodcastValid){
-							echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 15mb</div>';
+							echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximal = 1GB</div>';
 						}
 						if(isset($_POST['submit']) && $fichierSonVide){
 							echo '<div class="alert alert-danger" role="alert">Aucun fichier detecté</div>';

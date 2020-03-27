@@ -129,7 +129,7 @@
 							<input type="email" id="mail" <?php if (!$champCorrecte || !$mailSaisie ){ echo "<div class = \"formulaireERR\" ";}?> name="mail" placeholder="mail" <?php if (isset($_POST["mail"]) && $mailSaisie && $champCorrecte){echo "value = \"".$_POST["mail"]."\"";}?> required>
 								<?php
 									if (!$mailSaisie){
-										echo " <div class=\" txtERR\">Veuillez saisir votre mail</div>";
+										echo " <div class=\" txtERR\">Veuillez saisir votre adresse mail</div>";
 									}
 
 								?>
@@ -139,14 +139,14 @@
 										echo " <div class=\" txtERR\">Veuillez saisir votre mot de passe</div>";
 									}
 									if (!$champCorrecte){
-										echo " <div class=\" txtERR\">Le mot de passe ou le mail sont invalides, veuillez recommencer</div>";
+										echo " <div class=\" txtERR\">Le mot de passe ou l'adresse mail sont invalides, veuillez recommencer</div>";
 									}
 								
 								?>
 							<div class="centrer g-recaptcha" data-sitekey="<?php echo $clef_publique;?>"></div>
 								<?php
 									if(!$reCapcha){
-										echo " <div class=\" txtERR\">Veuillez valider le reCapcha</div>";
+										echo " <div class=\" txtERR\">Veuillez valider le Recapcha</div>";
 									}
 								?>
 							<input type="submit" class="boutonVert" value="Connexion">
@@ -162,7 +162,7 @@
 				  <?php
 					if (!$conecte) {
 				   ?>
-					<a class="underlineHover" href="mdpOubli.php">Mot de passe oublié?</a>
+					<a class="underlineHover" href="mdpOubli.php">Mot de passe oublié ?</a>
 				  <?php
 					}else{
 						

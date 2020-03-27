@@ -66,6 +66,7 @@
 				if ($_POST['inputNiveau'] != $row['niveau']){
 					$BonneModif = true;
 				}
+				//on regarde de ne pas changer ses propres droits
 				if ($_SESSION['id'] == $row['id_utilisateur']){
 					$ModificationNonPersonel = false;
 				}
@@ -84,11 +85,11 @@
 
 	?>
 		
-		
+	<!-- titre de la page -->
 	<h1 class="text-uppercase m-4 text-center">Modifier Droits</h1>
 	<div class="cadre ">
 		<div>
-			<!-- titre -->
+			<!-- titre des liens entre les pages-->
 			<a class="a1 inactive underlineHover titre" href="CreerAnimateur.php">Creer Animateur</a>
 			<a class="a1 active titre" href="ModifierDroits.php">Modifier Droits </a>
 		</div>
@@ -100,7 +101,7 @@
 		if ($action && $BonneModif && $ModificationNonPersonel){
 			?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Modification effectué!</h4>
+					<h4 class="alert-heading">Modification effectuée!</h4>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -111,7 +112,7 @@
 		if ($action && !$ModificationNonPersonel){
 			?>
 				<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Modification non effectué!</h4>
+					<h4 class="alert-heading">Modification non effectuée!</h4>
 					<p>Vous ne pouvez pas changer vos propres droits</p>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -125,8 +126,8 @@
 		if ($action && !$BonneModif){
 			?>
 				<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Modification non effectué!</h4>
-					<p>Vous ne pouvez pas changer un le droit d'accés d'une personne par son même droit</p>
+					<h4 class="alert-heading">Modification non effectuée!</h4>
+					<p>Vous ne pouvez pas changer le droit d'accés d'une personne par son même droit</p>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -138,7 +139,7 @@
 	?>
 
 	
-	
+	<!-- tableau contenant les utilisateurs et leurs informations -->
 	<div class="cadre2 margin marge" >
 		<div class="table-responsive">
 			<table class="table table-striped">
@@ -157,13 +158,13 @@
 						$sql = "SELECT * FROM utilisateur WHERE attente = 0 ORDER BY prenom";
 						$stmt = $pdo->prepare($sql);
 						$stmt->execute();
-											 
+						// on affiche toutes les infos des utilisateurs 				 
 						while ($row = $stmt->fetch()) {
 							echo '<tr>
 									<th scope="row">'.$row['prenom'].'</th>
 									<td>'.$row['nom'].'</td>
 									<td>'.$row['mail'].'</td>';
-							
+							//on creer un formulaire pour chaque utilisateur ou on fera passer son id et son nouveau niveau d'accés 
 							echo '<form action="ModifierDroits.php" method="POST">';
 							if ($row['niveau'] == 1){
 								echo '<td>

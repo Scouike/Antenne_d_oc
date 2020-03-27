@@ -67,7 +67,7 @@
 				$recuperationOK = true;
 			}
 			
-			//determination si le clef de recuperation est valide 
+			//determination si la clef de recuperation est valide 
 			if ($recuperationOK){
 				$sql = "SELECT * FROM utilisateur ";
 				$stmt = $pdo->prepare($sql);
@@ -89,7 +89,7 @@
 				$stmt->execute([hash('sha256',$_POST["mdp"]),$_POST["mail"],$_POST["clef"]]);
 				$mdpChange = true;
 				
-				//changement de la clef pour ne pas etre reutilisé 
+				//changement de la clef pour ne pas être reutilisé 
 				
 				//generation aleatoire d'une clef
 				$clef = md5(microtime(TRUE)*100000);
@@ -117,14 +117,14 @@
 				
 					<?php
 						if (!$clefCorrecte){
-							echo "<div class=\" centrer\">Le liens que vous avez chargé n'étais pas ou plus  fonctionnel veuillez refaire une demande de modification de mot de passe </div>";
+							echo "<div class=\" centrer\">Le lien que vous avez chargé n'était pas ou plus  fonctionnel, veuillez refaire une demande de modification de mot de passe </div>";
 						}else if (!$mdpChange){
 					?>
 				
 					<input type="password" id="mdp" <?php if (!$mdpOK){ echo "<div class = \"formulaireERR\" ";}?> name="mdp" placeholder="nouveau mot de passe" required>
 					<?php
 						if (!$mdpOK){
-							echo " <div class=\" txtERR\">Le mot de passe est invalide, il doit au minimum avoir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>";
+							echo " <div class=\" txtERR\">Le mot de passe est invalide, il doit au moins contenir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>";
 						}
 					?>
 					<input type="password" id="mdpVerif" <?php if (!$mdpVerif){ echo "<div class = \"formulaireERR\" ";}?> name="mdpVerif" placeholder="Verification de mot de passe" required>
@@ -140,7 +140,7 @@
 					<?php
 							
 						}else{
-							echo "<div class=\" centrer\">Le mot de passe à été changé </div>";
+							echo "<div class=\" centrer\">Le mot de passe a été changé </div>";
 							
 						}
 					?>

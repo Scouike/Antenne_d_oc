@@ -163,7 +163,7 @@
 							</div>
 							<div class="row">
 								<div class="col">date de mise en ligne : '.$date.' </div>
-								<div class="col">Emmision : '.$nomemission.'</div>
+								<div class="col">Emission : '.$nomemission.'</div>
 							</div>
 						</div>';
 					
@@ -188,7 +188,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -216,7 +216,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -245,7 +245,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 				}
@@ -280,13 +280,13 @@
 								<!-- la drop zone -->
 								<form  action="Modifier.php"  method="POST"  enctype="multipart/form-data" id="formTheme">
 									<div class="alert alert-primary" role="alert">
-									  Attention vous pouvez modifier l'image si vous le souhaitais mais si vous ne voulais pas la changer n'interagissais pas avec la zone de dépot de l'image.
+									  Attention vous pouvez modifier l'image si vous le souhaitez mais si vous ne voulez pas la changer n'interagissez pas avec la zone de dépôt de l'image.
 									</div>
 									<!-- la zone de drop -->
 									<div class="dropzone">
 										<input type="file"  name="imageTheme" id="themeDepoImg" >
 									</div>
-									<p id="textDropZoneImg" class="textDropZone">Déposer vos fichier ou cliquer ici</p>
+									<p id="textDropZoneImg" class="textDropZone">Déposer vos fichiers ou cliquer ici</p>
 									
 
 									<!--nom -->
@@ -546,7 +546,7 @@
 								<br/><br/>
 								
 								<div class="alert alert-primary" role="alert">
-									  Attention vous pouvez modifier l'image et le son si vous le souhaitais mais si vous ne voulais pas les changer n'interagissais pas avec la zone de dépot de l'image et du son.
+									  Attention vous pouvez modifier l'image et le son si vous le souhaitez mais si vous ne voulez pas les changer n'interagissez pas avec la zone de dépôt de l'image et du son.
 								</div>
 								</br>
 								
@@ -557,7 +557,7 @@
 										<div class="dropzone">
 											<input type="file" name="image" id="image" class="form-control-file" >
 										</div>
-										<p id="textDropZoneImg"  class="textDropZone">Déposer les images de vos podcast ici</p>
+										<p id="textDropZoneImg"  class="textDropZone">Déposer les images de vos podcasts ici</p>
 										
 									</div>
 									
@@ -567,7 +567,7 @@
 										<div class="dropzone">
 											<input type="file" name="podcast" id="podcast" class="form-control-file" >
 										</div>
-										<p id="textDropZonePodcast" class="textDropZone" >Déposer vos fichier audio ici</p>
+										<p id="textDropZonePodcast" class="textDropZone" >Déposer vos fichiers audio ici</p>
 										
 									</div>
 									
@@ -610,7 +610,7 @@
 				$formatImage = array('image/jpg','image/png','image/jpeg','image/gif');
 				$formatImageCorecte = true;
 				$formatPodcastCorecte = true;
-				$maxTaille = 15000000; //15mb
+				$maxTaille = 1000000000;; //1GB
 				$tailleImageValid = true;
 				$taillePodcastValid = true;
 				$fichierSonVide = false;
@@ -781,7 +781,7 @@
 			if ($modification == 1){
 				?>
 					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						<h4 class="alert-heading">Le podcast à bien été modifié!</h4>
+						<h4 class="alert-heading">Le podcast a bien été modifié!</h4>
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -793,7 +793,7 @@
 			if ($modification == 2){
 				?>
 					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						<h4 class="alert-heading">L'émission à bien été modifié!</h4>
+						<h4 class="alert-heading">L'émission a bien été modifié!</h4>
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -806,7 +806,7 @@
 			if ($modification == 3){
 				?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Le Théme à bien été modifié!</h4>
+					<h4 class="alert-heading">Le thème a bien été modifié!</h4>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -920,14 +920,14 @@
 						<div class="dropzone">
 							<input type="file"  name="imageTheme" id="themeDepoImg">
 						</div>
-						<p id="textDropZoneImg" class="textDropZone">Déposer vos fichier ou cliquer ici</p>
+						<p id="textDropZoneImg" class="textDropZone">Déposer vos fichiers ou cliquer ici</p>
 						<?php
 							
 							if($presencefichier && !$formatBon){
-								echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type d\'image accépté sont : jpg, png, jpeg, gif</div>';
+								echo '<div class="alert alert-danger" role="alert">Le format n\'est pas correct, les types d\'image accéptés sont : jpg, png, jpeg, gif</div>';
 							}
 							if($presencefichier && !$tailleCorrecte){
-								echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 5mb</div>';
+								echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximal = 5mb</div>';
 							}
 						
 						?>
@@ -938,7 +938,7 @@
 								<input type="text" class="form-control <?php if(isset($_POST['nomTheme']) && !$nomThemeDisponible){ echo "is-invalid";} ?>"  id="nom" name="nomTheme" placeholder="Nom du Theme" maxlength="25" required>
 								<?php	
 									if (isset($_POST['nomTheme']) && !$nomThemeDisponible ){
-										echo '<div class="invalid-feedback">Le Nom du théme que vous voulez ajouter est déjà pris</div>';
+										echo '<div class="invalid-feedback">Le nom du thème que vous voulez ajouter est déjà pris</div>';
 									}
 								?>
 							</div>
@@ -967,7 +967,7 @@
 								<input type="text" class="form-control  <?php if(isset($_POST['modifEmission']) && $nomPris){ echo "is-invalid";} ?>"  id="nomEmission" name="nomEmission" placeholder="Nom de l'emission" maxlength="25" required>
 								<?php
 									if(isset($_POST['modifEmission']) && $nomPris){
-										echo '<div class="invalid-feedback">Le nom de ce théme est déjà pris</div>';
+										echo '<div class="invalid-feedback">Le nom de ce thème est déjà pris</div>';
 									}
 								
 								
@@ -1058,7 +1058,7 @@
 							</div>
 							<?php
 								if($datenonValide){
-									echo '</br><div class="alert alert-danger" role="alert">Atention la date de mise en ligne ne peut pas étre postérieur à la date d\'archivage</div>';
+									echo '</br><div class="alert alert-danger" role="alert">Attention la date de mise en ligne ne peut pas être postérieur à la date d\'archivage</div>';
 								}
 							?>
 							<br/>
@@ -1081,10 +1081,10 @@
 									<p id="textDropZoneImg"  class="textDropZone">Déposer les images de vos podcast ici</p>
 									<?php
 										if(!$formatImageCorecte){
-										echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type de fichiers audios accépté sont : jpg, png, jpeg, gif</div>';
+										echo '<div class="alert alert-danger" role="alert">Le format n\'est pas correct, les types de fichiers audios accéptés sont : jpg, png, jpeg, gif</div>';
 										}
 										if(!$tailleImageValid){
-											echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 5mb</div>';
+											echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximal = 5mb</div>';
 										}
 
 									?>
@@ -1096,14 +1096,14 @@
 									<div class="dropzone">
 										<input  type="file" name="podcast" id="podcast" class="form-control-file" >
 									</div>
-									<p id="textDropZonePodcast" class="textDropZone" >Déposer vos fichier audio ici</p>
+									<p id="textDropZonePodcast" class="textDropZone" >Déposer vos fichiers audio ici</p>
 									<?php
 								
 										if(!$formatPodcastCorecte){
-											echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type d\'image accépté sont : mp3, ogg, wav</div>';
+											echo '<div class="alert alert-danger" role="alert">Le format n\'est pas correct, les types d\'images accéptés sont : mp3, ogg, wav</div>';
 										}
 										if(!$taillePodcastValid){
-											echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 15mb</div>';
+											echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximal = 1GB</div>';
 										}
 
 									

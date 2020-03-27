@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Sans+Caption&display=swap');
 
+/**
+ Ici est présen l'affichage du site ormis c'elle pour la partie de la connexion inscription 
+pour plus de détaille sur les propriété css utilisé aller sur https://developer.mozilla.org/fr/docs/Web/CSS	
+ */
+
 #logo{
  height:60px;	
 }
@@ -142,6 +147,7 @@ footer{
   color: #0d0d0d;
   border-bottom: 2px solid #5fbae9;
 }
+/* :hover permet de modifier l'appence d'un objet quant on y passe la souris dessus */ 
 .a1.active:hover {
 	text-decoration:none;
 }
@@ -153,6 +159,8 @@ footer{
 }
 
 .dropzone{
+	position: relative;
+	z-index: 3;
 	background: white;
     border-radius: 5px;
     border: 2px dashed rgb(0, 135, 247);
@@ -162,8 +170,11 @@ footer{
     margin-left: auto;
     margin-right: auto;
 	margin-bottom: 20px;
+	background-color:rgba(255, 255, 255, 0.4); /* le 0.4 permet de rendre transparent la dropzone et de pouvoir voir le texte en dessous */
 }
 .dropzone:hover{
+	position: relative;
+	z-index: 3;
 	background: white;
     border-radius: 5px;
     border: 2px solid rgb(0, 135, 247);
@@ -173,6 +184,7 @@ footer{
     margin-left: auto;
     margin-right: auto;
 	margin-bottom: 20px;
+	background-color:rgba(255, 255, 255, 0.7); 
 }
 
 .dropzone input{
@@ -187,6 +199,7 @@ footer{
 }
 .textDropZone {
 	position: relative;
+	z-index: 1;
 	text-align: center;
 	bottom:140px;
 }

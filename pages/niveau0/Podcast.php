@@ -94,7 +94,7 @@
 							</div>
 							<div class="row">
 								<div class="col">date de mise en ligne : '.$date.' </div>
-								<div class="col">Emmision : '.$nomemission.'</div>
+								<div class="col">Emission : '.$nomemission.'</div>
 							</div>
 						</div>';
 					
@@ -115,7 +115,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -139,7 +139,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -164,7 +164,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 				}

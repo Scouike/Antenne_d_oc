@@ -84,7 +84,7 @@
 			//fonction qui determine qui affiche un podcast
 			function affichagePodcast($date, $idemission, $podcast, $texte, $image, $idPodcast){
 				global $pdo;
-				
+				$date =  date("d-m-Y",strtotime($date));
 				//recuperation du nom de l'emission
 				$sql = "SELECT nom FROM emission WHERE id_emission = ? ";
 				$stmt = $pdo->prepare($sql);
@@ -125,7 +125,7 @@
 							</div>
 							<div class="row">
 								<div class="col">date de mise en ligne : '.$date.' </div>
-								<div class="col">Emmision : '.$nomemission.'</div>
+								<div class="col">Emission : '.$nomemission.'</div>
 							</div>
 						</div>';
 					
@@ -150,7 +150,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -178,7 +178,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -207,7 +207,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 				}
@@ -300,7 +300,7 @@
 		if ($action == 1){
 			?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Le podcast à bien été ajouté!</h4>
+					<h4 class="alert-heading">Le podcast a bien été ajouté!</h4>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -312,7 +312,7 @@
 		if ($action == 2){
 			?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Le podcast à bien été supprimé!</h4>
+					<h4 class="alert-heading">Le podcast a bien été supprimé!</h4>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -369,7 +369,7 @@
 			<!-- Liste déroulante avec les possibles émissions 	 -->
 			Emission :
 			<select class="custom-select" name ="emission">
-				<!-- toutes les emmisions -->
+				<!-- toutes les emissions -->
 				<?php
 					
 					if (isset($_POST['emission'])){
@@ -417,6 +417,15 @@
 					affichagePodcast($row['dateCreation'], $row['id_emission'], $row['son'], $row['texte'], $row['image'],$row['id_podcast'] );
 				}
 			}
+		}else{
+			$sql = "SELECT * FROM podcast WHERE archive = 0 AND attente = 1 ORDER BY id_podcast ";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+												 
+			while ($row = $stmt->fetch()) {	
+				affichagePodcast($row['dateCreation'], $row['id_emission'], $row['son'], $row['texte'], $row['image'],$row['id_podcast'] );
+			}
+			
 		}
 	
 		

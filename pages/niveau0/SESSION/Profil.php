@@ -22,7 +22,7 @@
 	<body>	
 		<?php   
 			//redirection des utilisateurs qui ne devrais pas étre à cette endroits
-			if (!isset($_SESSION['level']) || $_SESSION['level'] < 2){
+			if (!isset($_SESSION['level']) || $_SESSION['level'] < 1){
 				header('Location: http://localhost/ProjetRadioGit/ProjetRadioPhp/index.php');
 				Exit();
 			}			
@@ -148,7 +148,7 @@
 					<input type="password" class="form-control <?php if (!$mdpCorrecte){ echo "is-invalid";}else if (isset($_POST['mdpHold']) && $mdpCorrecte){ echo "is-valid"; } ?>" id="mdpHold" name="mdpHold" placeholder="Ancien mot de passe">
 						<?php 
 						if (isset($_POST["mdpHold"]) && $mdpCorrecte ){
-							echo '<div class="valid-feedback">Mot de passe Correcte</div>';
+							echo '<div class="valid-feedback">Mot de passe correct</div>';
 						}
 						if (!$mdpCorrecte){
 							echo '<div class="invalid-feedback">Le mot de passe est invalide</div>';
@@ -164,10 +164,10 @@
 					<input type="password" class="form-control  <?php if (!$mdpOK){ echo "is-invalid";}else if (isset($_POST['mdp']) && $mdpOK){ echo "is-valid"; } ?>" id="mdp" name="mdp" placeholder="Nouveau mot de passe">
 					<?php 
 						if (isset($_POST["mdp"]) && $mdpOK ){
-							echo '<div class="valid-feedback">Mot de passe Correcte</div>';
+							echo '<div class="valid-feedback">Mot de passe correct</div>';
 						}
 						if (!$mdpOK){
-							echo '<div class="invalid-feedback">Le mot de passe est invalide, il doit au minimum avoir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>';
+							echo '<div class="invalid-feedback">Le mot de passe est invalide, il doit au moins contenir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>';
 						}
 					?>
 				</div>
@@ -179,7 +179,7 @@
 					<input type="password" class="form-control  <?php if (!$mdpVerif){ echo "is-invalid";}else if (isset($_POST['mdpVerif']) && $mdpVerif){ echo "is-valid"; } ?>" id="mdpVerif" name="mdpVerif" placeholder="Nouveau mot de passe Confirmation">
 					<?php 
 						if (isset($_POST["mdpVerif"]) && $mdpVerif ){
-							echo '<div class="valid-feedback">Les mots de passe sont identique</div>';
+							echo '<div class="valid-feedback">Les mots de passe sont identiques</div>';
 						}
 						if (!$mdpVerif){
 							echo '<div class="invalid-feedback">Les mots de passe ne correspondent pas</div>';
@@ -195,9 +195,9 @@
 			?>
 					<div class="alert alert-success" role="alert">
 						<h4 class="alert-heading">Bravo!</h4>
-						<p>Vous avez Bien changé votre mot de passe avec succés </p>
+						<p>Votre mot de passe a été changé avec succés </p>
 						<hr>
-						<p class="mb-0">Vous pouvez maintenant vous connecter avec celui ci</p>
+						<p class="mb-0">Vous pouvez maintenant vous connecter avec celui-ci</p>
 					</div>
 			
 			

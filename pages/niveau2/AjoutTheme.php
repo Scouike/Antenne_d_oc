@@ -146,7 +146,7 @@
 		if ($themeAjouter){
 			?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Le Théme a bien été ajouté!</h4>
+					<h4 class="alert-heading">Le théme a bien été ajouté!</h4>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -165,14 +165,14 @@
 			<div class="dropzone">
 				<input type="file"  name="imageTheme" >
 			</div>
-			<p id="textDropZoneImg" class="textDropZone">Déposer vos fichier ou cliquer ici</p>
+			<p id="textDropZoneImg" class="textDropZone">Déposer vos fichiers ou cliquer ici</p>
 			<?php
 				
 				if(!$formatBon){
-					echo '<div class="alert alert-danger" role="alert">Le format n\'est pas corecte les type d\'image accépté sont : jpg, png, jpeg, gif</div>';
+					echo '<div class="alert alert-danger" role="alert">Le format n\'est pas correct, les types d\'images accéptés sont : jpg, png, jpeg, gif</div>';
 				}
 				if(!$tailleCorrecte){
-					echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximum = 5mb</div>';
+					echo '<div class="alert alert-danger" role="alert">Taille du fichier trop volumineuse, taille maximal = 5mb</div>';
 				}
 				if(!$fichierPresent){
 					echo '<div class="alert alert-danger" role="alert">Aucun fichier detecté</div>';
@@ -186,7 +186,7 @@
 					<input type="text" class="form-control <?php if(isset($_POST['nomTheme']) && !$nomThemeDisponible){ echo "is-invalid";} ?>"  id="nom" name="nomTheme" placeholder="Nom du Theme" maxlength="25" required>
 					<?php	
 						if (isset($_POST['nomTheme']) && !$nomThemeDisponible ){
-							echo '<div class="invalid-feedback">Le Nom du théme que vous voulez ajouter est déjà pris</div>';
+							echo '<div class="invalid-feedback">Le nom du thème que vous voulez ajouter est déjà pris</div>';
 						}
 					?>
 				</div>

@@ -93,7 +93,7 @@
 							</div>
 							<div class="row">
 								<div class="col">date de mise en ligne : '.$date.' </div>
-								<div class="col">Emmision : '.$nomemission.'</div>
+								<div class="col">Emission : '.$nomemission.'</div>
 							</div>
 						</div>';
 					
@@ -114,7 +114,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -138,7 +138,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -164,7 +164,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 				}
@@ -298,7 +298,7 @@
 			<!-- Liste déroulante avec les possibles émissions 	 -->
 			Emission :
 			<select class="custom-select" name ="emission">
-				<!-- toutes les emmisions -->
+				<!-- toutes les emissions -->
 				<?php
 					
 					if (isset($_POST['emission'])){

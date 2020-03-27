@@ -183,10 +183,10 @@
 						echo '<div class="valid-feedback">Mail Correcte</div>';
 					}
 					if (!$mailOK){
-						echo '<div class="invalid-feedback">Le mail est invalide, veuillez remplir un mail valide</div>';
+						echo '<div class="invalid-feedback">L\'adresse mail est invalide, veuillez remplir une adresse mail valide</div>';
 					}
 					if (!$mailUnique){
-						echo '<div class="invalid-feedback">Un compte est déjà associé à ce mail</div>';
+						echo '<div class="invalid-feedback">Un compte est déjà associé à cette adresse mail</div>';
 					}
 
 				?>
@@ -200,10 +200,10 @@
 				<input type="password" class="form-control <?php if (!$mdpOK){ echo "is-invalid";}else if (isset($_POST['mdp']) && $mdpOK){ echo "is-valid"; } ?>" id="mdp" name="mdp" placeholder="Mot de passe" required>
 				<?php 
 					if (isset($_POST["mdp"]) && $mdpOK ){
-						echo '<div class="valid-feedback">Mot de passe Correcte</div>';
+						echo '<div class="valid-feedback">Mot de passe correct</div>';
 					}
 					if (!$mdpOK){
-						echo '<div class="invalid-feedback">Le mot de passe est invalide, il doit au minimum avoir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>';
+						echo '<div class="invalid-feedback">Le mot de passe est invalide, il doit au moins contenir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>';
 					}
 				?>
 			</div>
@@ -218,7 +218,7 @@
 						
 				<?php 
 					if (isset($_POST["mdpVerif"]) && $mdpVerif ){
-						echo '<div class="valid-feedback">Les mots de passe sont identique</div>';
+						echo '<div class="valid-feedback">Les mots de passe sont identiques</div>';
 					}
 					if (!$mdpVerif){
 						echo '<div class="invalid-feedback">Les mots de passe ne correspondent pas</div>';
@@ -271,10 +271,10 @@
 			
 				<?php
 					if (isset($_POST["dateNaiss"]) && $ageOK ){
-						echo '<div class="valid-feedback">Date de daissance accepté</div>';
+						echo '<div class="valid-feedback">Date de naissance acceptée</div>';
 					}
 					if (!$ageOK){
-						echo '<div class="invalid-feedback">Le site est réservé au personnes de plus de 15 ans</div>';
+						echo '<div class="invalid-feedback">Le site est réservé aux personnes de plus de 15 ans</div>';
 					}
 
 						
@@ -316,9 +316,9 @@
 		?>
 				<div class="alert alert-success" role="alert">
 					<h4 class="alert-heading">Bravo!</h4>
-					<p>Vous avez crée un nouveau compte avec succés </p>
+					<p>Vous avez crée un nouveau compte avec succès </p>
 					<hr>
-					<p class="mb-0">Vous pouvez maintenant vous connecter avec celui ci ou en creer un autre</p>
+					<p class="mb-0">Vous pouvez maintenant vous connecter avec celui-ci ou en créer un autre</p>
 				</div>
 		
 		

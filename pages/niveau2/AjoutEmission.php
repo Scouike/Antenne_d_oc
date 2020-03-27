@@ -120,7 +120,7 @@
 					<input type="text" class="form-control  <?php if(isset($_POST['uploadfiles']) && $nomPris){ echo "is-invalid";} ?>"  id="nomEmission" name="nomEmission" placeholder="Nom de l'emission" maxlength="25" required>
 					<?php
 						if(isset($_POST['uploadfiles']) && $nomPris){
-							echo '<div class="invalid-feedback">Le nom de ce théme est déjà pris</div>';
+							echo '<div class="invalid-feedback">Le nom de ce thème est déjà pris</div>';
 						}
 					
 					
@@ -171,7 +171,7 @@
 					<div class="form-check">
 						<input class="form-check-input" type="checkbox" id="interview" name="interview" value="1">
 						<label class="form-check-label" for="interview">
-							Cocher la case si vous voulez que l'emission soit une interview
+							Cochez la case si vous voulez que l'emission soit une interview
 						</label>
 					</div>
 				</div>

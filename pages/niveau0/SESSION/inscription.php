@@ -210,16 +210,16 @@ require '../../../PHPMailer-master/src/SMTP.php';
 				
 				//envoie du mail
 				$subject = "Activer votre compte" ;
-				$body = 'Bienvenue sur Anthene d\'Oc,
+				$body = 'Bienvenue sur Antenne d\'Oc,
 						 
 						Pour activer votre compte, veuillez cliquer sur le lien ci-dessous
-						ou copier/coller dans votre navigateur Internet.
+						ou copier/coller le dans votre navigateur Internet.
 						 </br></br></br>
 						http://localhost/ProjetRadioGit/ProjetRadioPhp/pages/niveau0/SESSION/activation.php?log='.urlencode($mail).'&cle='.urlencode($clef).'
 						 
 						</br></br></br>
 						---------------
-						Ceci est un mail automatique, Merci de ne pas y répondre.';
+						Ceci est un mail automatique, merci de ne pas y répondre.';
 				
 				envoieMail($mail,$subject,$body);
 				
@@ -249,7 +249,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 				<?php
 					if ($inscriptionValide){
 						
-						echo "<div class=\" centrer\">Bravo votre inscription a été prise en compte, veuillez maintenant activer votre compte en cliquant sur le lien qui vous a été envoyé, merci. </div>";
+						echo "<div class=\" centrer\">Bravo votre inscription a été prise en compte, veuillez maintenant activer votre compte en cliquant sur le lien qui vous a été envoyé par mail, merci. </div>";
 						echo " <a class=\"underlineHover\" href=\"../../../index.php\">Accueil</a>";
 					}else{
 						
@@ -261,7 +261,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 					<input type="text" id="prenom" <?php if (!$prenomOK ){ echo "<div class = \"formulaireERR\" ";}?> name="prenom" placeholder="prenom" <?php if (isset($_POST["prenom"]) && $prenomOK){echo "value = \"".$_POST["prenom"]."\"";}?> required>
 					<?php
 						if (!$prenomOK){
-							echo " <div class=\" txtERR\">Le prenom n'est pas valide il doit faire entre 1 et 25 charcatere</div>";
+							echo " <div class=\" txtERR\">Le prénom n'est pas valide il doit faire entre 1 et 25 caratères</div>";
 						}
 						
 					?>
@@ -277,7 +277,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 					<input type="date" id="dateNaiss" <?php if (!$ageOK){ echo "<div class = \"formulaireERR\" ";}?> name="dateNaiss" min="1900-00-01" max="2200-00-01" required >
 					<?php
 						if (!$ageOK){
-							echo " <div class=\" txtERR\">Le site est réservé au personnes de plus de 15 ans</div>";
+							echo " <div class=\" txtERR\">Le site est réservé aux personnes de plus de 15 ans</div>";
 						}
 						
 					?>
@@ -286,13 +286,13 @@ require '../../../PHPMailer-master/src/SMTP.php';
 					<input type="email" id="mail" <?php if (!$mailOK || !$mailUnique){ echo "<div class = \"formulaireERR\" ";}?> name="mail" placeholder="mail" <?php if (isset($_POST["mail"]) && $mailOK){echo "value = \"".$_POST["mail"]."\"";}?> required>
 					<?php
 						if (!$mailOK){
-								echo " <div class=\" txtERR\">Le mail est invalide, veuillez remplir un mail valide</div>";
+								echo " <div class=\" txtERR\">L'adresse mail est invalide, veuillez remplir une adresse mail valide</div>";
 						}
 						if (!$mailUnique){
-							echo " <div class=\" txtERR\">Un compte est déjà associé à ce mail</div>";
+							echo " <div class=\" txtERR\">Un compte est déjà associé à ceette adresse mail</div>";
 						}
 						if (!$mailIndesirable){
-							echo " <div class=\" txtERR\">Votre mail à été classé dans les indésirable vous n'étes pas ou plus le bienvenue sur ce site </div>";
+							echo " <div class=\" txtERR\">Votre adresse mail a été classée dans les indésirables vous n'êtes pas ou plus le bienvenue sur ce site </div>";
 						}
 						
 						
@@ -301,7 +301,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 					<input type="password" id="mdp" <?php if (!$mdpOK){ echo "<div class = \"formulaireERR\" ";}?> name="mdp" placeholder="mot de passe" required>
 					<?php
 						if (!$mdpOK){
-							echo " <div class=\" txtERR\">Le mot de passe est invalide, il doit au minimum avoir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>";
+							echo " <div class=\" txtERR\">Le mot de passe est invalide, il doit au moins contenir une majuscule, une minuscule, un chiffre et 8 caractères en tout</div>";
 						}
 					?>
 					<input type="password" id="mdpVerif" <?php if (!$mdpVerif){ echo "<div class = \"formulaireERR\" ";}?> name="mdpVerif" placeholder="Verification de mot de passe" required>

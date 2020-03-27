@@ -59,6 +59,8 @@
 			} catch (PDOException $e) {
 				 throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
+			
+			// section du cadre festif si vous voulez qu'il soit affiché il faut renplacer $cadreFestif = false; par $cadreFestif = true;
 			$cadreFestif = false;
 			if ($cadreFestif){
 				?>
@@ -90,7 +92,8 @@
 				<div class="col-10 colonne-milieu">
 		<!-- Affichage des podcasts depuis la BD -->
 		<?php 
-			$sql = "SELECT dateCreation, podcast.id_podcast AS idpodcast, podcast.id_emission AS idemission, image, son, podcast.texte AS texte_podcast, emission.nom FROM podcast
+				//requéte sql 
+				$sql = "SELECT dateCreation, podcast.id_podcast AS idpodcast, podcast.id_emission AS idemission, image, son, podcast.texte AS texte_podcast, emission.nom FROM podcast
 					JOIN emission ON podcast.id_emission = emission.id_emission
 					WHERE podcast.archive = 0
 					AND podcast.attente = 0
@@ -134,7 +137,10 @@
 		?>
 		
 		<?php 
-		// Fonction qui affiche un podcast
+			/**
+				Fonction qui affiche un podcast en fonction de la date, de l'id de l'emission
+				du son du texte et de l'image
+			*/
 			function affichagePodcast($date, $idemission, $podcast, $texte, $image){
 				global $pdo;
 				$date =  date("d-m-Y",strtotime($date));
@@ -174,7 +180,7 @@
 							</div>
 							<div class="row">
 								<div class="col">date de mise en ligne : '.$date.' </div>
-								<div class="col">Emmision : '.$nomemission.'</div>
+								<div class="col">Emission : '.$nomemission.'</div>
 							</div>
 						</div>';
 					
@@ -195,7 +201,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -219,7 +225,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -244,7 +250,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 				}

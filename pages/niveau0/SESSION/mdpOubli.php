@@ -117,7 +117,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 				$subject = "Recuperer mot de passe " ;
 				$body = 'Bonjour,
 						 
-						Vous avez demandé une récupération de mot de passe cliquer, sur le liens pour le réinitialiser. Si vous n\'etes 
+						Vous avez demandé une récupération de mot de passe, cliquez sur le lien pour le réinitialiser. Si vous n\'êtes 
 						pas à l\'origine de ce mail veuillez l\'ignorer.
 						 
 						</br></br></br> 
@@ -154,7 +154,7 @@ require '../../../PHPMailer-master/src/SMTP.php';
 					<input type="email" id="mail" <?php if ($mailInexistant){ echo "<div class = \"formulaireERR\" ";}?> name="mail" placeholder="mail" required>
 					<?php
 						if ($mailInexistant){
-							echo " <div class=\" txtERR\">Aucun compte n'est associé à cette email</div>";
+							echo " <div class=\" txtERR\">Aucun compte n'est associé à cette adresse mail</div>";
 						}
 						
 						}else{

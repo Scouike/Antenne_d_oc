@@ -202,7 +202,7 @@
 							</div>
 							<div class="row">
 								<div class="col">date de mise en ligne : '.$date.' </div>
-								<div class="col">Emmision : '.$nomemission.'</div>
+								<div class="col">Emission : '.$nomemission.'</div>
 							</div>
 						</div>';
 					
@@ -228,7 +228,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -257,7 +257,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 					
@@ -287,7 +287,7 @@
 								</div>
 								<div class="row">
 									<div class="col">date de mise en ligne : '.$date.' </div>
-									<div class="col">Emmision : '.$nomemission.'</div>
+									<div class="col">Emission : '.$nomemission.'</div>
 								</div>
 							</div>';
 				}
@@ -367,7 +367,7 @@
 			if ($desarchivage == 1){
 				?>
 					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						<h4 class="alert-heading">Le podcast à bien été desarchivé!</h4>
+						<h4 class="alert-heading">Le podcast a bien été desarchivé!</h4>
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -379,7 +379,7 @@
 			if ($desarchivage == 2){
 				?>
 					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						<h4 class="alert-heading">L'émission à bien été desarchivé!</h4>
+						<h4 class="alert-heading">L'émission a bien été desarchivé!</h4>
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -392,7 +392,7 @@
 			if ($desarchivage == 3){
 				?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<h4 class="alert-heading">Le Théme à bien été desarchivé!</h4>
+					<h4 class="alert-heading">Le thème a bien été desarchivé!</h4>
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
